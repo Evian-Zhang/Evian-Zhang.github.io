@@ -1,0 +1,11 @@
+header {
+    font-family:sans-serif;
+}
+a {
+    color:#0000ff;
+    text-decoration: none;
+}
+
+a:hover {
+    font-weight:bold;
+}

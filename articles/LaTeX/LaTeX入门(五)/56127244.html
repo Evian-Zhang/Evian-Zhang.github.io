@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>LaTeX入门(五)——段落</title>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'] ],
+        displayMath: [ ['$$','$$'] ]
+    }
+});
+</script>
+</head><p>
+ 相信大家一定发现了，从开始到现在，我们在LaTeX中的输入一直没有出现过多个段落。那么LaTeX中如何实现分段呢？并不是很简单地
+</p>
+<div class="highlight">
+ <pre><code class="language-tex"><span></span>This is a line.
+This is a new line
+</code></pre>
+</div>
+<p>
+ 这样排版出来的结果，依然是
+</p>
+<figure>
+ <img src="./56127244_assets/v2-afb84226c891b0cc9459eb3b8a267f9f_b.png"/>
+</figure>
+<p>
+ 要分段，我们需要使用
+ <code>
+  \par
+ </code>
+ 命令，即
+</p>
+<div class="highlight">
+ <pre><code class="language-tex"><span></span>This is a line.<span class="k">\par</span>
+This is a new line. 
+</code></pre>
+</div>
+<p>
+ 甚至我们在
+ <code>
+  \par
+ </code>
+ 之后，源码里都不用换行，
+</p>
+<div class="highlight">
+ <pre><code class="language-tex"><span></span>This is a line.<span class="k">\par</span> This is a new line. 
+</code></pre>
+</div>
+<p>
+ 也能实现相应的分段。
+</p>
+<p>
+ 此外，我们也可以添加两个换行符来实现换行，即
+</p>
+<div class="highlight">
+ <pre><code class="language-text"><span></span>This is a line.
+
+This is a new line.
+</code></pre>
+</div>
+<p>
+ 和分段对应，另一种操作叫断行。用命令
+ <code>
+  \\
+ </code>
+ 实现。下面，我们来看一下这两种操作的不同：
+</p>
+<p>
+ 我们在正文中输入一段话（因为知乎的代码框里不会自动换行，所以我就不用代码框了）：
+</p>
+<p>
+ Four score and seven years ago our fathers brought forth on this continent, a new nation, conceived in Liberty, and dedicated to the proposition that all men are created equal. \par
+</p>
+<p>
+ Now we are engaged in a great civil war, testing whether that nation, or any nation so conceived and so dedicated, can long endure. We are met on a great battle-field of that war. We have come to dedicate a portion of that field, as a final resting place for those who here gave their lives that that nation might live. It is altogether fitting and proper that we should do this.
+</p>
+<p>
+ 在article文档类下排版出来的效果是
+</p>
+<figure>
+ <img src="./56127244_assets/v2-69e557c43f1b389de47678052a2882ac_b.jpg"/>
+</figure>
+<p>
+ 那么如果我们用断行
+ <code>
+  \\
+ </code>
+ 来实现的话，即输入为：
+</p>
+<p>
+ Four score and seven years ago our fathers brought forth on this continent, a new nation, conceived in Liberty, and dedicated to the proposition that all men are created equal. \\
+</p>
+<p>
+ Now we are engaged in a great civil war, testing whether that nation, or any nation so conceived and so dedicated, can long endure. We are met on a great battle-field of that war. We have come to dedicate a portion of that field, as a final resting place for those who here gave their lives that that nation might live. It is altogether fitting and proper that we should do this.
+</p>
+<p>
+ 那么输出会是
+</p>
+<figure>
+ <img src="./56127244_assets/v2-a7a147402f24aea0c61e17bedd1fd428_b.jpg"/>
+</figure>
+<p>
+ 首先我们先说明一点，在article文档类中，会对每个段落的段首进行缩进。那么在第一种情况，也就是
+ <code>
+  \par
+ </code>
+ 的情况下，"Four"段和"Now"段都进行了缩进，也就说明LaTeX将源码中这两个段落看作了两个段。但是，在第二种情况，也就是
+ <code>
+  \\
+ </code>
+ 的情况下，"Now"段并没有缩进。这说明，LaTeX并没有将"Now"段看作独立的一段，"Now"引导的一段话和"Four"段被LaTeX看作了一段话。
+</p>
+<p>
+ 从语言逻辑上讲，一段就是一段，实际上只需要分段来分隔每一段。但由于承载文字的工具的限制，纸的宽度是一定的，一段话如果超过了纸的宽度，就要换行。但是，换行产生的下一行句子和上一行仍然属于同一段。在多数时候，LaTeX自动帮我们做了换行的工作。但是，有时候我们出于各种各样的原因，想在一行的某个单词后强制换行，这时就应该用
+ <code>
+  \\
+ </code>
+ 命令。
+</p>
+<p>
+ 那么，LaTeX的段落有哪些性质呢？
+</p>
+<p>
+ 首先，我们要讲的，也是最复杂的，就是行距。
+</p>
+<h2>
+ 基线
+</h2>
+<p>
+ 在讲行距之前，我们先讲一下基线的概念。
+</p>
+<p>
+ 维基百科中如下说道：
+</p>
+<blockquote>
+ 字体排印学中，
+ <b>
+  基线
+ </b>
+ （英语：
+ <b>
+  Baseline
+ </b>
+ ）指的是多数字母排列的基准线。如右图所示，大多字母都沿着红色基线排列，唯有“p”向下延伸超过基线，超过的部分称为降部。
+</blockquote>
+<p>
+ 配图如下：
+</p>
+<figure>
+ <img src="./56127244_assets/v2-9026bebc9a7a0df9bd3357a910367b5b_b.jpg"/>
+</figure>
+<p>
+ 维基百科中又说，
+</p>
+<blockquote>
+ 东亚字体没有基线，每个字符坐落在一个方形盒子中，既无升部也无降部。当它与具有低基线的字体混合使用时，东亚字符应当被调整，使其字符底部在低基线字体的基线和降部高度之间。
+</blockquote>
+<p>
+ 相信大家看了这些话和配图以后，对基线应该有了一个大致的了解。
+</p>
+<h2>
+ 字号
+</h2>
+<p>
+ 介绍完基线之后，我们可以真正地了解字号了。前一篇文章，仅仅是简单地介绍了一下如何设置字号，那么字号究竟代表什么意思呢？pt和em究竟是什么呢？
+</p>
+<p>
+ 在现代排版学中，pt是字号的单位，中文译为磅。在Word中，1pt为1/72英寸。而在LaTeX中，1pt为1/72.27英寸。而磅与中文字号的转化关系为：
+</p>
+<p>
+ 初号42pt, 小初36pt, 一号26pt, 小一24pt, 二号22pt, 小二18pt, 三号16pt, 小三15pt, 四号14pt, 小四12pt, 五号10.5pt, 小五9pt
+</p>
+<p>
+ 当前的字号指的是"typically a bit larger than the distance from the tallest ascender to the lowest descender", 从之前基线的图中可以看出，就是比从descender一直到ascender的距离略大。
+</p>
+<p>
+ 当前的字体大小被记作单位em, 也就是说，如果当前字号为12pt, 那当前1em=12pt.
+</p>
+<p>
+ 那么，行距是什么呢？
+</p>
+<h2>
+ 行距
+</h2>
+<p>
+ 维基百科如是说道：
+</p>
+<blockquote>
+ 在字体排印学，
+ <b>
+  行距
+ </b>
+ （Leading）指代字体连续行的基线间的距离。
+</blockquote>
+<p>
+ 在Word中，我们谈论的单倍行距，双倍行距也源于此。对于每一个字号，有一个基准行距，它等于单倍行距。在旧时用打字机的时候，如何增加行距呢？人们选择的方法只有空一行这样。所以，在Word中有双倍行距，这时的行距就等于两倍的基准行距。
+</p>
+<p>
+ 在LaTeX中的行距机制，又是怎么样呢？
+</p>
+<p>
+ 我们上一篇文章中讲到，
+ <code>
+  \fontsize{fontSize}{baseLineSkip}\selectfont
+ </code>
+ 可以同时更改字体大小及行距。事实上，这里的行距是Word中的基准行距。它并不是真正的两个基线之间的距离。它存储在LaTeX的宏
+ <code>
+  \f@baselineskip
+ </code>
+ 中。LaTeX中还有一个宏，是
+ <code>
+  \baselinestretch
+ </code>
+ , 我们可以通过命令
+ <code>
+  \linespread{lineSpread}\selectfont
+ </code>
+ 来改变它，其中lineSpread填我们想要变成的值。而LaTeX中真正的行距，也就是两个基线之间的距离，是
+ <code>
+  \baselinestretch
+ </code>
+ 乘以
+ <code>
+  \f@baselineskip
+ </code>
+ 的值，它储存在
+ <code>
+  \baselineskip
+ </code>
+ 中。
+</p>
+<p>
+ 如果我们什么都不设置，对于不同的文档类，默认字体大小不同，但默认的
+ <code>
+  \f@baselineskip
+ </code>
+ 的值为默认字号的1.2倍，
+ <code>
+  \baselinestretch
+ </code>
+ 在不同的文档类中也不同，article文档类中为1，ctexart文档类为1.3
+</p>
+<p>
+ 因此，在我们改变行距时，如果想把行距调整成精确的值，一般用
+ <code>
+  \fontsize{fontSize}{baseLineSkip}\selectfont
+ </code>
+ 来实现；如果想成比例地调整行距，比如单倍行距，双倍行距，则使用
+ <code>
+  \linespread{lineSpread}\selectfont
+ </code>
+ 来实现。 比如说，双倍行距就是
+ <code>
+  \linespread{2}\selectfont
+ </code>
+</p>
+<p>
+ 此外，我们也可以用一个名叫
+ <code>
+  setspace
+ </code>
+ 的宏包。也就是说，在导言区使用
+ <code>
+  \usepackage{setspace}
+ </code>
+ .然后使用
+ <code>
+  \setstretch{lineSpread}
+ </code>
+ 来设置linespread（不用加
+ <code>
+  \selectfont
+ </code>
+ ）. 这个命令的好处在于会同时修改数学公式、浮动体等的间距，使之与正文间距适应。
+</p>
+<h2>
+ 空行
+</h2>
+<p>
+ 那么，我们如何在LaTeX中插入多个空行呢？一直用
+ <code>
+  \par\par\par
+ </code>
+ 是会疯狂报错的。。。正确做法是：
+</p>
+<div class="highlight">
+ <pre><code class="language-text"><span></span>\vspace*{n\baselineskip} 
+</code></pre>
+</div>
+<p>
+ 其中n为想空的行数。
+</p>
+<h2>
+ 段间距
+</h2>
+<p>
+ 在不同的段之间，也可以设置段间距（默认为0）。通过
+ <code>
+  \setlength{\parskip}{parSkip}
+ </code>
+ 来实现。比如说，我想设置段间距为2em, 则使用
+ <code>
+  \setlength{\parskip}{2em}
+ </code>
+ 即可。这样，在不同两段之间的距离，为段间距+
+ <code>
+  \baselineskip
+ </code>
+ 的距离。
+</p>
+<p>
+ 这里值得注意的是，由于
+ <code>
+  \\
+ </code>
+ 是断行不是分段，所以由
+ <code>
+  \\
+ </code>
+ 引起的下一行与本行之间的距离，只有
+ <code>
+  \baselineskip
+ </code>
+ , 而不加上
+ <code>
+  \parskip
+ </code>
+</p>
+<h2>
+ 缩进
+</h2>
+<p>
+ 在article及ctexart中，都默认给每一段的段首进行了缩进（在下一篇文章中我们会看到，article中的每一个章节后的首段不会缩进）。我们可以通过
+ <code>
+  \setlength{\parindent}{parIndent}
+ </code>
+ 来控制缩进距离，比如说，我想控制段首缩进2em，则应写
+ <code>
+  \setlength{\parindent}{2em}
+ </code>
+ . 这个命令会使该命令之后的所有段的缩进都变成这个值。如果要取消全部段落的段首缩进，则可以写
+ <code>
+  \setlength{\parindent}{0em}
+ </code>
+ .
+</p>
+<p>
+ 如果要单独取消某一行的段首缩进，则在该行的段首写
+ <code>
+  \noindent
+ </code>
+ 即可。
+</p>
+<h2>
+ 参考链接
+</h2>
+<p>
+ <a class="wrap external" href="http://link.zhihu.com/?target=https%3A//liam.page/2013/10/17/LaTeX-Linespace/" rel="nofollow noreferrer" target="_blank">
+  【LaTeX Tips】关于行距的研究
+ </a>
+</p></body></html>

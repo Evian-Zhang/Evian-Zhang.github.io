@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>LaTeX入门(七)——页面设置</title>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'] ],
+        displayMath: [ ['$$','$$'] ]
+    }
+});
+</script>
+</head><p>
+ 通过之前的一系列文章，我们分别从字、段、章节介绍了LaTeX的使用，按照这种顺序，接下来，我们就要介绍整体页面的设置。
+</p>
+<p>
+ 什么叫整体页面的设置呢？之前讲段落的时候我们提过，由于客观条件的限制，原本只需要分段的文字，因为纸的宽度有限，在每段内还要断行。同样地，因为纸的长度有限，因此，一篇文章也要分为好多页。那么一页的大小怎么设置，能容纳多少行，一行能有多宽，页眉、页尾怎么设置，凡此种种，都叫整体页面的设置。
+</p>
+<p>
+ 首先，这一切，都需要我们使用宏包
+ <code>
+  geometry
+ </code>
+ . 因此，首先，我们需要在导言区中写上
+</p>
+<div class="highlight">
+ <pre><code class="language-tex"><span></span> <span class="k">\usepackage</span><span class="nb">{</span>geometry<span class="nb">}</span>
+</code></pre>
+</div>
+<h2>
+ 页面大小设置
+</h2>
+<p>
+ 我们常用的页面大小，就是A4纸。要实现这个，可以在导言区中写上
+</p>
+<div class="highlight">
+ <pre><code class="language-text"><span></span>\geometry{a4paper}
+</code></pre>
+</div>
+<p>
+ 如果我们不是用约定的纸张大小，而是想以数值形式指定纸张大小，比如说长22厘米，宽10厘米，那么，我们可以在导言区中写
+</p>
+<div class="highlight">
+ <pre><code class="language-text"><span></span>\geometry{paperheight=22cm, paperwidth=10cm}
+</code></pre>
+</div>
+<h2>
+ 版心位置、大小设置
+</h2>
+<p>
+ 除了设置页面的大小以外，我们还可以设置版心的位置和大小。什么是版心呢？我们知道，在一张纸上写字的时候，我们一般不会每行第一个字顶着最左边写，一直写到页面的最右边再断行，我们一般是会留下一些页边距的。那么，除去这些页边距以外，包括整个文字部分的长方形叫做版心。每行的第一个字顶着版心的最左边开始，一直写到版心的最右边开始断行。
+</p>
+<p>
+ 版心的位置可以通过设置其左边距、右边距、上边距、下边距来设置。其对应的参数名分别为
+ <code>
+  left
+ </code>
+ ,
+ <code>
+  right
+ </code>
+ ,
+ <code>
+  top
+ </code>
+ ,
+ <code>
+  bottom
+ </code>
+ . 比如说，我们要设置左边距为2cm，可以在导言区中写
+</p>
+<div class="highlight">
+ <pre><code class="language-text"><span></span>\geometry{left=2cm} 
+</code></pre>
+</div>
+<p>
+ 此外，我们如果需要将版心居中，竖直居中的参数名为
+ <code>
+  vcentering
+ </code>
+ ,  水平居中的参数名为
+ <code>
+  hcentering
+ </code>
+ , 水平、竖直均居中的参数名为
+ <code>
+  centering
+ </code>
+ . 使用方法为：如果我们要让版心水平居中，可以在导言区中写
+</p>
+<div class="highlight">
+ <pre><code class="language-text"><span></span>\geometry{hcentering} 
+</code></pre>
+</div>
+<p>
+ 此外，还可以设置版心的大小。版心的长为
+ <code>
+  textheight
+ </code>
+ , 宽为
+ <code>
+  textwidth
+ </code>
+ . 我们如果要设置版心长为20cm，可以在导言区中写
+</p>
+<div class="highlight">
+ <pre><code class="language-text"><span></span>\geometry{textheight=20cm}
+</code></pre>
+</div>
+<p>
+ 总的而言，在
+ <code>
+  geometry
+ </code>
+ 宏包说明中的一张图可以很直观地解释上述参数：
+</p>
+<figure>
+ <img src="./56405574_assets/v2-2849336ac31e56146136821ba80dde0a_b.jpg"/>
+</figure>
+<h2>
+ 页眉与页脚
+</h2>
+<p>
+ 对于页眉页脚的设置，我们使用宏包
+ <code>
+  fancyhdr
+ </code>
+ . 所以，我们首先在导言区中写上
+</p>
+<div class="highlight">
+ <pre><code class="language-text"><span></span>\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+</code></pre>
+</div>
+<p>
+ 这里注意一点，如果我们同时使用了
+ <code>
+  geometry
+ </code>
+ 和
+ <code>
+  fancyhdr
+ </code>
+ 宏包，那么一定要把
+ <code>
+  \usepackage{fancyhdr}
+ </code>
+ 及相应的页眉、页脚设置写在
+ <code>
+  \usepackage{geometry}
+ </code>
+ 的前面，否则会出现奇怪的错误。
+</p>
+<p>
+ 具体的设置方法，我们首先来看一张图：
+</p>
+<figure>
+ <img src="./56405574_assets/v2-761404f98985619366f9da447a5e6d19_b.jpg"/>
+</figure>
+<p>
+ 这是宏包
+ <code>
+  fancyhdr
+ </code>
+ 说明文档里的配图。这个宏包将页面的页眉、页脚各分为左、中、右三个部分，其对应的指令名为
+ <code>
+  \lhead{}
+ </code>
+ ,
+ <code>
+  \chead{}
+ </code>
+ ,
+ <code>
+  \rhead{}
+ </code>
+ ,
+ <code>
+  \lfoot{}
+ </code>
+ ,
+ <code>
+  \lhead{}
+ </code>
+ ,
+ <code>
+  \rhead{}
+ </code>
+ . 我们在括号中填写想在对应地方出现的东西就可以了。比如说，我想在页眉正中出现“学习指南”，我们只需要在导言区中写上
+</p>
+<div class="highlight">
+ <pre><code class="language-text"><span></span>\chead{学习指南} 
+</code></pre>
+</div>
+<p>
+ 即可。
+</p>
+<p>
+ 如果想使用页码，可以用
+ <code>
+  \thepage
+ </code>
+ 来实现。
+ <code>
+  \thepage
+ </code>
+ 指令存储的是当前页面的页码数。比如说，我想在页尾的右侧写上当前页码，则在导言区中写上
+</p>
+<div class="highlight">
+ <pre><code class="language-text"><span></span>\rfoot{\thepage} 
+</code></pre>
+</div>
+<p>
+ 即可。
+</p>
+<p>
+ 此外，顺便提一句，如果要在正文中使用
+ <code>
+  \maketitle
+ </code>
+ ，那么那一页的页面格式会自动变回原来的页面格式。需要在
+ <code>
+  \maketitle
+ </code>
+ 后加上一句
+ <code>
+  \thispagestyle{fancy}
+ </code>
+ 。
+</p>
+<p>
+ 同时，页眉也被默认设置了含有页眉线。页眉线、页脚线的指令名分别为
+ <code>
+  \headrulewidth
+ </code>
+ 和
+ <code>
+  \footrulewidth
+ </code>
+ . 其粗细可分别用
+ <code>
+  \renewcommand
+ </code>
+ 来设置。比如说，我想取消页眉线，就可以在导言区中写上
+</p>
+<div class="highlight">
+ <pre><code class="language-text"><span></span>\renewcommand\headrulewidth{0pt} 
+</code></pre>
+</div>
+<p>
+</p></body></html>

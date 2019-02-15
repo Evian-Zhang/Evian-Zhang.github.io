@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>LaTeX入门(六)——章节与列表</title>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'] ],
+        displayMath: [ ['$$','$$'] ]
+    }
+});
+</script>
+</head><p>
+ 在我们的写作中，除了字斟句酌、段落分明以外，我们还需要做的，就是将这些段落组织成一个有层次的主体。就像我们设计衣服，找到了合适的纱线，纺成了一匹匹布料，我们还需要将这些布料用心组合，搭配出合适的衣服。
+</p>
+<p>
+ 在LaTeX中，与文章层次有关的，就是章节与列表。
+</p>
+<h2>
+ 章节
+</h2>
+<p>
+ 不同的文档类中的章节不一样。我们常用的article文档类的章节层次有：section, subsection, subsubsection, paragraph, subparagraph. 常用的report文档类的章节层次有：chapter, section, subsection, subsubsection, paragraph, subparagraph. 也就是说，report比article多了一个chapter.
+</p>
+<p>
+ 调用这些章节层次的方法为：
+ <code>
+  \section{}
+ </code>
+ ,
+ <code>
+  \subsection{}
+ </code>
+ 等等，以此类推。其中大括号内的参数为该章节的名字。比如说，在一篇数学建模的论文中，我们可以在正文中有如下章节结构：
+</p>
+<div class="highlight">
+ <pre><code class="language-tex"><span></span><span class="k">\section</span><span class="nb">{</span>问题重述<span class="nb">}</span>
+<span class="k">\section</span><span class="nb">{</span>符号说明<span class="nb">}</span>
+<span class="k">\section</span><span class="nb">{</span>问题分析<span class="nb">}</span>
+<span class="k">\section</span><span class="nb">{</span>基本假设<span class="nb">}</span>
+<span class="k">\section</span><span class="nb">{</span>模型的建立与求解<span class="nb">}</span>
+<span class="k">\subsection</span><span class="nb">{</span>问题一的求解<span class="nb">}</span>
+<span class="k">\subsection</span><span class="nb">{</span>问题二的求解<span class="nb">}</span>
+<span class="k">\subsection</span><span class="nb">{</span>问题三的求解<span class="nb">}</span>
+<span class="k">\section</span><span class="nb">{</span>模型的优缺点<span class="nb">}</span>
+</code></pre>
+</div>
+<p>
+ 在写完章节名以后，就可以写本章的内容了。比如说，
+</p>
+<div class="highlight">
+ <pre><code class="language-text"><span></span>\section{问题重述}
+本次建模的题目为......
+\section{符号说明}
+......
+</code></pre>
+</div>
+<p>
+ 也就是说，
+ <code>
+  \section{}
+ </code>
+ 这些命令，起到了分隔文章主体的作用。
+</p>
+<p>
+ 同时，LaTeX强大的一点在于，你只需要写
+ <code>
+  \section{}
+ </code>
+ ，而不需要声明这是第几章，它会自动给你编号。比如说，你在ctexart文档类中把上述的框架写进正文，排版出来的效果为：
+</p>
+<figure>
+ <img src="./56171762_assets/v2-46ceec99edc34dd04f2064cab8caf165_b.jpg"/>
+</figure>
+<p>
+ 此外，如果想要改变章节标题的格式，对于英文文档类，请参考宏包
+ <code>
+  titlesec
+ </code>
+ 的说明文档（就像之前说的那样，用texdoc）。对于中文文档类，如ctexart, ctexrep等，我们可以使用
+ <code>
+  \CTEXsetup[]{}
+ </code>
+ 命令，具体方法请参考宏包
+ <code>
+  ctex
+ </code>
+ 的说明文档，这里不再赘述。一般我们也不太会需要改变章节标题的格式，唯一可能会想改变的，是把中文
+ <code>
+  \section
+ </code>
+ 居左。我们可以在导言区中写
+</p>
+<div class="highlight">
+ <pre><code class="language-tex"><span></span><span class="k">\CTEXsetup</span><span class="na">[format+={\raggedright}]</span><span class="nb">{</span>section<span class="nb">}</span> 
+</code></pre>
+</div>
+<p>
+ 来实现。
+</p>
+<p>
+ 此外，值得一提的是，对于英文文档类，如article等，由于英文论文的写作规范，每个章节的首段是不缩进的。这不需要我们额外设置，LaTeX是自动设置好的。具体效果可参见下图：
+</p>
+<figure>
+ <img src="./56171762_assets/v2-c83868da0ce7508941cc6f11163c0e7f_b.jpg"/>
+</figure>
+<p>
+ 在某些时候，我们会发现，尽管LaTeX给我们提供到了subsubsection，但结构层次依然不够。但是，paragraph却有其与众不同的特点，标题后不能换行，对subsubsubsection的需要就出现了。但是，LaTeX并没有给我们subsubsubsection命令，我们需要自己定义。将下面一段文字复制到导言区：
+</p>
+<div class="highlight">
+ <pre><code class="language-tex"><span></span><span class="k">\usepackage</span><span class="nb">{</span>titlesec<span class="nb">}</span>
+<span class="k">\titleclass</span><span class="nb">{</span><span class="k">\subsubsubsection</span><span class="nb">}{</span>straight<span class="nb">}</span>[<span class="k">\subsection</span>]
+
+<span class="k">\newcounter</span><span class="nb">{</span>subsubsubsection<span class="nb">}</span>[subsubsection]
+<span class="k">\renewcommand\thesubsubsubsection</span><span class="nb">{</span><span class="k">\thesubsubsection</span>.<span class="k">\arabic</span><span class="nb">{</span>subsubsubsection<span class="nb">}}</span>
+<span class="k">\renewcommand\theparagraph</span><span class="nb">{</span><span class="k">\thesubsubsubsection</span>.<span class="k">\arabic</span><span class="nb">{</span>paragraph<span class="nb">}}</span>
+
+<span class="k">\titleformat</span><span class="nb">{</span><span class="k">\subsubsubsection</span><span class="nb">}</span>
+  <span class="nb">{</span><span class="k">\normalfont\normalsize\bfseries</span><span class="nb">}{</span><span class="k">\thesubsubsubsection</span><span class="nb">}{</span>1em<span class="nb">}{}</span>
+<span class="k">\titlespacing*</span><span class="nb">{</span><span class="k">\subsubsubsection</span><span class="nb">}</span>
+<span class="nb">{</span>0pt<span class="nb">}{</span>3.25ex plus 1ex minus .2ex<span class="nb">}{</span>1.5ex plus .2ex<span class="nb">}</span>
+
+<span class="k">\makeatletter</span>
+<span class="k">\renewcommand\paragraph</span><span class="nb">{</span><span class="k">\@</span>startsection<span class="nb">{</span>paragraph<span class="nb">}{</span>5<span class="nb">}{</span><span class="k">\z</span>@<span class="nb">}</span><span class="c">%</span>
+  <span class="nb">{</span>3.25ex <span class="k">\@</span>plus1ex <span class="k">\@</span>minus.2ex<span class="nb">}</span><span class="c">%</span>
+  <span class="nb">{</span>-1em<span class="nb">}</span><span class="c">%</span>
+  <span class="nb">{</span><span class="k">\normalfont\normalsize\bfseries</span><span class="nb">}}</span>
+<span class="k">\renewcommand\subparagraph</span><span class="nb">{</span><span class="k">\@</span>startsection<span class="nb">{</span>subparagraph<span class="nb">}{</span>6<span class="nb">}{</span><span class="k">\parindent</span><span class="nb">}</span><span class="c">%</span>
+  <span class="nb">{</span>3.25ex <span class="k">\@</span>plus1ex <span class="k">\@</span>minus .2ex<span class="nb">}</span><span class="c">%</span>
+  <span class="nb">{</span>-1em<span class="nb">}</span><span class="c">%</span>
+  <span class="nb">{</span><span class="k">\normalfont\normalsize\bfseries</span><span class="nb">}}</span>
+<span class="k">\def\toclevel</span>@subsubsubsection<span class="nb">{</span>4<span class="nb">}</span>
+<span class="k">\def\toclevel</span>@paragraph<span class="nb">{</span>5<span class="nb">}</span>
+<span class="k">\def\toclevel</span>@paragraph<span class="nb">{</span>6<span class="nb">}</span>
+<span class="k">\def\l</span>@subsubsubsection<span class="nb">{</span><span class="k">\@</span>dottedtocline<span class="nb">{</span>4<span class="nb">}{</span>7em<span class="nb">}{</span>4em<span class="nb">}}</span>
+<span class="k">\def\l</span>@paragraph<span class="nb">{</span><span class="k">\@</span>dottedtocline<span class="nb">{</span>5<span class="nb">}{</span>10em<span class="nb">}{</span>5em<span class="nb">}}</span>
+<span class="k">\def\l</span>@subparagraph<span class="nb">{</span><span class="k">\@</span>dottedtocline<span class="nb">{</span>6<span class="nb">}{</span>14em<span class="nb">}{</span>6em<span class="nb">}}</span>
+<span class="k">\makeatother</span>
+
+<span class="k">\setcounter</span><span class="nb">{</span>secnumdepth<span class="nb">}{</span>4<span class="nb">}</span>
+</code></pre>
+</div>
+<p>
+ 即可在正文中使用
+ <code>
+  \subsubsubsection{}
+ </code>
+ 命令了。
+</p>
+<p>
+ 一篇文章中，不仅仅有正文，还也许会有参考文献及附录。
+</p>
+<h2>
+ 参考文献
+</h2>
+<p>
+ 对于参考文献，这里不再介绍bibtex的方法，如果想了解的同学可以去网上自行搜索。下面介绍手动控制参考文献的方法：
+</p>
+<p>
+ 在正文中使用
+ <code>
+  thebibliography
+ </code>
+ 环境。下面给大家看一下我某次数学建模的参考文献：
+</p>
+<div class="highlight">
+ <pre><code class="language-tex"><span></span><span class="k">\begin</span><span class="nb">{</span>thebibliography<span class="nb">}{</span>99<span class="nb">}</span>
+<span class="k">\bibitem</span><span class="nb">{</span>CPStructure<span class="nb">}{</span>Borgatti, S. and Everett, M. Models of core/periphery structures. Social Networks, 21:
+375-395, October 2000<span class="nb">}</span>
+<span class="k">\bibitem</span><span class="nb">{</span>rightskewed<span class="nb">}{</span>Newman, M. The structure and function of complex networks. SIAM Review, 45:167-256, 2003.<span class="nb">}</span>
+<span class="k">\bibitem</span><span class="nb">{</span>CD<span class="nb">}{</span>Natarajan Meghanathan.A Binary Search Algorithm for Correlation Study of Decay Centrality vs. Degree Centrality and Closeness Centrality[J].Computer and information science,2017,10(2):52-75.<span class="nb">}</span>
+<span class="k">\bibitem</span><span class="nb">{</span>CC<span class="nb">}{</span>Masucci, A. Paolo,Molinero, Carlos.Robustness and closeness centrality for self-organized and planned cities[J].The European physical journal, B. Condensed matter physics,2016,89(2):-.<span class="nb">}</span>
+<span class="k">\bibitem</span><span class="nb">{</span>SA<span class="nb">}{</span>Chengxiang Zhuge,Chunfu Shao,Shuling Wang, et al.Sensitivity analysis of integrated activity-based model: using MATSim as an example[J].Transportation Letters,2019,11(2):93-103. DOI:10.1080/19427867.2017.1286772.<span class="nb">}</span>
+<span class="k">\bibitem</span><span class="nb">{</span>CE<span class="nb">}{</span>L. Laporta,J. Afonso,I. Mesquita.The need for weighting indirect connections between game variables: Social Network Analysis and eigenvector centrality applied to high-level men’s volleyball[J].International Journal of Performance Analysis in Sport,2018,18(6):1067-1077. DOI:10.1080/24748668.2018.1553094.<span class="nb">}</span>
+<span class="k">\end</span><span class="nb">{</span>thebibliography<span class="nb">}</span> 
+</code></pre>
+</div>
+<p>
+ 排版出来的效果为：
+</p>
+<figure>
+ <img src="./56171762_assets/v2-34a557fea9c8e9e6ab20ac7da33d5df2_b.jpg"/>
+</figure>
+<p>
+ 在
+ <code>
+  \begin{thebibliography}
+ </code>
+ 后还有一个
+ <code>
+  {99}
+ </code>
+ , 这是参考文献的最大条数，你也可以写
+ <code>
+  {80}
+ </code>
+ 之类的，不重要。
+</p>
+<p>
+ 在这之间的每一个
+ <code>
+  \bibitem
+ </code>
+ 代表一条参考文献。同样地，这是LaTeX自动帮你编号的。它实际上只有一个参数，我之所以写了两个大括号，是方便我们理解和使用。
+ <code>
+  \bibitem{aRef}{aContent}
+ </code>
+ , 排版出来的效果只有
+ <code>
+  aContent
+ </code>
+ .
+ <code>
+  aRef
+ </code>
+ 有什么用呢？它用于文章前面的交叉引用（关于这个我后面的文章里会详细说明）。这里只需要知道一点，在文章后面写了以后，在文章正文内就能使用
+ <code>
+  \cite{aRef}
+ </code>
+ 来引用这条参考文献。排版出来的效果为出现这个参考文献对应的编号。如果需要将编号置于右上角，则可以在导言区里写
+</p>
+<div class="highlight">
+ <pre><code class="language-text"><span></span>\newcommand{\upcite}[1]{\textsuperscript{\cite{#1}}} 
+</code></pre>
+</div>
+<p>
+ 然后在正文中使用
+ <code>
+  \upcite{aRef}
+ </code>
+ 即可。
+</p>
+<p>
+ 而这些参考文献的格式从哪来，我们一般是在百度学术或者Google学术上，找到对应的论文，然后点引用，会出现三种格式。我们直接复制GB/T 7714即可。
+</p>
+<figure>
+ <img src="./56171762_assets/v2-c5c395c8691e3c4b37ac4e7a2cbe62f1_b.jpg"/>
+</figure>
+<h2>
+ 附录
+</h2>
+<p>
+ 使用附录的方式有许多种，我常用的是使用宏包
+ <code>
+  appendix
+ </code>
+ ，其他方法大家也可以自行搜索。
+</p>
+<p>
+ 在导言区里写上：
+</p>
+<div class="highlight">
+ <pre><code class="language-tex"><span></span><span class="k">\usepackage</span><span class="na">[toc, page]</span><span class="nb">{</span>appendix<span class="nb">}</span> 
+</code></pre>
+</div>
+<p>
+ 然后，在正文中想要出现附录的地方使用
+ <code>
+  appendices
+ </code>
+ 环境，并且添加一句话，即：
+</p>
+<div class="highlight">
+ <pre><code class="language-tex"><span></span><span class="k">\begin</span><span class="nb">{</span>appendices<span class="nb">}</span>
+<span class="k">\addtocontents</span><span class="nb">{</span>toc<span class="nb">}{</span><span class="k">\protect\setcounter</span><span class="nb">{</span>tocdepth<span class="nb">}{</span>0<span class="nb">}}</span>
+<span class="k">\end</span><span class="nb">{</span>appendices<span class="nb">}</span> 
+</code></pre>
+</div>
+<p>
+ 然后，在这个环境中用
+ <code>
+  \section{}
+ </code>
+ 等命令就能产生附录中的章节了。那句额外的代码，是为了不在目录中出现每个附录章节的名字，而只在目录中出现一个附录代表全体。
+</p>
+<p>
+ 对于中文文档类，如ctexart等，需要在导言区
+ <code>
+  \usepackage[toc, page]{appendix}
+ </code>
+ 之后加上两句话：
+</p>
+<div class="highlight">
+ <pre><code class="language-tex"><span></span><span class="k">\renewcommand</span><span class="nb">{</span><span class="k">\appendixtocname</span><span class="nb">}{</span>附录<span class="nb">}</span>
+<span class="k">\renewcommand</span><span class="nb">{</span><span class="k">\appendixpagename</span><span class="nb">}{</span>附录<span class="nb">}</span> 
+</code></pre>
+</div>
+<p>
+ 这两个的作用，一个是在目录中用“附录”替换"appendices", 一个是在正文中用“附录”替换"appendices".
+</p>
+<h2>
+ 目录
+</h2>
+<p>
+ 刚刚提到了好多次目录，那么目录是怎么做的呢？
+</p>
+<p>
+ 在你正文中想要加入目录的地方，写上一行命令：
+</p>
+<div class="highlight">
+ <pre><code class="language-tex"><span></span><span class="k">\tableofcontents</span>
+</code></pre>
+</div>
+<p>
+ 然后排版两次（原因我会在之后的文章中提到），就能得到相应的目录了。
+</p>
+<h2>
+ 列表
+</h2>
+<p>
+ 除了章节以外，比章节更细的层次划分就是列表了。LaTeX中常见的列表有两种：有序列表和无序列表。有序列表即以1, 2, 3..这类的序号编号每一条条目，无序列表即每一条条目都被一个·所引起。
+</p>
+<p>
+ 有序列表的使用方法为：
+</p>
+<div class="highlight">
+ <pre><code class="language-tex"><span></span><span class="k">\begin</span><span class="nb">{</span>enumerate<span class="nb">}</span>
+<span class="k">\item</span> anItem
+<span class="k">\item</span> anotherItem
+<span class="k">\end</span><span class="nb">{</span>enumerate<span class="nb">}</span>
+</code></pre>
+</div>
+<p>
+ 无序列表的使用方法为：
+</p>
+<div class="highlight">
+ <pre><code class="language-tex"><span></span><span class="k">\begin</span><span class="nb">{</span>itemize<span class="nb">}</span>
+<span class="k">\item</span> anItem
+<span class="k">\item</span> anotherItem
+<span class="k">\end</span><span class="nb">{</span>itemize<span class="nb">}</span>
+</code></pre>
+</div>
+<p>
+ 每一个
+ <code>
+  \item
+ </code>
+ 代表一个条目。
+</p>
+<p>
+ 在列表中换行可以使用
+ <code>
+  \\
+ </code>
+ .但是，我们会发现，在列表中不分段落，没有缩进。
+</p>
+<p>
+ 我们可以实现列表的嵌套，即例如：
+</p>
+<div class="highlight">
+ <pre><code class="language-text"><span></span>将不同动物放入冰箱的步骤：
+\begin{itemize}
+\item 大象
+\begin{enumerate}
+\item 打开冰箱门
+\item 把大象放进去
+\item 关上冰箱门
+\end{enumerate}
+\item 长颈鹿
+\begin{enumerate}
+\item 打开冰箱门
+\item 把大象拿出来
+\item 把长颈鹿放进去
+\item 关上冰箱门
+\end{enumerate}
+\end{itemize}
+</code></pre>
+</div>
+<p>
+ 排版效果为：
+</p>
+<figure>
+ <img src="./56171762_assets/v2-9e73135ccb3c22c3d6171788c98a7d41_b.jpg"/>
+</figure>
+<p>
+ 此外，我们也可以自己定制列表环境。使用宏包
+ <code>
+  enumitem
+ </code>
+ . 具体方法请参见宏包的说明文档。在数学建模中，我们常用一个用于问题重述的列表环境，即生成“问题一”“问题二”的列表。我的代码为：
+</p>
+<div class="highlight">
+ <pre><code class="language-text"><span></span>\usepackage{enumitem}
+\newlist{question}{enumerate}{1}
+\setlist[question,1]{itemsep = 0pt, parsep = 0pt, align=left, leftmargin=*, label = {\bfseries 问题\chinese*}} 
+</code></pre>
+</div>
+<p>
+ 直接复制到导言区，然后就可以在正文中使用
+</p>
+<div class="highlight">
+ <pre><code class="language-text"><span></span>\begin{question}
+\item %这是问题一
+\item %这是问题二
+\item %这是问题三
+\end{question}
+</code></pre>
+</div>
+<p>
+ 来使用了。
+</p>
+<p>
+ 最后讲一下如何修改
+ <code>
+  enumerate
+ </code>
+ 和
+ <code>
+  itemize
+ </code>
+ 列表编号的问题。
+</p>
+<p>
+ 对于
+ <code>
+  enumerate
+ </code>
+ 列表，即有序列表来说，第一级列表编号默认为1. 2. 3. ... 如果我们要修改这个列表编号怎么办呢？对于每一个有序列表，都有一个
+ <code>
+  enumi
+ </code>
+ 来存储当前的计数。比如说现在第一级列表到了第三个，那么
+ <code>
+  enumi
+ </code>
+ 就是3(这里是第一级列表，如果列表内再嵌套列表，也就是第二级有序列表，则就是
+ <code>
+  enumii
+ </code>
+ , 第三级就是
+ <code>
+  enumiii
+ </code>
+ 以此类推)。 而命令
+ <code>
+  \theenumi
+ </code>
+ 控制的是
+ <code>
+  enumi
+ </code>
+ 的表现形式，比如说，如果我们在导言区中写
+</p>
+<div class="highlight">
+ <pre><code class="language-tex"><span></span> <span class="k">\renewcommand</span><span class="nb">{</span><span class="k">\theenumi</span><span class="nb">}{</span><span class="k">\chinese</span><span class="nb">{</span>enumi<span class="nb">}}</span>
+</code></pre>
+</div>
+<p>
+ 那么第一级编号时出现的就不是1 2 3而是一二三。
+</p>
+<p>
+ 而命令
+ <code>
+  \labelenumi
+ </code>
+ 控制的是在列表中的编号格式。比如说，我们如果在导言区中写
+</p>
+<div class="highlight">
+ <pre><code class="language-text"><span></span>\renewcommand{\labelenumi}{(\theenumi)}
+</code></pre>
+</div>
+<p>
+ 那么在列表中出现的就是(一) (二) (三)这种。
+</p>
+<p>
+ 对于
+ <code>
+  itemize
+ </code>
+ 列表，即无序列表来说，就没有了那个计数器。所以，我们只需要在导言区中写
+</p>
+<div class="highlight">
+ <pre><code class="language-text"><span></span>\renewcommand{\labelitemi}{sth.} 
+</code></pre>
+</div>
+<p>
+ 其中
+ <code>
+  sth.
+ </code>
+ 是你想将无序列表变成的模样。比如说，空心圆圈
+ <code>
+  $\circ$
+ </code>
+ 等等。
+</p></body></html>

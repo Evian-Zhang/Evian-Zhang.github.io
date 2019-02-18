@@ -1,3 +1,5 @@
+var article_container_left_margin = 2;
+var distance_from_line_to_container = 0.3;
 function transToEm(x) {
     return x * parseFloat(getComputedStyle(document.body).fontSize.replace("px", ""));
 }
@@ -23,7 +25,12 @@ function drawTree() {
         var header = document.getElementById("main_header");
         var root_x = main_canvas.width / 2;
         var root_y = header.offsetHeight;
-        context.moveTo(root_x, root_y);
+        context.strokeStyle = "#ffffff";
+        context.lineCap = "round";
+        context.shadowBlur = 15;
+        context.shadowColor = "#4169E1";
+        context.lineWidth = 5;
+        context.moveTo(root_x, root_y + transToEm(distance_from_line_to_container));
         var article_container_list = document.getElementsByClassName("article_container");
         var max_y = header.offsetTop + header.offsetHeight / 2;
         var node_list = [];
@@ -31,7 +38,9 @@ function drawTree() {
             var article_container = _a[_i];
             var container_left = article_container.offsetLeft;
             var node = {
-                x: container_left < root_x ? container_left - transToEm(2) + article_container.offsetWidth : container_left - transToEm(2),
+                x: container_left < root_x ?
+                    container_left - transToEm(article_container_left_margin) + article_container.offsetWidth + transToEm(distance_from_line_to_container) :
+                    container_left - transToEm(article_container_left_margin) - transToEm(distance_from_line_to_container),
                 y: article_container.offsetTop + article_container.offsetHeight / 2
             };
             node_list.push(node);
@@ -40,15 +49,11 @@ function drawTree() {
         for (var nodeIndex = 0; nodeIndex < node_list.length; nodeIndex = nodeIndex + 1) {
             var tmpNode = node_list[nodeIndex];
             context.lineTo(root_x, tmpNode.y);
+            context.stroke();
             context.lineTo(tmpNode.x, tmpNode.y);
+            context.stroke();
             context.moveTo(root_x, tmpNode.y);
         }
-        context.strokeStyle = "#ffffff";
-        context.lineWidth = 10;
-        context.lineCap = "round";
-        context.shadowBlur = 20;
-        context.shadowColor = "#4169E1";
-        context.stroke();
     }
 }
 window.onload = function () {

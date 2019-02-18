@@ -1,13 +1,14 @@
 body {
     background-color:#000000;
     color:#ffffff;
-    min-width:50em;
     padding:0;
     margin:0;
 }
 
-#main {
+#main_wrapper {
     position:relative;
+    min-width:50em;
+    max-width:500em;
 }
 
 header {
@@ -41,7 +42,6 @@ a:hover {
     padding:0;
     left:0;
     top:0;
-    background-color:#111111;
 }
 
 div.article_container {

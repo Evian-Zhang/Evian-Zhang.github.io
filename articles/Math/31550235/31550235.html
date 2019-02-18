@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>更精细地处理极限</title>
+<base target="_blank" />
+<link rel="stylesheet" type="text/css" href="/css/article.css" />
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'] ],
+        displayMath: [ ['$$','$$'] ]
+    }
+});
+</script>
+</head>
+<body>
+<div id="main_wrapper">
+    <header id="main_header">
+        <a href="/index.html">Evian Zhang's<br />naive blog</a>
+        <h2>更精细地处理极限</h2>
+    </header>
+    <div id="article_body">
+<p>
+ 在这篇文章里，我想主要谈两个问题：极限的定义和极限的换元法。并且在最后讲一个令人疑惑的问题。
+</p>
+<h2>
+ <b>
+  极限的定义
+ </b>
+</h2>
+<p>
+ 首先，回忆一下我们的《高等数学》上对（一元函数）极限的定义：
+</p>
+<blockquote>
+ 如果
+ <span class="text/tex">
+  $\displaystyle \exists a \in R,s.t.\forall \epsilon &gt;0,\exists\delta&gt;0,s.t.\forall0&lt;|x-x_0|&lt;\delta ,|f(x)-a|&lt;\epsilon$
+ </span>
+ ,则称
+ <span class="text/tex">
+  $\displaystyle y=f(x)$
+ </span>
+ 在
+ <span class="text/tex">
+  $\displaystyle x \to a$
+ </span>
+ 时极限存在，记作
+ <span class="text/tex">
+  $\displaystyle \lim_{x \to x_0}f(x)=a$
+ </span>
+ 。
+</blockquote>
+<p>
+ 接着，我们来看一下Zorich的《数学分析》中对函数极限的定义：
+</p>
+<blockquote>
+ 设有函数
+ <span class="text/tex">
+  $\displaystyle f:E \to \mathbb{R}$
+ </span>
+ ,
+ <span class="text/tex">
+  $\displaystyle A \in \mathbb{R}$
+ </span>
+ .如果对于任何
+ <span class="text/tex">
+  $\displaystyle \epsilon&gt;0$
+ </span>
+ ,存在一数
+ <span class="text/tex">
+  $\displaystyle \delta &gt;0$
+ </span>
+ ，使得对于满足
+ <span class="text/tex">
+  $\displaystyle 0&lt;|x-x_0|&lt;\delta$
+ </span>
+ 的任何
+ <span class="text/tex">
+  $\displaystyle x\in E$
+ </span>
+ ,关系
+ <span class="text/tex">
+  $\displaystyle |f(x)-A|&lt;\epsilon$
+ </span>
+ 成立，我们就（跟随柯西）说当x趋于a时，函数f趋于A，或说，A是函数f当x趋于a时的极限。
+</blockquote>
+<p>
+ 仔细看一下，这两者有何区别？
+</p>
+<p>
+ 区别有二：
+</p>
+<p>
+ 一，《高等数学》中对极限的定义里，并没有对函数f的定义域进行说明。事实上，我们在《高等数学》中做的函数的题里面，都是默认定义域为实数集的。
+</p>
+<p>
+ 二，《数学分析》中对极限的定义里，在
+ <span class="text/tex">
+  $\displaystyle 0&lt;|x-x_0|&lt;\delta$
+ </span>
+ 后加了一个限制条件
+ <span class="text/tex">
+  $\displaystyle x\in E$
+ </span>
+ ，这事实上也是与第一点相统一的。
+</p>
+<p>
+ 那么，为什么数学分析中加了这句话呢？这两种极限会有差别么？
+</p>
+<p>
+ 答案是，有的。
+</p>
+<p>
+ 一个例子：
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle \lim_{x \to 0}\frac{\frac{1}{x}}{\sin \frac{1}{x}}$
+ </span>
+</p>
+<p>
+ 以《高等数学》上的定义来看，这个极限显然是不存在的，因为无论
+ <span class="text/tex">
+  $\displaystyle \delta$
+ </span>
+ 有多小，总会存在
+ <span class="text/tex">
+  $\displaystyle x=\frac{1}{k\pi}$
+ </span>
+ ,使得
+ <span class="text/tex">
+  $\displaystyle f(x)$
+ </span>
+ 无意义。
+</p>
+<p>
+ 但是以《数学分析》上的定义来看，这个极限是（广义上）存在的。因为这个函数的定义域是
+ <span class="text/tex">
+  $\displaystyle \{x|x\neq \frac{1}{k\pi},k\in Z\}$
+ </span>
+ .那么就不会出现上述的情况。同时，我们可以算出这个极限为无穷。
+</p>
+<p>
+ 从形的角度去理解这两种定义，我们会发现，《数学分析》上的定义实际是《高等数学》上定义的一种推广。我们知道，在平面直角坐标系中，横轴x轴和纵轴y轴都是
+ <b>
+  实数轴
+ </b>
+ ，所以我们在讨论极限的时候是按实数去逼近那个极限值的。但是，总有一些情况，我们会挖去实数轴上的某些点，这样函数的图像从实数上来看是间断的，但是事实上确实存在着一种“趋近”的现象，而这个现象并不能用《高等数学》上极限的定义去描述。但是，用了《数学分析》的定义，我们确实可以描述这种现象了。也就出现了我们常见的“按有理数去逼近”等方法。在《数学分析》中，为了强调这种定义域对极限的重要性，特地出现了更严谨的记号：
+ <span class="text/tex">
+  $\displaystyle \lim_{E \ni x \to x_0}f(x)$
+ </span>
+ .
+</p>
+<p>
+ 同时，我可以再举一个《数学分析》上这种定义必要性的例子：
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle 2^\sqrt2$
+ </span>
+ 是什么？
+</p>
+<p>
+ 在高中课本上，我们是计算
+ <span class="text/tex">
+  $\displaystyle 2^{1.4},2^{1.41},...$
+ </span>
+ 和
+ <span class="text/tex">
+  $\displaystyle 2^{1.5},2^{1.42},...$
+ </span>
+ ，发现这两个数列确实存在极限。然后由此定义了
+ <span class="text/tex">
+  $\displaystyle 2^\sqrt2$
+ </span>
+ .按函数极限的定义，这种行为显然无法描述。因为我们并不知道任何数的无理数次方的定义，也就无法在实数集上让自变量去逼近
+ <span class="text/tex">
+  $\displaystyle \sqrt2$
+ </span>
+ 。而如果用数列极限的方法，却只能用单独的数列
+ <span class="text/tex">
+  $\displaystyle 1.4,1.41,1.414,...$
+ </span>
+ 去逼近，但事实上，只要是趋向于
+ <span class="text/tex">
+  $\displaystyle \sqrt2$
+ </span>
+ 的数列，都会使这个极限存在。所以，自然地，我们用到《数学分析》上对极限的定义：讨论
+ <span class="text/tex">
+  $\displaystyle \lim_{Q \ni x \to \sqrt2}2^x$
+ </span>
+ .
+</p>
+<p>
+ 由此，我们会发现许多极限的定理都需要更加精细地写出来：
+</p>
+<p>
+ <br/>
+</p>
+<p>
+ 极限的唯一性：
+</p>
+<p>
+ 若
+ <span class="text/tex">
+  $\displaystyle \lim_{E \ni x \to x_0}f(x)=a_1$
+ </span>
+ ,
+ <span class="text/tex">
+  $\displaystyle \lim_{E \ni x \to x_0}f(x)=a_2$
+ </span>
+ ,则
+ <span class="text/tex">
+  $\displaystyle a_1=a_2$
+ </span>
+ .
+</p>
+<p>
+ <br/>
+</p>
+<p>
+ 海涅定理：
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle \lim_{E \ni x \to x_0}f(x)=a$
+ </span>
+ 的充要条件是：
+</p>
+<p>
+ 对于任意数列
+ <span class="text/tex">
+  $\displaystyle \{a_n\}$
+ </span>
+ ,若它满足
+ <span class="text/tex">
+  $\displaystyle \forall n\in N^*,a_n \in E$
+ </span>
+ 且
+ <span class="text/tex">
+  $\displaystyle \lim_{n \to \infty}a_n=x_0$
+ </span>
+ ,则
+ <span class="text/tex">
+  $\displaystyle \lim_{n \to \infty}f(a_n)=a$
+ </span>
+ .
+</p>
+<p>
+ <br/>
+</p>
+<p>
+ 极限的复合运算法则：
+</p>
+<p>
+ 设函数
+ <span class="text/tex">
+  $\displaystyle f:Y \to R$
+ </span>
+ ,
+ <span class="text/tex">
+  $\displaystyle g:X \to Y$
+ </span>
+ ,且
+ <span class="text/tex">
+  $\displaystyle \lim_{X\ni x \to x_0}g(x)=u_0$
+ </span>
+ ,
+ <span class="text/tex">
+  $\displaystyle \lim_{Y \ni u\to u_0}f(x)=a$
+ </span>
+ ,且存在一个
+ <span class="text/tex">
+  $\displaystyle x_0$
+ </span>
+ 的去心邻域
+ <span class="text/tex">
+  $\displaystyle \overset{\circ}U(x_0)\cap X$
+ </span>
+ ,使对于任意这里面的元素x满足
+ <span class="text/tex">
+  $\displaystyle g(x)\neq u_0$
+ </span>
+ ,那么
+ <span class="text/tex">
+  $\displaystyle \lim_{X \ni x\to x_0}f(g(x))=\lim_{Y\ni u \to u_0}f(u)=a$
+ </span>
+</p>
+<p>
+ <br/>
+</p>
+<h2>
+ <b>
+  极限的换元法
+ </b>
+</h2>
+<p>
+ 在我们处理极限过程中，总是很自然地运用换元法：比如说，我们常令
+ <span class="text/tex">
+  $\displaystyle t=\frac1x$
+ </span>
+ ,这样
+ <span class="text/tex">
+  $\displaystyle \lim_{x\to \infty}$
+ </span>
+ 就可以变成
+ <span class="text/tex">
+  $\displaystyle \lim_{t \to 0}$
+ </span>
+ .但是，让我们思考一下极限的换元法的本质是什么。我们为什么可以用极限的换元法？
+</p>
+<p>
+ 事实上，极限的换元法是极限的复合运算法则。在我们令
+ <span class="text/tex">
+  $\displaystyle t=\frac1x$
+ </span>
+ 的时候，实际上是构造了一个复合函数
+ <span class="text/tex">
+  $\displaystyle f(t(x))$
+ </span>
+ ,也就是说，
+ <span class="text/tex">
+  $\displaystyle \lim_{x \to x_0}f(x)=\lim_{x\to x_0}f(t)$
+ </span>
+ .但是，最关键的一步是
+ <span class="text/tex">
+  $\displaystyle \lim_{x\to x_0}f(t)=\lim_{t\to t_0}f(t)$
+ </span>
+ ,或者写的更明白一些：
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle \lim_{x\to x_0}f(t(x))=\lim_{t \to t_0}f(t)$
+ </span>
+ .
+</p>
+<p>
+ 这正是极限的复合运算法则。所以在不满足极限的复合运算法则的时候，我们并不能使用极限的换元法。（不过正常人一般不会那样使用换元法23333）举个例子：
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle f(x)=\begin{cases} 1&amp;x=0\\ 0&amp;x\neq0 \end{cases}$
+ </span>
+ ,求
+ <span class="text/tex">
+  $\displaystyle \lim_{x\to 0}f(x\sin \frac1x)$
+ </span>
+ 。
+</p>
+<p>
+ 我们设
+ <span class="text/tex">
+  $\displaystyle g(x)=x\sin \frac1x$
+ </span>
+ ，那么 明眼人都能看出来，
+ <span class="text/tex">
+  $\displaystyle \lim_{R/\{0\} \ni x \to 0}f(g(x))$
+ </span>
+ 并不存在。因为在x趋于0的过程中，g(x)无数次穿过x轴，导致f(x)总是会有值跳出来，极限并不存在。如果我们运用换元法
+ <span class="text/tex">
+  $\displaystyle t=x\sin \frac{1}{x}$
+ </span>
+ ，则
+ <span class="text/tex">
+  $\displaystyle \lim_{t \to 0}f(t)=0$
+ </span>
+ .这样显然是荒谬的。
+</p>
+<h2>
+ <b>
+  最后
+ </b>
+</h2>
+<p>
+ 最后，给出一个令人疑惑的问题：
+</p>
+<p>
+ <br/>
+</p>
+<p>
+ 我们知道，
+ <span class="text/tex">
+  $\displaystyle f(x)=\begin{cases}x^2\sin \frac1x&amp;x\neq 0\\0&amp;x=0\end{cases}$
+ </span>
+ 在
+ <span class="text/tex">
+  $\displaystyle x=0$
+ </span>
+ 处导数存在且为0（用导数的定义做），但是，在区间
+ <span class="text/tex">
+  $\displaystyle [0,x]$
+ </span>
+ 上运用Lagrange中值定理：
+ <span class="text/tex">
+  $\displaystyle \frac{x^2 \sin\frac{1}{x}}{x}=2\xi \sin \frac 1\xi-\cos \frac1 \xi$
+ </span>
+ ,并且由夹逼定理可以知道，
+ <span class="text/tex">
+  $\displaystyle \lim_{x\to 0}\xi=0$
+ </span>
+ .于是
+ <span class="text/tex">
+  $\displaystyle \lim_{x\to 0}\frac{x^2\sin \frac1x}{x}=\lim_{\xi \to 0}2\xi \sin \frac 1\xi-\cos \frac1\xi$
+ </span>
+ 不存在。
+</p>
+<p>
+ <br/>
+</p>
+<p>
+ 这个实际上是因为错误地运用了极限的换元法，或者说，复合运算法则。它错在了最后一步。最后的那个极限未必不存在。我设
+ <span class="text/tex">
+  $\displaystyle \xi =\xi(x)$
+ </span>
+ 的值域为
+ <span class="text/tex">
+  $\displaystyle \Xi$
+ </span>
+ ,那么我们求的极限实际上是
+ <span class="text/tex">
+  $\displaystyle \lim _{\Xi \ni \xi\to0}2\xi \sin\frac1\xi-\cos \frac1\xi$
+ </span>
+ ,这个不能判断是否存在。
+</p>
+<p>
+ （事实上，我认为这个问题的破题之处，并非与
+ <span class="text/tex">
+  $\displaystyle \xi(x)$
+ </span>
+ 的连续性有关，尽管有些朋友和我讲是这样的。）
+</p>
+<p>
+ <br/>
+</p>
+<p>
+ 写这篇文章的时候我并非步步推敲，必有疏漏之处。望诸知友不吝斧正！
+</p></div></div></body></html>

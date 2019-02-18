@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>关于等价无穷小的一点认识</title>
+<base target="_blank" />
+<link rel="stylesheet" type="text/css" href="/css/article.css" />
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'] ],
+        displayMath: [ ['$$','$$'] ]
+    }
+});
+</script>
+</head>
+<body>
+<div id="main_wrapper">
+    <header id="main_header">
+        <a href="/index.html">Evian Zhang's<br />naive blog</a>
+        <h2>关于等价无穷小的一点认识</h2>
+    </header>
+    <div id="article_body">
+<p>
+ 最近有很多人纠结于等价无穷小的问题，主要在于分式的分子分母中有加减法时是否能用等价无穷小。这里我写了篇小干货，分享给大家。
+</p>
+<p>
+ 这篇文章中用到了我之前的
+ <a class="internal" href="https://zhuanlan.zhihu.com/p/27659362">
+  浅谈相等关系与等价关系
+ </a>
+ 中的记号，～与一般书上等价无穷小的记号无关，请大家在日常考试中不要用本文的记号。出了事概不负责。这里我们以～来表示高阶无穷小，主要是为了表示“...【是】...的高阶无穷小”而非“...【等于】...的高阶无穷小”。
+</p>
+<p>
+ 此外，
+ <span class="text/tex">
+  $\displaystyle f(x)-g(x)\sim o(h(x))$
+ </span>
+ 往往可被记作
+ <span class="text/tex">
+  $\displaystyle f(x)\sim g(x)+o(h(x))$
+ </span>
+</p>
+<h2>
+ <b>
+  用到的定理
+ </b>
+</h2>
+<p>
+ 1.如果
+ <span class="text/tex">
+  $\displaystyle \lim_{x \to x_0}f(x)$
+ </span>
+ 和
+ <span class="text/tex">
+  $\displaystyle \lim_{x \to x_0}g(x)$
+ </span>
+ 都存在，那么
+ <span class="text/tex">
+  $\displaystyle \lim_{x \to x_0}(f(x)g(x))=(\lim _{x \to x_0}f(x))(\lim _{x \to x_0}g(x))$
+ </span>
+</p>
+<p>
+ 2.在
+ <span class="text/tex">
+  $\displaystyle x \to 0$
+ </span>
+ 时，
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle ko(x^m)\sim o(x^m)$
+ </span>
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle o(kx^m)\sim o(x^m)$
+ </span>
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle o(x^m)o(x^n)\sim o(x^{m+n})$
+ </span>
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle x^mo(x^n)\sim o(x^{m+n})$
+ </span>
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle \frac{o(x^m)}{x^n}\sim o(x^{m-n})$
+ </span>
+</p>
+<p>
+ 在
+ <span class="text/tex">
+  $\displaystyle x=0$
+ </span>
+ 的某个邻域中有
+ <span class="text/tex">
+  $\displaystyle o(f(x)) \leq |f(x)|$
+ </span>
+</p>
+<p>
+ 在
+ <span class="text/tex">
+  $\displaystyle m \geq n$
+ </span>
+ 时，有
+ <span class="text/tex">
+  $\displaystyle o(x^m)+o(x^n)\sim o(x^n)$
+ </span>
+ ，
+ <span class="text/tex">
+  $\displaystyle o(x^m+x^n)\sim o(x^n)$
+ </span>
+</p>
+<p>
+ 3.Taylor公式：
+ <span class="text/tex">
+  $\displaystyle f(x)\sim \sum_{k=0}^n \frac{f^{(k)}(x_0)}{k!}(x-x_0)^k+o((x-x_0)^n)$
+ </span>
+</p>
+<p>
+ Maclaurin公式:
+ <span class="text/tex">
+  $\displaystyle f(x)\sim \sum_{k=0}^n \frac{f^{(k)}(0)}{k!}x^k+o(x^n)$
+ </span>
+</p>
+<p>
+ 4.复合函数的等价无穷小
+</p>
+<p>
+ 设
+ <span class="text/tex">
+  $\displaystyle y=f(x)$
+ </span>
+ 满足
+ <span class="text/tex">
+  $\displaystyle f(0)$
+ </span>
+ ,
+ <span class="text/tex">
+  $\displaystyle f^{\prime}(0)$
+ </span>
+ ,
+ <span class="text/tex">
+  $\displaystyle f^{\prime}(P(0))$
+ </span>
+ 都存在且
+ <span class="text/tex">
+  $\displaystyle f^{\prime}(0) \neq 0$
+ </span>
+ ，
+ <span class="text/tex">
+  $\displaystyle P(x)$
+ </span>
+ 是最高项次数为m的多项式，那么在
+ <span class="text/tex">
+  $\displaystyle x \to 0$
+ </span>
+ 时，有公式
+ <span class="text/tex">
+  $\displaystyle f(P(x)+o(x^m))-f(P(x))\sim o(f(x^m)-f(0))$
+ </span>
+</p>
+<p>
+ 证明：
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle \lim_{x \to 0}\frac{f(P(x)+o(x^m))-f(P(x))}{f(x^m)-f(0)}=\lim_{x \to 0}\frac{f(P(x)+o(x^m))-f(P(x))}{(P(x)+o(x^m))-P(x)}\frac{o(x^m)}{f(x^m)-f(0)}$
+ </span>
+</p>
+<p>
+ 而
+ <span class="text/tex">
+  $\displaystyle \lim_{x \to 0}\frac{f(P(x)+o(x^m))-f(P(x))}{(P(x)+o(x^m))-P(x)}=f^{\prime}(P(0))$
+ </span>
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle \lim_{x \to 0}\frac{o(x^m)}{f(x^m)-f(0)}=\lim_{x \to 0}\frac{\frac{o(x^m)}{x^m}}{\frac{f(x^m)-f(0)}{x^m}}=\frac{0}{f^{\prime}(0)}=0$
+ </span>
+</p>
+<p>
+ 故原命题成立
+</p>
+<p>
+ 5.等价无穷小的复合函数
+</p>
+<p>
+ 设
+ <span class="text/tex">
+  $\displaystyle P(x)$
+ </span>
+ 是最高项次数为m，最低项次数为n的多项式，那么
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle o(P(x)+o(x^m))\sim o(x^n)$
+ </span>
+</p>
+<p>
+ 证明：
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle \lim_{x \to 0}\frac{o(P(x)+o(x^m))}{x^n}=\lim_{x \to 0}\frac{\frac{o(P(x)+o(x^m))}{P(x)+o(x^m)}}{\frac{x^n}{P(x)+o(x^m)}}=0$
+ </span>
+</p>
+<p>
+ 6.带高阶无穷小的有理分式
+</p>
+<p>
+ 设
+ <span class="text/tex">
+  $\displaystyle P(x)$
+ </span>
+ ，
+ <span class="text/tex">
+  $\displaystyle Q(x)$
+ </span>
+ 分别是最高项次数、最低项次数为
+ <span class="text/tex">
+  $\displaystyle m_1,n_1$
+ </span>
+ ，
+ <span class="text/tex">
+  $\displaystyle m_2,n_2$
+ </span>
+ 的多项式，即
+ <span class="text/tex">
+  $\displaystyle P(x)=\sum _{k=n_1}^{m_1}a_kx^k$
+ </span>
+ ,
+ <span class="text/tex">
+  $\displaystyle P(x)=\sum _{k=n_2}^{m_2}b_kx^k$
+ </span>
+ ，其中
+ <span class="text/tex">
+  $\displaystyle a_{n_1},b_{n_2},a_{m_1},b_{m_2} \neq 0$
+ </span>
+ ,
+ <span class="text/tex">
+  $\displaystyle n_1,n_2 \geq 1$
+ </span>
+</p>
+<p>
+ 那么，
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle \lim _{x \to 0}\frac{P(x)+o(x^{m_1})}{Q(x)+o(x^{m_2})}=\lim _{x \to 0}\frac{P(x)}{Q(x)}$
+ </span>
+</p>
+<p>
+ 证明：
+</p>
+<p>
+ 我们仅讨论
+ <span class="text/tex">
+  $\displaystyle n_1=n_2$
+ </span>
+ 时的情形，当其不等时，证明类似并且结论平凡。
+</p>
+<p>
+ 由于
+ <span class="text/tex">
+  $\displaystyle \lim _{x \to 0}\frac{P(x)+o(x^{m_1})}{Q(x)+o(x^{m_2})}=\lim _{x \to 0}\frac{P(x)+o(x^{n})}{Q(x)+o(x^{n})}=\lim _{x \to 0}\frac{P(x)+o(x^{n})}{x^n}\frac{x^n}{Q(x)+o(x^{n})}=\lim _{x \to 0}\frac{P(x)}{Q(x)}$
+ </span>
+</p>
+<h2>
+ <b>
+  正文
+ </b>
+</h2>
+<p>
+ 我们在计算极限的过程中，最常遇见的，便是
+ <span class="text/tex">
+  $\displaystyle \frac{0}{0}$
+ </span>
+ 型的极限。常用的做法有，约分、等价无穷小代换、L'Hospital法则、Taylor展开。
+</p>
+<p>
+ 事实上，根据我们的第3条定理，等价无穷小代换和L'Hospital法则其实只是Taylor展开的低阶形式，所以，我认为在计算这种极限的时候，还是用Taylor展开比较具有普适性。
+ <b>
+  所以我建议大家在计算极限的时候，总是带上高阶无穷小，而非愣头愣脑地直接用等价无穷小。
+ </b>
+</p>
+<p>
+ 计算
+ <span class="text/tex">
+  $\displaystyle \frac{0}{0}$
+ </span>
+ 型极限的步骤，是运用上述定理1、2、3、4、5，将其化成有理分式带上高阶无穷小的形式，再用定理6化简，或者用约分等方法得出结论。
+ <br/>
+ 【例题】
+</p>
+<p>
+ 求
+ <span class="text/tex">
+  $\displaystyle \lim_{x \to 0}\frac{\sqrt{1+x\sin x}-1}{1-\cos x }$
+ </span>
+</p>
+<p>
+ 解：
+ <span class="text/tex">
+  $\displaystyle \lim_{x \to 0}\frac{\sqrt{1+x\sin x}-1}{1-\cos x }=\lim_{x \to 0}\frac{\frac{1}{2}x\sin x+o(x\sin x)}{\frac{1}{2}x^2+o(x^2) }$
+ </span>
+</p>
+<p>
+ 而
+ <span class="text/tex">
+  $\displaystyle o(x\sin x)\sim o(x^2+xo(x))\sim o(x^2+o(x^2))\sim o(x^2)$
+ </span>
+</p>
+<p>
+ 故原式=
+ <span class="text/tex">
+  $\displaystyle \lim_{x \to 0}\frac{\frac{1}{2}x^2+xo(x)+o(x^2)}{\frac{1}{2}x^2+o(x^2) }=\lim_{x \to 0}\frac{\frac{1}{2}x^2+o(x^2)+o(x^2)}{\frac{1}{2}x^2+o(x^2) }=\lim_{x \to 0}\frac{\frac{1}{2}x^2+o(x^2)}{\frac{1}{2}x^2+o(x^2) }=\lim_{x \to 0}\frac{\frac{1}{2}x^2}{\frac{1}{2}x^2 }=1$
+ </span>
+</p>
+<p>
+ <br/>
+</p>
+<p>
+ 求
+ <span class="text/tex">
+  $\displaystyle \lim_{x \to 0}\frac{2^{\sin x}-2^x}{x}$
+ </span>
+</p>
+<p>
+ 解：
+ <span class="text/tex">
+  $\displaystyle \lim_{x \to 0}\frac{2^{\sin x}-2^x}{x}=\lim_{x \to 0}\frac{2^{x}-2^x+o(2^x-1)}{x}=\lim_{x \to 0}\frac{o(x\ln2+o(x))}{x}=\lim_{x \to 0}\frac{o(x)}{x}=0$
+ </span>
+</p>
+<p>
+ <br/>
+</p>
+<p>
+ 接下来我们对上述6个定理中的部分内容进行一定的阐释。
+</p>
+<p>
+ 首先，这其中的许多定理都是被限定在
+ <span class="text/tex">
+  $\displaystyle x \to 0$
+ </span>
+ 的情况下，这是由于Maclaurin公式的存在，导致我们讨论极限只需要这样。即使不能在x=0处展开，我们也可以利用
+ <span class="text/tex">
+  $\displaystyle t=x-x_0$
+ </span>
+ 来将极限化归为这种类型。
+</p>
+<p>
+ 其次，我们在多项式后的高阶无穷小总是与多项式次数相同。这也是Maclaurin公式决定的。对于不同的情况，我们要么把高阶无穷小利用定理2进行变化，要么就纯粹是高阶无穷小的题，而非一般函数的题，我们就不再讨论。
+</p>
+<p>
+ 还有就是，定理4和5其实是有关系的。对于复合函数来说，如果先对内函数用Taylor展开，那么就用定理4；如果先对外函数用Taylor展开，那么就用定理5.此外，还需声明的是，有时候用定理4或定理5之后得出的结论不一样，也就是先展开外函数和先展开内函数的结果所带的高阶无穷小不同。这个就看缘分吧。
+</p>
+<p>
+ 以及，定理4中有一个条件，
+ <span class="text/tex">
+  $\displaystyle f^{\prime}(0)\neq 0$
+ </span>
+ 。这个条件我总觉得有些辣眼睛。我试着规避这个条件，但总是找不到合适的替代条件。事实上，如果
+ <span class="text/tex">
+  $\displaystyle f^\prime (0)=0$
+ </span>
+ ，有反例
+ <span class="text/tex">
+  $\displaystyle f(x)=x^2$
+ </span>
+ ,
+ <span class="text/tex">
+  $\displaystyle g(x)=\sqrt{1+x^2}$
+ </span>
+ ,
+ <span class="text/tex">
+  $\displaystyle m=1$
+ </span>
+ 。
+</p>
+<p>
+ 对于定理6，事实上，它的公式我们不太需要记住。定理6的目的是告诉大家，只有
+ <span class="text/tex">
+  $\displaystyle n_1,n_2 \geq 1$
+ </span>
+ 时才能出现有效的结果。在我们正规计算极限的过程中，实际上就是把定理6证了一遍。比如求
+ <span class="text/tex">
+  $\displaystyle \lim_{x \to 0}\frac{\sqrt{1+x}-e^x}{\sin x}$
+ </span>
+ ,正规过程即为
+ <span class="text/tex">
+  $\displaystyle \lim_{x \to 0}\frac{\sqrt{1+x}-e^x}{\sin x}=\lim_{x \to 0}\frac{(\sqrt{1+x}-1)-(e^x-1)}{x}\frac{x}{\sin x}=-\frac{1}{2}$
+ </span>
+ .
+</p>
+<h2>
+ <b>
+  【下述重要】
+ </b>
+</h2>
+<p>
+ 此外，为什么等价无穷小只能用于乘除，而不能用于加减呢？事实上，这与我们定理6有关。
+ <b>
+  在分式的分子或分母中，事实上是可以用等价无穷小的，但只有在不被抵消为0的情况下可以。
+ </b>
+ 比如说，如果分子或分母中是
+ <span class="text/tex">
+  $\displaystyle x-\sin x$
+ </span>
+ ,那么只能通过等价无穷小代换至
+ <span class="text/tex">
+  $\displaystyle \frac{1}{6}x^3+o(x^3)$
+ </span>
+ ,而不能代换成
+ <span class="text/tex">
+  $\displaystyle o(x)$
+ </span>
+ ,因为此时高阶无穷小前多项式的最低次项的次数是0，不符合定理6中
+ <span class="text/tex">
+  $\displaystyle n_1,n_2 \geq 1$
+ </span>
+ 的条件。
+</p>
+<h2>
+ <b>
+  【上述重要】
+ </b>
+</h2>
+<p>
+ 我们讲了这么多定理，事实上，大多数都不是在标准课本上的（事实上，有些定理网络上也没有。。。）。所以在正规考试中也不能用。
+ <b>
+  我用这些定理的目的，是让大家理解为什么在某种情况下能用等价无穷小，但在某种情况下用等价无穷小就是错的。
+ </b>
+</p>
+<p>
+ 接下来，我们看一些非
+ <span class="text/tex">
+  $\displaystyle \frac{0}{0}$
+ </span>
+ 型的极限的求法：
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle 0\cdot\infty=\frac{0}{(\frac{1}{\infty})}$
+ </span>
+ ,
+ <span class="text/tex">
+  $\displaystyle 1^\infty =e^{\infty \ln 1}=e^{0 \cdot \infty}$
+ </span>
+</p>
+<p>
+ 以及，一些灵活的技巧，如：
+</p>
+<p>
+ 求
+ <span class="text/tex">
+  $\displaystyle \lim_{x \to \infty}(\sin \frac{4}{x}+\cos \frac{2}{x})^x$
+ </span>
+</p>
+<p>
+ 原式=
+ <span class="text/tex">
+  $\displaystyle \lim_{x \to \infty}((1+\sin \frac{4}{x}-(1-\cos \frac{2}{x}))^\frac{1}{\sin \frac{4}{x}-(1-\cos \frac{2}{x})})^{x(\sin \frac{4}{x}-(1-\cos \frac{2}{x}))}=e^{\lim_{x \to \infty}{x(\sin \frac{4}{x}-(1-\cos \frac{2}{x}))}}$
+ </span>
+</p>
+<p>
+ 而
+ <span class="text/tex">
+  $\displaystyle \lim_{x \to \infty}{x(\sin \frac{4}{x}-(1-\cos \frac{2}{x}))}=\lim_{t \to 0}\frac{\sin (4t)-(1-\cos (2t))}{t}$
+ </span>
+ 就变成了正常的分式极限
+</p>
+<p>
+ <br/>
+</p>
+<p>
+ 以上就是用等价无穷小求极限的我的一点思考。
+</p></div></div></body></html>

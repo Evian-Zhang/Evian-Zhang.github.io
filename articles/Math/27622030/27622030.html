@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>从关系到映射</title>
+<base target="_blank" />
+<link rel="stylesheet" type="text/css" href="/css/article.css" />
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'] ],
+        displayMath: [ ['$$','$$'] ]
+    }
+});
+</script>
+</head>
+<body>
+<div id="main_wrapper">
+    <header id="main_header">
+        <a href="/index.html">Evian Zhang's<br />naive blog</a>
+        <h2>从关系到映射</h2>
+    </header>
+    <div id="article_body">
+数学，是由一个个定义，或者说“对象”组成的。如果将数学比作一个结构精巧的积木，那么一个个对象就是构造其的木块，而我们要谈的“关系”，就是这些木块之间的黏合剂；也正如“关系”其名，如果将数学比作一个庞大的社会，关系就是连接个人之间的人情世故。
+<p>
+ 正如我们之前引入逻辑联结词，集合的交、并、相对差一样，如果没有“关系”，那么一个个定义都只是孤立的个体，就像我们不知道主餐后应该是甜点，搞不清烤鸭和烤鱼哪个热量更高。关系，就是连接个体之间的桥梁。
+ <br/>
+</p>
+<p>
+ 其实，在我们数学研究中，已经在不经意间使用了关系，如之前的命题之间的逆、否，如集合之间的包含与被包含。我们再提关系的意义，就是将这些对象统一起来，从整体的角度来看它们的共性。
+</p>
+<h2>
+ <b>
+  关系
+ </b>
+</h2>
+<p>
+ 首先，我们给出有序对的概念:
+</p>
+<p>
+ 定义
+ <b>
+  有序对
+ </b>
+ (ordered pair)
+ <span class="text/tex">
+  $\displaystyle &lt;a,b&gt;$
+ </span>
+ ,它满足性质
+ <span class="text/tex">
+  $\displaystyle &lt;a,b&gt;=&lt;c,d&gt;\leftrightarrow a=c\wedge b=d$
+ </span>
+</p>
+<p>
+ 这个有序对的概念涉及两个对象，首先，它是“对”，包含两个特定的元素a和b，其次，它有序，若a≠b，则
+ <span class="text/tex">
+  $\displaystyle &lt;a,b&gt;\ne &lt;b,a&gt;$
+ </span>
+</p>
+<p>
+ 而我们之前说过，数学中除集合以外的一切定义，都可以由集合给出。那么，这个有序对怎么由集合给出呢？这个集合要包含上述两个对象，所以，机智的数学家们给出了这样的定义:
+</p>
+<span class="text/tex">
+ $\displaystyle &lt;a,b&gt;=\left\{ a,\left\{ a,b \right\}  \right\} $
+</span>
+<br/>
+<p>
+ 不难验证，这个定义确实满足上述的两个对象。
+</p>
+<p>
+ 讲了这么多，终于可以定义“关系”了：
+</p>
+<p>
+ <b>
+  二元关系
+ </b>
+ (binary relation)是一个非空集合，它的元素都是有序对。此外，空集也是特殊的二元关系。二元关系简称“关系”
+</p>
+<p>
+ 其实关系也有不是二元的，但是其他的关系都可以由二元关系类比得出
+</p>
+<p>
+ 有了关系的定义，我们一般怎样构造一个关系呢？
+</p>
+<p>
+ 我们可以定义两个集合的直积或笛卡尔乘积(Cartesian product)：
+</p>
+<span class="text/tex">
+ $\displaystyle A\times B=\left\{ &lt;a,b&gt;|a\in A\wedge b\in B \right\} $
+</span>
+<br/>
+<p>
+ 这是我们构造关系的最有效方法。
+</p>
+<p>
+ 容易知道，
+ <span class="text/tex">
+  $\displaystyle A\times B$
+ </span>
+ 的任何子集也是关系，而
+ <b>
+  对于任意
+ </b>
+ <b>
+  <span class="text/tex">
+   $\displaystyle A\times B$
+  </span>
+  的
+  <i>
+   子集
+  </i>
+ </b>
+ ，我们称其为“从A到B的关系”，若A=B，则称为“A上的关系”
+</p>
+<p>
+ 我们常将一个二元关系记作R，（注意到R是一个集合），如果
+ <span class="text/tex">
+  $\displaystyle &lt;a,b&gt;\in R$
+ </span>
+ ,则记作
+ <span class="text/tex">
+  $\displaystyle aRb$
+ </span>
+ <br/>
+</p>
+<p>
+ 记集合
+ <span class="text/tex">
+  $\displaystyle \left\{ a|\exists b\left( aRb \right)  \right\} $
+ </span>
+ 为R的
+ <b>
+  定义域
+ </b>
+ (domain)，集合
+ <span class="text/tex">
+  $\displaystyle \left\{ b|\exists a\left( aRb \right)  \right\} $
+ </span>
+ 为R的
+ <b>
+  值域
+ </b>
+ (range)
+</p>
+<p>
+ 一下子给出了这么多定义，看似十分杂糅，实际上都是些很显然的东西。我们有两个对象，他们之间可能有先后顺序，可能有主次矛盾，而关系，则是将这些性质数学化的手段。我们常见的二元关系，有之前讲的集合之间的包含与被包含关系，也有数之间的大小关系。
+</p>
+<p>
+ 关系，也有一些性质涉及到了更深层次的意义，比如说，数学之美。
+</p>
+<p>
+ 设R为集合A上的关系
+</p>
+<p>
+ 如果
+ <span class="text/tex">
+  $\displaystyle \forall x\left( x\in A\rightarrow xRx \right) $
+ </span>
+ ,则称R为
+ <b>
+  自反的
+ </b>
+ (reflexive)
+</p>
+<p>
+ 如果
+ <span class="text/tex">
+  $\displaystyle \forall x\left( x\in A\rightarrow \neg xRx \right) $
+ </span>
+ ，则称R为
+ <b>
+  反自反的
+ </b>
+ (irreflexive)
+</p>
+<p>
+ 如果
+ <span class="text/tex">
+  $\displaystyle \forall x\forall y\left( x,y\in A\wedge xRy\rightarrow yRx \right) $
+ </span>
+ ,则称R为
+ <b>
+  对称的
+ </b>
+ (symmetric)
+</p>
+<p>
+ 如果
+ <span class="text/tex">
+  $\displaystyle \forall x\forall y\left( x,y\in A\wedge xRy\wedge  yRx \rightarrow x=y\right) $
+ </span>
+ ,则称R为
+ <b>
+  反
+ </b>
+ <b>
+  对称的
+ </b>
+ (antisymmetric)
+ <br/>
+</p>
+<p>
+ 如果
+ <span class="text/tex">
+  $\displaystyle \forall x\forall y\forall z\left( x,y,z\in A\wedge xRy\wedge yRz\rightarrow xRz \right) $
+ </span>
+ ,则称R为
+ <b>
+  传递的
+ </b>
+ (transitive)
+</p>
+<p>
+ 用自然的语言来说，如果所有x和自身都有关系R，则R为自反的；如果所有x和自身都没有关系R，则R为反自反的；如果x和y有关系R，那么y和x也有关系R，则R为对称的；如果x和y有关系R，那么y和x就没有关系R，则R为反对称的；如果x和y，y和z有关系R，那么x和z有关系R，则R为传递的。
+</p>
+<p>
+ 数之间的小于关系是反自反的，传递的；小于等于关系是自反的，反对称的，传递的；相等关系是自反的，对称的，反对称的，传递的。
+</p>
+<p>
+ 而现实生活中的正常的恋人关系，是反自反的，对称的；血缘关系是自反的，对称的，传递的。
+</p>
+<p>
+ 一个够好的关系，是至少具备上述性质中的几个的。如果啥性质都没有，那这个关系可是够难看的。
+</p>
+<h2>
+ <b>
+  映射
+ </b>
+</h2>
+<p>
+ 由关系，我们便可以引入数学上分布最广的对象——
+ <b>
+  函数
+ </b>
+ (function),亦即，
+ <b>
+  映射
+ </b>
+ (mapping)。
+</p>
+<p>
+ 这里之所以称之为映射而非函数，原因是我想在这篇文章里讨论的仅仅是函数在集合论中的部分，其单调性、奇偶性等等暂且按下不表。而在此，映射似乎更符合这种语境。
+</p>
+<p>
+ 映射是一种特殊的二元关系。
+</p>
+<p>
+ 设F为二元关系，A、B为其定义域、值域，若
+ <span class="text/tex">
+  $\displaystyle \forall x\in A$
+ </span>
+ ,
+ <span class="text/tex">
+  $\displaystyle \exists $
+ </span>
+ 唯一
+ <span class="text/tex">
+  $\displaystyle y\in B$
+ </span>
+ ,使得
+ <span class="text/tex">
+  $\displaystyle xFy$
+ </span>
+ ，则称F为映射,并记
+ <span class="text/tex">
+  $\displaystyle y=f(x)$
+ </span>
+ 。
+ <br/>
+</p>
+<p>
+ 这里的定义与二元关系的区别就在于“唯一”。也正如一个人可以与许多人有恋人关系，但也只能同时与一个人有夫妻关系。
+</p>
+<p>
+ 再次指出，这里的映射也是一个集合。
+</p>
+<p>
+ 如果映射F的定义域为A，值域包含于B，则称f为由A到B的映射，B称为其
+ <b>
+  陪域
+ </b>
+ (codomain)。
+</p>
+<p>
+ 映射有三个自身的属性——定义域、对应关系与陪域。相信这个大家都在初高中牢记于心，我就不再赘述了。
+</p>
+<p>
+ 那么上面所说的“由A到B的映射”可知，B不是由A和F唯一确定的，只要包含F值域的集合，都可称之为“由A到B的映射”。
+</p>
+<p>
+ 映射的表示方法，与函数略有不同。如：
+</p>
+<p>
+ 映射
+ <span class="text/tex">
+  $\displaystyle f:x\rightarrow 2x,x\in [1,2]$
+ </span>
+</p>
+<p>
+ 是严格的映射的表示方法。注意到映射的表示中，全无等号的出现。第一个冒号，意在诠释这个映射
+ <i>
+  f
+ </i>
+ 。如果映射f后接等号，那也只能用集合或另一个映射去与之相等，如
+ <span class="text/tex">
+  $\displaystyle f=\left\{ &lt;1,2&gt;,&lt;2,2&gt;,&lt;3,6&gt; \right\} $
+ </span>
+ ；第二个箭头，意在区别哪个是定义域的元素，哪个是值域的元素，在计算机语言中，有时也可以用等号，不过一般是
+ <span class="text/tex">
+  $\displaystyle 2x=x$
+ </span>
+ .
+</p>
+<p>
+ 此外，由A到B的映射F还可记为
+ <span class="text/tex">
+  $\displaystyle F:A\rightarrow B$
+ </span>
+</p>
+<p>
+ 比如说，
+ <span class="text/tex">
+  $\displaystyle f:x\rightarrow 2x,x\in [1,2]$
+ </span>
+ 可记作
+ <span class="text/tex">
+  $\displaystyle f:[1,2]\rightarrow [2,4]$
+ </span>
+ ,亦可记作
+ <span class="text/tex">
+  $\displaystyle f:[1,2]\rightarrow R$
+ </span>
+ ,其中，
+ <span class="text/tex">
+  $\displaystyle [2,4]$
+ </span>
+ 和
+ <span class="text/tex">
+  $\displaystyle R$
+ </span>
+ 均为F的陪域，而只有
+ <span class="text/tex">
+  $\displaystyle [2,4]$
+ </span>
+ 为其值域。
+</p>
+<br/>
+<p>
+ 下面介绍映射的分类：
+</p>
+<p>
+ 设F为由A到B的映射
+</p>
+<p>
+ 如果F的值域为B，则称F为
+ <b>
+  满射
+ </b>
+ (surjective)
+</p>
+<p>
+ 如果
+ <span class="text/tex">
+  $\displaystyle \forall x\forall y\left( x\ne y\rightarrow f(x)\ne f(y) \right) $
+ </span>
+ ,则称F为
+ <b>
+  单射
+ </b>
+ (injective)
+</p>
+<p>
+ 如果F既是满射也是单射，则称F为
+ <b>
+  双射
+ </b>
+ (bijective)
+</p>
+<p>
+ 事实上，双射是最有意义的映射，这在集合的等势中应用极高。
+</p>
+<p>
+ 嘿嘿，暂时写这么多吧。
+</p>
+<p>
+ 愿大家在阅尽数学中关系后，找到在社会关系中与自己以细细红丝相连而有浓浓感情的那个人。
+</p></div></div></body></html>

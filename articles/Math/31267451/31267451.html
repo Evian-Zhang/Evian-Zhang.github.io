@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>微分中值定理的常数K值法</title>
+<base target="_blank" />
+<link rel="stylesheet" type="text/css" href="/css/article.css" />
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'] ],
+        displayMath: [ ['$$','$$'] ]
+    }
+});
+</script>
+</head>
+<body>
+<div id="main_wrapper">
+    <header id="main_header">
+        <a href="/index.html">Evian Zhang's<br />naive blog</a>
+        <h2>微分中值定理的常数K值法</h2>
+    </header>
+    <div id="article_body">
+<p>
+ 微分中值定理的题，往往作为难题来压轴。事实上，微分中值定理的题也是千变万化，搞得人心惶惶。并且，微分中值定理的题不像求极限那样可以用Taylor公式暴力求解。那么，今天，我来介绍一种（部分微分中值定理题的）暴力求法。
+</p>
+<h2>
+ <b>
+  常数K值法
+ </b>
+</h2>
+<p>
+ 首先，我们来回忆一下拉格朗日中值定理的一个证法：
+</p>
+<p>
+ （这个证法可能和大部分书上的不太一样）
+</p>
+<p>
+ <br/>
+</p>
+<p>
+ 已知：
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle f(x)\in C_{[a,b]}\cap D_{(a,b)}$
+ </span>
+</p>
+<p>
+ 求证：
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle \exists x_0 \in (a,b),s.t.f'(x_0)=\frac{f(b)-f(a)}{b-a}$
+ </span>
+</p>
+<p>
+ 证明：
+</p>
+<p>
+ 设
+ <span class="text/tex">
+  $\displaystyle K=\frac{f(b)-f(a)}{b-a}$
+ </span>
+ 为常数 ,记
+ <span class="text/tex">
+  $\displaystyle g(x)=K(x-a)-\left( f(x)-f(a)\right)$
+ </span>
+ ,
+</p>
+<p>
+ 那么
+ <span class="text/tex">
+  $\displaystyle g(a)=g(b)=0$
+ </span>
+ ，且
+ <span class="text/tex">
+  $\displaystyle g(x)\in C_{[a,b]}\cap D_{(a,b)}$
+ </span>
+</p>
+<p>
+ 所以由Rolle定理，得：
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle \exists x_0 \in (a,b),s.t.g'(x_0)=0$
+ </span>
+</p>
+<p>
+ 即：
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle K-f'(x_0)=0$
+ </span>
+</p>
+<p>
+ 定理得证
+</p>
+<p>
+ <br/>
+</p>
+<p>
+ 这是用常数K值法解题的标准步骤，最后一步大家可能觉得有些费解。事实上，最后一步将我们一开始设的K代入，就是在说，
+ <span class="text/tex">
+  $\displaystyle \exists x_0 \in (a,b),s.t. f'(x_0)=\frac{f(b)-f(a)}{b-a}$
+ </span>
+</p>
+<h2>
+ 那么，下面我们介绍
+ <b>
+  常数K值法的一般步骤
+ </b>
+ ：
+</h2>
+<p>
+ (这个 厌恶形式化的人 就可以略过啦)
+</p>
+<p>
+ 首先，我们要知道，常数K值法适用的证明题中，我们要证的式子，长成什么样。
+</p>
+<p>
+ 我们已知的常数，得是
+ <span class="text/tex">
+  $\displaystyle a_0,a_1,...,a_n$
+ </span>
+ 这
+ <span class="text/tex">
+  $\displaystyle n+1$
+ </span>
+ 个数，其中
+ <span class="text/tex">
+  $\displaystyle n \geq 1$
+ </span>
+ ，
+ <span class="text/tex">
+  $\displaystyle a_0 \leq a_1 \leq...\leq a_n$
+ </span>
+</p>
+<p>
+ 我们最常见的证明题，是两个数，a和b作为区间的端点，但也有可能和区间[a,b]和其中的一点c有关,所以我们这里介绍的是多元的情况
+</p>
+<p>
+ 我们要证的那个中值
+ <span class="text/tex">
+  $\displaystyle x_0$
+ </span>
+ ,是介于
+ <span class="text/tex">
+  $\displaystyle (a_0,a_n)$
+ </span>
+ 之间的一个数。
+</p>
+<p>
+ 我们要证的式子，可以化成左边仅与
+ <span class="text/tex">
+  $\displaystyle f^{(n)}(x_0)$
+ </span>
+ 有关的式子
+ <span class="text/tex">
+  $\displaystyle G(f'(x_0))$
+ </span>
+ ，右边仅与
+ <span class="text/tex">
+  $\displaystyle f(a_0),f(a_1),...,f(a_n)$
+ </span>
+ 及
+ <span class="text/tex">
+  $\displaystyle a_0,a_1,...,a_n$
+ </span>
+ 有关的式子
+ <span class="text/tex">
+  $\displaystyle F(f(a_0),f(a_1),...,f(a_n),a_1,a_2,...,a_n)$
+ </span>
+ ,（即不能出现
+ <span class="text/tex">
+  $\displaystyle f(\frac{a+b}{2})$
+ </span>
+ 这样的式子），且要求
+ <span class="text/tex">
+  $\displaystyle \forall 0 \leq i\leq n$
+ </span>
+ ,有 对于
+ <span class="text/tex">
+  $\displaystyle F(f(a_0),f(a_1),...,f(a_i),...,f(a_n),a_1,a_2,...,i,...,a_n)$
+ </span>
+ ，将第n项换成第i项得到的式子
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle F(f(a_0),f(a_1),...,f(a_i),...,f(a_i),...,f(a_i),a_1,a_2,...,a_i,...,a_i)$
+ </span>
+ ,将其化为整式形式（一般是把分母乘到等号另一边去）后，变成
+ <span class="text/tex">
+  $\displaystyle F_1(f(a_0),f(a_1),...f(a_i),...,f(a_i),a_1,a_2,...,a_i...,a_i)G(f'(x_0))=F_2(f(a_0),f(a_1),...,f(a_i)...,f(a_i),a_1,a_2,...,a_i...,a_i)$
+ </span>
+</p>
+<p>
+ 可以化成
+ <span class="text/tex">
+  $\displaystyle 0=0$
+ </span>
+ 型
+</p>
+<p>
+ 那么就可以使用常数K值法。
+</p>
+<p>
+ 步骤是：
+</p>
+<p>
+ 设
+ <span class="text/tex">
+  $\displaystyle G(K)=F(f(a_0),f(a_1),...,f(a_n),a_1,a_2,...,a_n)$
+ </span>
+ 为常数，设函数
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle g(x)=F_1(f(a_0),f(a_1),...,f(x),a_1,a_2,...,x)G(K)-F_2(f(a_0),f(a_1),...,f(x),a_1,a_2,...,x)$
+ </span>
+</p>
+<p>
+ 注意到这里把
+ <span class="text/tex">
+  $\displaystyle a_n$
+ </span>
+ 都换成了x
+</p>
+<p>
+ 那么经过代入计算可以得到，
+ <span class="text/tex">
+  $\displaystyle g(a_0)=g(a_1)=...=g(a_n)=0$
+ </span>
+</p>
+<p>
+ 所以由Rolle中值定理可以得到，存在n个数
+ <span class="text/tex">
+  $\displaystyle b_i \in (a_i,a_{i+1})$
+ </span>
+ ，使得
+ <span class="text/tex">
+  $\displaystyle g'(b_i)=0$
+ </span>
+</p>
+<p>
+ 再运用n-1次Rolle定理，可以得到
+ <span class="text/tex">
+  $\displaystyle \exists x_0 \in (a,b)$
+ </span>
+ ,
+ <span class="text/tex">
+  $\displaystyle s.t.g^{(n)}(x_0)=0$
+ </span>
+</p>
+<p>
+ 此时我们可以发现，
+ <span class="text/tex">
+  $\displaystyle g^{(n)}(x_0)=A(K-f^{(n)}(x_0))=0$
+ </span>
+ ,消去A，定理得证。
+</p>
+<p>
+ <br/>
+</p>
+<p>
+ 常数K值法的普适性的验证比较麻烦，这里我也不再证明。
+</p>
+<p>
+ <br/>
+</p>
+<h2>
+ <b>
+  给出几个运用常数K值法的例子
+ </b>
+</h2>
+<p>
+ <b>
+  其实还是这个比较直观，嗯。
+ </b>
+</p>
+<p>
+ 最开头我们给了二元的常数K值法的例子，即拉格朗日中值定理的证明。下面我们给一个三元的形式：
+</p>
+<p>
+ 已知：
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle f\in C_{[a,b]}\cap D^2_{(a,b)}$
+ </span>
+</p>
+<p>
+ 求证：
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle \forall c \in (a,b),\exists x_0 \in (a,b),s.t.$
+ </span>
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle \frac{f''(x_0)}{2}=\frac{f(a)}{(a-b)(a-c)}+\frac{f(b)}{(b-a)(b-c)}+\frac{f(c)}{(c-a)(c-b)}$
+ </span>
+</p>
+<p>
+ 证明：
+</p>
+<p>
+ 记
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle \frac{K}{2}=\frac{f(a)}{(a-b)(a-c)}+\frac{f(b)}{(b-a)(b-c)}+\frac{f(c)}{(c-a)(c-b)}$
+ </span>
+</p>
+<p>
+ 设
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle g(x)=\frac{K}{2}\left( (a-x)(x-c)(c-a) \right) +f(a)(x-c)+f(x)(c-a)+f(c)(a-x)$
+ </span>
+</p>
+<p>
+ 那么
+ <span class="text/tex">
+  $\displaystyle g(a)=g(c)=g(b)=0$
+ </span>
+</p>
+<p>
+ 又
+ <span class="text/tex">
+  $\displaystyle g\in C_{[a,b]}\cap D_{(a,b)}$
+ </span>
+</p>
+<p>
+ 故
+ <span class="text/tex">
+  $\displaystyle \exists x_1\in(a,c),x_2\in(c,b),s.t.g'(x_1)=g'(x_2)=0$
+ </span>
+</p>
+<p>
+ 又
+ <span class="text/tex">
+  $\displaystyle g'\in C_{[a,b]}\cap D_{(a,b)}$
+ </span>
+</p>
+<p>
+ 故
+ <span class="text/tex">
+  $\displaystyle \exists x_0 \in (x_1,x_2)\subset(a,b),s.t.g''(x_0)=0$
+ </span>
+</p>
+<p>
+ 而
+ <span class="text/tex">
+  $\displaystyle g''(x_0)=\frac{K}{2}\cdot2(a-c)+f''(x_0)(c-a)$
+ </span>
+</p>
+<p>
+ 故
+ <span class="text/tex">
+  $\displaystyle K=f''(x_0)$
+ </span>
+</p>
+<p>
+ 定理得证
+</p>
+<p>
+ <br/>
+</p>
+<p>
+ 由此可见，检验要证的式子符不符合常数K值法的条件，我们一般只需要目测就好。
+</p>
+<p>
+ <br/>
+</p>
+<p>
+ 再给一道常数K值法拓展的题，也就是出现了
+ <span class="text/tex">
+  $\displaystyle \frac{a+b}{2}$
+ </span>
+ 的式子。这时，我们也就不能只用Rolle定理了，我们还需要用Lagrange中值定理，甚至Cauchy中值定理。
+</p>
+<p>
+ 已知：
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle f\in C_{[a,b]}\cap D^2_{(a,b)}$
+ </span>
+</p>
+<p>
+ 求证：
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle \exists x_0 \in (a,b),s.t.f(a)-2f(\frac{a+b}{2})+f(b)=\frac{(b-a)^2}{4}f''(x_0)$
+ </span>
+</p>
+<p>
+ 证明：
+</p>
+<p>
+ 记
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle f(a)-2f(\frac{a+b}{2})+f(b)=\frac{(b-a)^2}{4}K$
+ </span>
+</p>
+<p>
+ 设
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle g(x)=\frac{(x-a)^2}{4}K-\left( f(a)-2f(\frac{a+x}{2})+f(x)\right)$
+ </span>
+</p>
+<p>
+ 那么
+ <span class="text/tex">
+  $\displaystyle g(a)=g(b)=0$
+ </span>
+</p>
+<p>
+ 又
+ <span class="text/tex">
+  $\displaystyle g\in C_{[a,b]}\cap D_{(a,b)}$
+ </span>
+</p>
+<p>
+ 故
+ <span class="text/tex">
+  $\displaystyle \exists x_1\in (a,b),s.t.g'(x_1)=0$
+ </span>
+</p>
+<p>
+ 而
+ <span class="text/tex">
+  $\displaystyle g'(x_1)=\frac{x_1-a}{2}K-\left(-f'(\frac{a+x_1}{2})+f'(x_1)\right)=0$
+ </span>
+</p>
+<p>
+ 故
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle \frac{f'(x_1)-f'(\frac{a+x_1}{2})}{\frac{x_1-a}{2}}=K$
+ </span>
+</p>
+<p>
+ 而
+ <span class="text/tex">
+  $\displaystyle f'\in C_{[\frac{x_1+a}{2},x_1]}\cap D_{(\frac{x_1+a}{2},x_1)}$
+ </span>
+</p>
+<p>
+ 故由Lagrange中值定理：
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle \exists x_0 \in (\frac{x_1+a}{2},x_1) \subset (a,b)$
+ </span>
+ ,s.t.
+ <span class="text/tex">
+  $\displaystyle \frac{f'(x_1)-f'(\frac{a+x_1}{2})}{\frac{x_1-a}{2}}=f''(x_0)$
+ </span>
+</p>
+<p>
+ 故
+ <span class="text/tex">
+  $\displaystyle K=f''(x_0)$
+ </span>
+</p>
+<p>
+ 定理得证
+</p>
+<p>
+ <br/>
+</p>
+<h2>
+ <b>
+  总结
+ </b>
+</h2>
+<p>
+ 总的来说，常数K值法还是比较暴力的一种方法，所以除非无计可施的情况下，才用这种方法。而且，许多含有中值的不等式并不能用常数K值法解出来。所以常数K值法也是有局限的。
+</p>
+<p>
+ 最后说一句，Taylor大法好，Lagrange余项赛高！
+</p>
+<p>
+ 由于我水平并不高，文章中必然存在着种种错误，希望各位对我文章中的错误不吝斧正！
+</p></div></div></body></html>

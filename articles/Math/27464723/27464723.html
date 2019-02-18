@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>集合的基本概念及公理化集合论</title>
+<base target="_blank" />
+<link rel="stylesheet" type="text/css" href="/css/article.css" />
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'] ],
+        displayMath: [ ['$$','$$'] ]
+    }
+});
+</script>
+</head>
+<body>
+<div id="main_wrapper">
+    <header id="main_header">
+        <a href="/index.html">Evian Zhang's<br />naive blog</a>
+        <h2>集合的基本概念及公理化集合论</h2>
+    </header>
+    <div id="article_body">
+<p>
+ 6月22日第一次更新 补充了公理化集合论的内容
+</p>
+<p>
+ 令人尴尬的是，
+ <b>
+  集合
+ </b>
+ (set)好像是唯一一个没有定义的数学概念。
+</p>
+<p>
+ 在讲集合之前，我想讲讲为什么许多数学书籍（比如说Baby Rudin、Zorich的数分等等）会从集合这一概念讲起。现代化的数学，是可以交给一种我称为“理想计算机“的东西处理的。所谓理想计算机，有点像我上一篇文章里讲的“公理推理系统”。它可以根据我们给的逻辑规则，从公理和定义中推理出所有我们已知的定理。但是它不像我们，有直觉和感性，它的每一步推理都是从我们给它的最初条件得出的。那么比如说我们要给这个理想计算机输入“数”的概念，那么得让它明白什么是数。这个我们从小由数苹果等实践行为得出的数的概念，显然这个机器是理解不了的。同样地，我们想输入其他数学概念，都会遇到类似的难题。每给这个理想化计算机一个概念的定义，总需要我们用它已知的概念去解释这个定义。由此追根溯源，“集合”便是它最初需要理解的东西。那集合我们又能怎么用它已知的东西去定义呢？除了集合，它啥也不知道。由于这个原因，集合我们也就无从给它定义了，就权当"cram it into mind"吧。（关于集合定义“数”，这个我后面的文章里也许会讲。）
+</p>
+<p>
+ 顺便再提一点，把我们的知识变成能让理想计算机识别的东西的过程，从某种意义上讲，就是“公理化”的过程。
+</p>
+<p>
+ 集合的概念出现得较晚，大约在上个世纪初才由Cantor引入。
+</p>
+<h2>
+ <b>
+  基本概念
+ </b>
+</h2>
+<p>
+ 如果a是集合S的
+ <b>
+  元素
+ </b>
+ (element),则记作
+ <span class="text/tex">
+  $\displaystyle a\in S$
+ </span>
+</p>
+<p>
+ 我们常用大写英文字母表示集合，小写英文字母表示集合的元素。
+</p>
+<p>
+ 打个比方，集合就是一个大箱子，而元素则是我们打开箱子第一眼看到的东西，无论这大箱子里面，是小箱子，亦或是小球，都是这个集合的元素。但是，小箱子里面的东西，则不是这个大箱子的元素。举个例子，
+ <span class="text/tex">
+  $\displaystyle \left\{ x,1,\left\{ x \right\} ,1926,\infty ,\forall  \right\} $
+ </span>
+ 的元素分别是x、1、
+ <span class="text/tex">
+  $\displaystyle \left\{ x \right\} $
+ </span>
+ 、1926、
+ <span class="text/tex">
+  $\displaystyle \infty $
+ </span>
+ 、
+ <span class="text/tex">
+  $\displaystyle \forall $
+ </span>
+ 。现实中，就比如说，我们国家所有的省级行政区组成的集合的元素，既包括××省，也包括××市，还有××自治区，虽然省中也有市，但是省级行政区的市的地位和省是一样的。
+</p>
+<p>
+ 如果
+ <span class="text/tex">
+  $\displaystyle \forall x\in A,x\in B$
+ </span>
+ 且
+ <span class="text/tex">
+  $\displaystyle \forall x\in B,x\in A$
+ </span>
+ ，那么称集合A和B
+ <b>
+  相等
+ </b>
+ ，记为
+ <span class="text/tex">
+  $\displaystyle A=B$
+ </span>
+</p>
+<p>
+ 此外，集合的元素具有
+ <b>
+  无序性
+ </b>
+ ，
+ <b>
+  相异性
+ </b>
+ 。即：
+ <span class="text/tex">
+  $\displaystyle \left\{ x,y \right\} =\left\{ y,x \right\} $
+ </span>
+ ,
+ <span class="text/tex">
+  $\displaystyle \left\{ x ,x\right\} =\left\{ x \right\} $
+ </span>
+</p>
+<p>
+ (有人也许会说，
+ <span class="text/tex">
+  $\displaystyle \left\{ x ,x\right\} $
+ </span>
+ 这样的写法是错的。我并不认同，因为元素的相异性是集合的一个性质，而非集合的定义中的一部分，而
+ <span class="text/tex">
+  $\displaystyle \left\{ x ,x\right\} $
+ </span>
+ 这样的写法并不违反我们之前的规定。)
+</p>
+<p>
+ 以集合为元素的集合也可称为
+ <b>
+  集族
+ </b>
+ 。以数为元素的集合也可称作
+ <b>
+  数集
+ </b>
+ 。（注意一下，这说明集合的元素可以不是数，比如说上面的
+ <span class="text/tex">
+  $\displaystyle \infty $
+ </span>
+ 、
+ <span class="text/tex">
+  $\displaystyle \forall $
+ </span>
+ ）
+</p>
+<p>
+ 不含任何元素的集合称为
+ <b>
+  空集
+ </b>
+ (empty set)，记作……这个你们都知道的对不对，我就不打了。（知乎的公式好像输入不了？）空集=
+ <span class="text/tex">
+  $\displaystyle \left\{ x|x\ne x \right\}$
+ </span>
+ ={勥巭炛|有女朋友的勥巭炛}（划）
+</p>
+<p>
+ 正如0一样，
+ <b>
+  空集并非什么都没有
+ </b>
+ ，空集自身也是一个客观存在的集合。{空集}≠空集
+</p>
+<p>
+ 这里要注意一点，集合的描述法
+ <span class="text/tex">
+  $\displaystyle \left\{ x|p(x) \right\} $
+ </span>
+ 具有全称性，即
+ <span class="text/tex">
+  $\displaystyle \forall x(p(x)\rightarrow x\in \left\{ x|p(x) \right\} )$
+ </span>
+</p>
+<br/>
+<p>
+ 已知集合A、B，那么集合
+ <span class="text/tex">
+  $\displaystyle \left\{ x|x\in A\vee x\in B \right\} $
+ </span>
+ 称为A和B的
+ <b>
+  并集
+ </b>
+ (union)，记作
+ <span class="text/tex">
+  $\displaystyle A\cup B$
+ </span>
+ ；集合
+ <span class="text/tex">
+  $\displaystyle \left\{ x |x\in A\wedge x\in B\right\} $
+ </span>
+ 称为A和B的
+ <b>
+  交集
+ </b>
+ (intersection),记作
+ <span class="text/tex">
+  $\displaystyle A\cap B$
+ </span>
+ ，集合
+ <span class="text/tex">
+  $\displaystyle \left\{ x|x\in A\wedge x\notin B \right\} $
+ </span>
+ 称为B对A的
+ <b>
+  相对补集
+ </b>
+ (relative complement)，记作
+ <span class="text/tex">
+  $\displaystyle A-B$
+ </span>
+ 。
+</p>
+<p>
+ 对于集族
+ <span class="text/tex">
+  $\displaystyle \left\{ A_1,A_2, ...,A_n\right\} $
+ </span>
+ ，我们将
+ <span class="text/tex">
+  $\displaystyle A_1\cup A_2\cup...\cup A_n$
+ </span>
+ 记作
+ <span class="text/tex">
+  $\displaystyle \bigcup_{k=1}^{n} A_k$
+ </span>
+ ,我们将
+ <span class="text/tex">
+  $\displaystyle A_1\cap A_2\cap...\cap A_n$
+ </span>
+ 记作
+ <span class="text/tex">
+  $\displaystyle \bigcap_{k=1}^{n} A_k$
+ </span>
+ .
+</p>
+<p>
+ 对于无穷集族
+ <span class="text/tex">
+  $\displaystyle \left\{ A_1,A_2,... \right\} $
+ </span>
+ ,我们类似地记
+ <span class="text/tex">
+  $\displaystyle \bigcup_{k=1}^{\infty } A_k$
+ </span>
+ 和
+ <span class="text/tex">
+  $\displaystyle \bigcap_{k=1}^{\infty } A_k$
+ </span>
+ .
+</p>
+<p>
+ 如果
+ <span class="text/tex">
+  $\displaystyle \forall x\in A,x\in B$
+ </span>
+ ,则称A为B的
+ <b>
+  子集
+ </b>
+ (subset)，记作
+ <span class="text/tex">
+  $\displaystyle A\subseteq B$
+ </span>
+ ，读作A包含于B
+</p>
+<p>
+ 由子集的概念我们知道，
+ <span class="text/tex">
+  $\displaystyle A=B$
+ </span>
+ 等价于
+ <span class="text/tex">
+  $\displaystyle A\subseteq B$
+ </span>
+ 且
+ <span class="text/tex">
+  $\displaystyle B\subseteq A$
+ </span>
+</p>
+<p>
+ 如果
+ <span class="text/tex">
+  $\displaystyle A\subseteq B$
+ </span>
+ ，且A≠B,那么称A为B的
+ <b>
+  真子集
+ </b>
+ (proper subset)，记作……这个同样知乎打不出来。。。读作A真包含于B(这里我吐槽一下，苏教版的高中数学必修一里，真子集的英文一直是proper set，错了好几年了。。)
+</p>
+<p>
+ （关于包含和真包含的符号，美苏两国的记号不一样，看文献时需注意）
+</p>
+<p>
+ <b>
+  空集是所有集合的子集，是所有非空集合的真子集
+ </b>
+ 。
+</p>
+<p>
+ 这个有人说是规定，也有的人说是定理。我倾向于定理。证明的话，就是该命题等价于：
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle \forall x$
+ </span>
+ (
+ <span class="text/tex">
+  $\displaystyle x\in $
+ </span>
+ 空集
+ <span class="text/tex">
+  $\displaystyle \rightarrow x\in A$
+ </span>
+ )
+ <br/>
+</p>
+<p>
+ 而该蕴涵式的左边的命题是个假命题，因为没有元素会属于空集，所以该命题为真命题。
+</p>
+<p>
+ 一个集合的所有子集组成的集合称为该集合的
+ <b>
+  幂集
+ </b>
+ (power set)。
+</p>
+<p>
+ 如集合
+ <span class="text/tex">
+  $\displaystyle \left\{ x,y,z \right\} $
+ </span>
+ 的幂集为{空集,x,y,z,{x,y},{x,z},{y,z},{x,y,z}}
+</p>
+<p>
+ Venn图是看集合之间关系的很好的工具，这个大家高中的学过，我就不再赘述了。
+</p>
+<p>
+ 关于交和并的符号，我们也有巧记的方法：
+</p>
+<figure>
+ <img src="./27464723_assets/v2-0242e1af1693388d2722d99e04e30159_b.jpg"/>
+</figure>
+<br/>
+<h2>
+ <b>
+  集合恒等式
+ </b>
+</h2>
+<p>
+ 下面给出一些集合恒等式：
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle A\cup (B\cup C)=(A\cup B)\cup C$
+ </span>
+ ,
+ <span class="text/tex">
+  $\displaystyle A\cap (B\cap C)=(A\cap B)\cap C$
+ </span>
+ <br/>
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle A\cup (B\cap  C)=(A\cup B)\cap (A\cup C)$
+ </span>
+ ,
+ <span class="text/tex">
+  $\displaystyle A\cap (B\cup C)=(A\cap B)\cup (A\cap C)$
+ </span>
+ <br/>
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle A-(B\cup C)=(A-B)\cap (A-C)$
+ </span>
+ ,
+ <span class="text/tex">
+  $\displaystyle A-(B\cap C)=(A-B)\cup (A-C)$
+ </span>
+ <br/>
+</p>
+<span class="text/tex">
+ $\displaystyle (A-B)-C=(A-C)-(B-C)$
+</span>
+<br/>
+<p>
+ 这些集合恒等式，可以用Venn图很方便地看出，而证明只需用一些逻辑恒等式。下面我们证明第一条集合恒等式：
+</p>
+<span class="text/tex">
+ $\displaystyle x\in A\cup (B\cup C)\Leftrightarrow x\in A\wedge (x\in B\wedge x\in C)$
+</span>
+<br/>
+<span class="text/tex">
+ $\displaystyle \Leftrightarrow ( x\in A\wedge x\in B)\wedge x\in C\Leftrightarrow x\in (A\cup B)\cup C$
+</span>
+<br/>
+<h2>
+ <b>
+  公理化集合论
+ </b>
+</h2>
+<p>
+ 最后讲点公理化集合论的东西。对此不感兴趣的同学可以直接跳过了。。。
+</p>
+<p>
+ 在讲这个之前，我们来看看二十世纪初发生的
+ <b>
+  第三次数学危机
+ </b>
+ ：
+</p>
+<blockquote>
+ 1897年，福尔蒂揭示了集合论中的第一个悖论。两年后，康托发现了很相似的悖论。1902年，罗素又发现了一个悖论，它除了涉及集合概念本身外不涉及别的概念。罗素悖论曾被以多种形式通俗化。其中最著名的是罗素于1919年给出的，它涉及到某村理发师的困境。理发师宣布了这样一条原则：他给所有不给自己刮脸的人刮脸，并且，只给村里这样的人刮脸。当人们试图回答下列疑问时，就认识到了这种情况的悖论性质："理发师是否自己给自己刮脸？"如果他不给自己刮脸，那么他按原则就该为自己刮脸；如果他给自己刮脸，那么他就不符合他的原则。
+ <br/>
+ 摘自百度百科
+</blockquote>
+由此，数学家们又开始了公理化集合论，试图解释集合的本质，消除这样的罗素悖论。
+<br/>
+<p>
+ 对于集合的本质，数学家们提出了ZFC公理系统。
+</p>
+<p>
+ 1.外延公理(axiom of extensionality)
+</p>
+<span class="text/tex">
+ $\displaystyle \forall A\forall B(\forall x(x\in A\leftrightarrow  x\in B)\rightarrow \forall C(A\in C\leftrightarrow B\in C))$
+</span>
+<p>
+ 这条公理就是说，对于任意两个集合A和B，如果对于任意x有x属于A等价于x属于B，那么对于任意集合C有A属于C等价于B属于C。
+</p>
+<p>
+ 这条公理拆开来看，最外层是两个全称量词，它表示这条公理适用于任意两个集合，从而在集合论中具有普适性。接着是一个蕴涵式，蕴涵式左边的命题，意思是x属于A等价于x属于B，从感性上理解，就是A和B的元素完全相同，如果有一个元素A有而B没有，那么就不能由x属于A推出x属于B了；蕴涵式的右边，意思是对于任意一个集族C，A属于C等价于B属于C，从感性上理解就是A和B完全相同。比如说这世界上有两个人A和B，你找不出来任何一个A干了而B没干的事，同样也找不出B干了A没干的事。那么在集合的意义上，A和B是完全相同的。这个公理描述了一件事，两个集合的元素完全相同，那么他们俩也完全相同。这个定理，给出了“集合相等”这个定义可以存在的基础，也说明了集合的性质由其元素完全决定。
+</p>
+<p>
+ 2.正则公理(axiom of regularity)
+</p>
+<span class="text/tex">
+ $\displaystyle \forall A(\exists x(x\in A)\rightarrow \exists B(B\in A)\wedge \neg \exists y(y\in A\wedge y\in B))$
+</span>
+<br/>
+<p>
+ 我们先搞清这个命题的涵义：
+</p>
+<p>
+ 最外头是一个全称量词，同样地，是为了保证普适性。核心是一个蕴涵式，蕴涵式前面的命题意思是A非空，后面是一个特称量词引导的命题。这个命题是一个合取式，意思是这样一个非空集合A中，必有一个元素B属于A，使得不存在既属于A也属于B的元素。首先，如果A的元素都不是集合，那么
+ <span class="text/tex">
+  $\displaystyle y\in B$
+ </span>
+ 为假，从而命题为真。如果A的元素有集合，那么这个公理才有不平凡的意义。即为：不存在属于自身的集合。亦即，
+ <span class="text/tex">
+  $\displaystyle A\ni B\ni C\ni ...$
+ </span>
+ 这个序列只能是有限的，不能无限进行下去。也就是说，我定义一个集合
+ <span class="text/tex">
+  $\displaystyle A_0=\left\{ x \right\} $
+ </span>
+ ,
+ <span class="text/tex">
+  $\displaystyle A_{n+1}={A_n}$
+ </span>
+ ,那么n趋于无穷大时，
+ <span class="text/tex">
+  $\displaystyle A_n$
+ </span>
+ 无意义。这条公理对我们构造集合起了一定的限制作用。从现实中讲，也就是“无限张一山”是不可能存在的。
+</p>
+<p>
+ <figure>
+  <img src="./27464723_assets/v2-026011dd910eedb20b5dc0431113adb2_b.jpg"/>
+ </figure>
+ （不过我还挺喜欢吃这个蟹柳的。。。）
+</p>
+<p>
+ 3.分离公理模式(axiom schema of specification)
+</p>
+<span class="text/tex">
+ $\displaystyle \forall A\forall w_1\forall w_2...\forall w_n\exists B\forall x(x\in B\leftrightarrow (x\in A\wedge \varphi ))$
+</span>
+<br/>
+<p>
+ 这则公理的逻辑形式比较复杂，就不详细解释其字面意思了。
+</p>
+<p>
+ 这则公理实际说的是，集合
+ <span class="text/tex">
+  $\displaystyle \left\{ x\in A|p(x) \right\} $
+ </span>
+ 存在的合理性。亦即，我有一个集合A，以及一个分类标准p(x),我可以把符合p(x)的所有A的元素组成一个新的集合B。
+</p>
+<p>
+ 这里注意到一点，这条公理告诉我们，在ZFC公理框架下，单谈
+ <span class="text/tex">
+  $\displaystyle \left\{ x|p(x) \right\} $
+ </span>
+ 是没有意义的，必须我们已知一个集合A，才能有集合
+ <span class="text/tex">
+  $\displaystyle \left\{ x\in A|p(x) \right\} $
+ </span>
+ 。我们只能根据已知集合去构造新的满足性质的集合。而罗素悖论，实际上是构造了
+ <span class="text/tex">
+  $\displaystyle S=\left\{ x|x\notin S \right\} $
+ </span>
+ ,这个集合里元素满足的性质与该集合自身相关，所以是不符合这条分离公理模式的。在生活中，这条公理即为“不能用自己阐释自己”。由此，罗素悖论被解决。
+</p>
+<br/>
+<p>
+ 4.配对公理(axiom of pairing)
+</p>
+<span class="text/tex">
+ $\displaystyle \forall x\forall y\exists A(x\in A\wedge y\in A)$
+</span>
+<br/>
+<p>
+ 这条公理保证了并集的存在的合理性。也为我们构造集合提供了手段。
+</p>
+<p>
+ 5.并集公理(axiom of union)
+</p>
+<span class="text/tex">
+ $\displaystyle \forall S\exists A\forall  X\forall  x((x\in X\wedge X\in S)\rightarrow x\in A)$
+</span>
+<br/>
+<p>
+ 其中S为集族。
+</p>
+<p>
+ 这个公理给了我们另一种构造集合的手段。比如说，已知A={x,{a,b,c}},B={y},那么配对公理告诉我们，我们可以构造出一个集合{x,y,{a,b,c}},而并集公理告诉我们，我们可以构造一个集合{x,a,b,c}
+</p>
+<p>
+ 回到我们最初对集合的阐释，这个公理告诉我们，我们可以把这个大箱子内的所有小箱子都拆开来，把所有的球放在一起变成一个箱子。
+</p>
+<p>
+ 6.替换公理模式(axiom schema of replacement)
+</p>
+<span class="text/tex">
+ $\displaystyle \forall A\forall w_1\forall w_2...\forall w_n(\forall x(x\in A\rightarrow \exists !y\phi )\rightarrow \exists B\forall x(x\in A\rightarrow \exists y(y\in B\wedge \phi )))$
+</span>
+<br/>
+<p>
+ 这个公理比较复杂，而且要用到函数之类的东西，我就不详细解释了。总之，这给了我们另一种构造集合的方式——利用函数构造集合。比如，A={1,2,3}，
+ <span class="text/tex">
+  $\displaystyle f(x)=x+5$
+ </span>
+ ,那么我们可以对A中的每个元素使用f，从而构造出新集合{6,7,8}
+</p>
+<p>
+ 7.无穷公理(axiom of infinity)
+</p>
+<p>
+ (摘自wiki，知乎这打不了空集。。)
+</p>
+<p>
+ 这个公理与自然数的构造密切相关，这里按下不表。此外，这个定理还保证了无穷集合的存在。
+</p>
+<p>
+ 8.幂集公理(axiom of power set)
+</p>
+<span class="text/tex">
+ $\displaystyle \forall A\exists B\forall C(C\in B\leftrightarrow \forall w(w\in C\rightarrow w\in A))$
+</span>
+<br/>
+<p>
+ 这个公理的最外层，对A的全称量词同样是保证普适性，而这里的B，实际就是A的幂集。这里核心的等价式，实际上就是说B是怎么构造的，即
+ <span class="text/tex">
+  $\displaystyle B=\left\{ C|\forall w(w\in C\rightarrow w\in A) \right\} $
+ </span>
+ 。这在有穷集合中很容易理解，比如说{1,2}的幂集就是{空集,{1},{2},{1,2}}。而对无穷集合来说，比如说，实数集R，它的幂集的存在是否合理呢？这就不是那么显然的了。而这个公理告诉我们，无论集合是否有穷，都存在幂集。
+</p>
+<p>
+ 9.选择公理(axiom of choice)
+</p>
+<p>
+ 同样摘自wiki
+</p>
+<p>
+ 这个公理啥意思呢？举个例子，比如说X={{1},{2,3,4},{1926,233}},我可以在其每一个元素的元素中选择一个代表元素，比如说第一个元素{1},我可以选择1，{2,3,4}我可以选择2,{1926,233}我可以选择1926.
+</p>
+<p>
+ 这个公理其实是最神奇的公理，也是讨论最广的公理，很多很有用的定理都可以由这条公理推出，如良序定理等。感兴趣的同学可以去搜索了解，我就不解释了。
+</p>
+<p>
+ 参考资料：
+</p>
+<p>
+ wiki:Zermelo-Fraenkel set theory
+</p>
+<p>
+ <a class="wrap external" href="http://link.zhihu.com/?target=https%3A//en.wikipedia.org/wiki/Zermelo" rel="nofollow noreferrer" target="_blank">
+  Ernst Zermelo - Wikipedia
+ </a>
+ –Fraenkel_set_theory#Metamathematics
+</p></div></div></body></html>

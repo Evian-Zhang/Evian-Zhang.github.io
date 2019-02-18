@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>离散化观点——一个学习连续知识的小tip</title>
+<base target="_blank" />
+<link rel="stylesheet" type="text/css" href="/css/article.css" />
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'] ],
+        displayMath: [ ['$$','$$'] ]
+    }
+});
+</script>
+</head>
+<body>
+<div id="main_wrapper">
+    <header id="main_header">
+        <a href="/index.html">Evian Zhang's<br />naive blog</a>
+        <h2>离散化观点——一个学习连续知识的小tip</h2>
+    </header>
+    <div id="article_body">
+<p>
+ 10.5 第一次更新，使一些语言更加严谨，并增添了Newton-Leibniz公式的离散化表示。
+</p>
+<hr/>
+<h2>
+ <b>
+  写在前面
+ </b>
+</h2>
+<p>
+ 这么久没更了，大家肯定都以为我弃坑了。。实际上是因为升学的原因，许多事都要办，就把续坑的事拖到了今天。。
+</p>
+<p>
+ 今天我要介绍的，从运算上来看十分简单，因为这是由“平凡”到“不平凡”的类比。我一直觉得，我们数学的学习，不需要特别在短时间内学得特别高深。从多角度理解所学知识，便是一个巩固知识体系的好方法。本篇文章就是讲的最简单的——从平凡的、退化的例子来理解知识。
+</p>
+<p>
+ 大学的数学学习中，绝大多数都是和定义在实数集上的函数有关的知识。比如说，零点定理，微积分，等等。有些十分容易理解，有些却又仿佛是匪夷所思，让人不知所云。就我而言，用离散化的观点去研究这些问题，也许是一个小tip。
+</p>
+<p>
+ 说了这么多，“离散”(discrete),究竟是什么？感性地说，一眼望去“茫茫人海”不是离散，而一个一个“真实的人”是离散。你如果要想知道一国之大众的心理，从整体上去判断往往需要异于常人的高瞻远瞩，而一个人一个人地抽查或普查，却是一个简单直观的方法。这，就是离散。
+</p>
+<p>
+ 从理性上说，离散的集合，就是
+ <i>
+  至多可数
+ </i>
+ (almost countable)且无
+ <i>
+  聚点
+ </i>
+ （condensation point）的集合。实数集、有理数集都不离散，整数集离散。事实上，整数集上的函数——数列正是我们研究函数的有力助手。
+</p>
+<h2>
+ <b>
+  正题
+ </b>
+</h2>
+<p>
+ 为了和函数相类比，不同于一般从
+ <span class="text/tex">
+  $\displaystyle N^+ \rightarrow R$
+ </span>
+ 的数列的定义，我们这里定义的
+ <i>
+  数列
+ </i>
+ 为：从
+ <span class="text/tex">
+  $\displaystyle Z\rightarrow R$
+ </span>
+ 的函数。记为
+ <span class="text/tex">
+  $\displaystyle \left\{ a_n \right\}$
+ </span>
+ .也就是说，这里
+ <span class="text/tex">
+  $\displaystyle a_{-1}$
+ </span>
+ ,
+ <span class="text/tex">
+  $\displaystyle \sum_{i=-\infty}^{+\infty}{a_i}$
+ </span>
+ 都是合法的记号。（当然，我们也可以把函数的定义域限制在
+ <span class="text/tex">
+  $\displaystyle [0,+\infty)$
+ </span>
+ ,但这样就会产生一些毫无必要且繁杂的端点讨论。）
+</p>
+<h2>
+ <b>
+  完备性
+ </b>
+</h2>
+<p>
+ 如果一个集合
+ <span class="text/tex">
+  $\displaystyle X$
+ </span>
+ 满足以下6个性质之一，那么称这个集合是完备集：
+</p>
+<p>
+ 1.对于任意
+ <span class="text/tex">
+  $\displaystyle B\subset X$
+ </span>
+ ，如果
+ <span class="text/tex">
+  $\displaystyle \exists x\in X$
+ </span>
+ ，使得对于任意
+ <span class="text/tex">
+  $\displaystyle b \in B$
+ </span>
+ 有
+ <span class="text/tex">
+  $\displaystyle b \leq x$
+ </span>
+ ,那么
+ <span class="text/tex">
+  $\displaystyle \exists x_0 \in X$
+ </span>
+ ,使对于任意
+ <span class="text/tex">
+  $\displaystyle b \in B$
+ </span>
+ ,有
+ <span class="text/tex">
+  $\displaystyle b \leq x_0$
+ </span>
+ ,且
+ <span class="text/tex">
+  $\displaystyle \forall x &lt; x_0\wedge x\in X$
+ </span>
+ ,
+ <span class="text/tex">
+  $\displaystyle \exists b_0 \in B$
+ </span>
+ ,使
+ <span class="text/tex">
+  $\displaystyle b_0 \geq x$
+ </span>
+ 。此
+ <span class="text/tex">
+  $\displaystyle x_0$
+ </span>
+ 记作
+ <span class="text/tex">
+  $\displaystyle {\sup \\X} { \left\{ B \right\}}$
+ </span>
+ ,称为集合B在X中的上确界。
+</p>
+<p>
+ 2.对于任意从
+ <span class="text/tex">
+  $\displaystyle N^+ \rightarrow X$
+ </span>
+ 的数列
+ <span class="text/tex">
+  $\displaystyle \left\{ a_n \right\}$
+ </span>
+ ,若其单调递增且
+ <i>
+  有上界
+ </i>
+ （即
+ <span class="text/tex">
+  $\displaystyle \exists x \in X,\forall n \in N^+,a_n \leq x$
+ </span>
+ ）,那么这个数列必然
+ <i>
+  有极限
+ </i>
+ （即
+ <span class="text/tex">
+  $\displaystyle \exists a \in X,\forall \epsilon \in \Delta X,\exists N \in N^+,s.t.\forall n &gt; N,|a_n-a|&lt;\epsilon$
+ </span>
+ ）。【关于
+ <span class="text/tex">
+  $\displaystyle \Delta X$
+ </span>
+ 的定义，会在后面的 极限 章节中给出】
+</p>
+<p>
+ 3.设从
+ <span class="text/tex">
+  $\displaystyle N^+ \rightarrow X$
+ </span>
+ 的数列
+ <span class="text/tex">
+  $\displaystyle \{a_n\},\{b_n\}$
+ </span>
+ ,满足
+ <span class="text/tex">
+  $\displaystyle \forall n \in N^+,a_n \leq b_n$
+ </span>
+ ,定义
+ <i>
+  X上的闭区间
+ </i>
+ <span class="text/tex">
+  $\displaystyle I=[a,b]$
+ </span>
+ 为
+ <span class="text/tex">
+  $\displaystyle \{x|x \in X \wedge a \leq x \leq b\}$
+ </span>
+ .那么若
+ <span class="text/tex">
+  $\displaystyle I_n=[a_n,b_n]$
+ </span>
+ ,则
+ <span class="text/tex">
+  $\displaystyle (\bigcap_{i=1}^{+\infty}I_n) \cap X$
+ </span>
+ 非空，且只有一个元素。
+</p>
+<p>
+ 4.对于任意X上的闭区间
+ <span class="text/tex">
+  $\displaystyle I=[a,b]$
+ </span>
+ ,定义其一个覆盖为满足
+ <span class="text/tex">
+  $\displaystyle \bigcup_{}^{} S \supset I$
+ </span>
+ 的集合S。（
+ <span class="text/tex">
+  $\displaystyle \bigcup_{}^{}S$
+ </span>
+ 表示
+ <span class="text/tex">
+  $\displaystyle \{x|x\in D,D\in S\}$
+ </span>
+ ）.那么在I的所有覆盖中，总能找到一个
+ <i>
+  有限的
+ </i>
+ 覆盖。（即S的势小于等于整数集）
+</p>
+<p>
+ 5.对于任意从
+ <span class="text/tex">
+  $\displaystyle N^+ \rightarrow X$
+ </span>
+ 的数列
+ <span class="text/tex">
+  $\displaystyle \{a_n\}$
+ </span>
+ ,若其有界，则必存在指标列
+ <span class="text/tex">
+  $\displaystyle \{n_k\}$
+ </span>
+ ,使得子列
+ <span class="text/tex">
+  $\displaystyle \{ a_{n_k} \}$
+ </span>
+ 收敛。
+</p>
+<p>
+ 6.对于一个从
+ <span class="text/tex">
+  $\displaystyle N^+ \rightarrow X$
+ </span>
+ 的数列
+ <span class="text/tex">
+  $\displaystyle \{a_n\}$
+ </span>
+ ,若
+ <span class="text/tex">
+  $\displaystyle \forall \epsilon \in \Delta X,\exists N \in N^+,s.t.\forall m,n &gt; N,|a_m-a_n|&lt;\epsilon$
+ </span>
+ ,则该数列收敛。
+</p>
+<p>
+ 这6个定理互相等价，被称为实数集的六大完备定理。这6条定理的互推，也是令数学系大一学生头疼的一个难题。对于我们来说，光看懂这6条定理已经够吃力了，再互推？我还是躲进我的小被几里吧…
+</p>
+<p>
+ 下面，就是我们的离散化武器——离散集发挥作用的时候惹！
+</p>
+<p>
+ 我们设离散集
+ <span class="text/tex">
+  $\displaystyle D=\{...,d_{-2},d_{-1},d_{0},d_1,d_2,...\}$
+ </span>
+ ,其中满足
+ <span class="text/tex">
+  $\displaystyle \forall i \in Z$
+ </span>
+ (或者Z上的闭区间),
+ <span class="text/tex">
+  $\displaystyle d_i &lt; d_{i+1}$
+ </span>
+ (考虑到D的至多可数性，这里如果取小于等于，就实属无用。此外，这里能从小到大地写，是与这个集合无聚点有关的。这里不证。).举个例子，
+ <span class="text/tex">
+  $\displaystyle \{...,-2,-1,0,1,2,...\}$
+ </span>
+ 和
+ <span class="text/tex">
+  $\displaystyle \{1,2,3\}$
+ </span>
+ 都是满足条件的离散集。
+</p>
+<p>
+ 事实上，这个离散集D也具有完备性。
+</p>
+<p>
+ 我们用这个离散集来考察第一条定理：
+</p>
+<p>
+ 这条定理的主体是一个“如果……（条件），那么……（结果）”的结构。我们来看它的条件，实际上说的就是B在X中有上界。也就是说，X中有元素可以大于等于B中的所有元素。容易知道，对于离散集D的子集B，如果B满足这个条件，那么离散集B的形式必然是
+ <span class="text/tex">
+  $\displaystyle \{...,d_{k-2},d_{k-1},d_k\}$
+ </span>
+ ，
+ <span class="text/tex">
+  $\displaystyle k \in Z$
+ </span>
+ .我们这里假定D中元素的下标是遍历负无穷到正无穷的。如果是其他情况，会有很平凡的类似结果。
+</p>
+<p>
+ 我们再来看这条定理结构中的结果，它阐释了B一定有上确界这件事。对于有理数集来说，这点并不一定，比如说
+ <span class="text/tex">
+  $\displaystyle \{1,1.4,1.41,1.414,...\}$
+ </span>
+ 这一个有理数集上的集合，虽然有上界，比如说2，但在有理数集中并没有上确界，事实上，它的上确界是无理数
+ <span class="text/tex">
+  $\displaystyle \sqrt{2}$
+ </span>
+ 。而离散集则不存在这个问题。很显然，
+ <span class="text/tex">
+  $\displaystyle d_k$
+ </span>
+ 即为B的上确界。
+</p>
+<p>
+ <br/>
+</p>
+<p>
+ 是不是特！别！直！观！
+</p>
+<p>
+ <br/>
+</p>
+<p>
+ 其他5条定理类似，也可以用离散化观点去看懂。这里不再赘述，留给读者当打发时间的工具。
+</p>
+<h2>
+ <b>
+  极限
+ </b>
+</h2>
+<p>
+ 在刚才完备性的处理中，我们已经用到了极限的概念。并且，我们不加说明地引入了
+ <span class="text/tex">
+  $\displaystyle \Delta X$
+ </span>
+ 这一记号。这里，我们给出其定义：
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle \Delta X=\{x|x=|x_1-x_2|,x_1,x_2\in X,x_1 \neq x_2\}$
+ </span>
+</p>
+<p>
+ 称由
+ <span class="text/tex">
+  $\displaystyle Z \rightarrow X$
+ </span>
+ 上的数列
+ <span class="text/tex">
+  $\displaystyle \{a_n\}$
+ </span>
+ 有极限a，当且仅当
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle \forall \epsilon \in \Delta X,\exists N\in Z,s.t.\forall n &gt;N,|a_n-a|&lt;\epsilon$
+ </span>
+ 。此时记作
+ <span class="text/tex">
+  $\displaystyle \lim_{n \rightarrow + \infty}{a_n}=a$
+ </span>
+</p>
+<p>
+ 当X为实数集时，
+ <span class="text/tex">
+  $\displaystyle \Delta X$
+ </span>
+ 自然变成了全体正实数的集合，极限的定义也就变成了我们常见的定义。
+</p>
+<p>
+ 当D为离散集时，我们想证明，如果极限存在，那么存在
+ <span class="text/tex">
+  $\displaystyle N_0 \in Z$
+ </span>
+ ,使得
+ <span class="text/tex">
+  $\displaystyle \forall n &gt;N_0,a_n=a$
+ </span>
+ .
+</p>
+<p>
+ 用反证法。如果不存在这样的
+ <span class="text/tex">
+  $\displaystyle N_0$
+ </span>
+ ，那么对于任意
+ <span class="text/tex">
+  $\displaystyle \epsilon \in \Delta D$
+ </span>
+ ,对于任意
+ <span class="text/tex">
+  $\displaystyle N \in Z$
+ </span>
+ ,存在
+ <span class="text/tex">
+  $\displaystyle n_0 &gt;N$
+ </span>
+ ,使
+ <span class="text/tex">
+  $\displaystyle 0&lt;|a_n-a|&lt;\epsilon$
+ </span>
+ ，即
+ <span class="text/tex">
+  $\displaystyle a-\epsilon &lt;a_n&lt;a+\epsilon$
+ </span>
+ 且
+ <span class="text/tex">
+  $\displaystyle a_n \neq a$
+ </span>
+ 。这与
+ <span class="text/tex">
+  $\displaystyle D$
+ </span>
+ 无聚点相矛盾。
+</p>
+<p>
+ 由以上证明可知，对离散集而言，极限变得十分平凡。
+</p>
+<h2>
+ <b>
+  介值定理
+ </b>
+</h2>
+<p>
+ 对于函数，我们知道它的介值定理的表述为：
+</p>
+<p>
+ 对于在
+ <span class="text/tex">
+  $\displaystyle [a,b]$
+ </span>
+ 上连续的函数
+ <span class="text/tex">
+  $\displaystyle y=f(x)$
+ </span>
+ ,对于任意
+ <span class="text/tex">
+  $\displaystyle m \in [\min\{f(a),f(b)\},\max \{f(a),f(b)\}]$
+ </span>
+ ,存在
+ <span class="text/tex">
+  $\displaystyle x_0 \in [a,b]$
+ </span>
+ ,使
+ <span class="text/tex">
+  $\displaystyle f(x_0)=m$
+ </span>
+</p>
+<p>
+ 我们知道，连续是一个比较强的条件。那么对于离散的数列来说，也是有所谓的“零点定理”，不过同样要一些比较强的条件。
+</p>
+<p>
+ 设D为离散集。对于从
+ <span class="text/tex">
+  $\displaystyle Z \rightarrow D$
+ </span>
+ 的数列
+ <span class="text/tex">
+  $\displaystyle \{a_n\}$
+ </span>
+ ，如果在Z上的一个闭区间
+ <span class="text/tex">
+  $\displaystyle [p,q]$
+ </span>
+ 有
+ <span class="text/tex">
+  $\displaystyle \Delta \{a_n\}_{n=p}^{q}\subset\{x|x=kx_0,k\in N\}$
+ </span>
+ ,其中
+ <span class="text/tex">
+  $\displaystyle x_0\in \Delta D$
+ </span>
+ ,那么对于任意
+ <span class="text/tex">
+  $\displaystyle m \in \{x|x=\min\{a_p,a_q\}+kx_0,0 \leq k \leq \frac{|a_p-a_q|}{x_0},k\in Z\}$
+ </span>
+ ,存在整数
+ <span class="text/tex">
+  $\displaystyle i \in [p,q] $
+ </span>
+ ,使
+ <span class="text/tex">
+  $\displaystyle a_i=m$
+ </span>
+ 。
+</p>
+<p>
+ 虽然这个表述很麻烦，甚至难以理解，但一个简单的推论却是非常有用的：
+</p>
+<p>
+ 如果数列
+ <span class="text/tex">
+  $\displaystyle \{a_n\}$
+ </span>
+ 中，后一项减前一项要么是1要么是-1，那么在Z上的一个闭区间
+ <span class="text/tex">
+  $\displaystyle [p,q]$
+ </span>
+ 中，如果
+ <span class="text/tex">
+  $\displaystyle a_p &lt; a_q$
+ </span>
+ ,那么
+ <span class="text/tex">
+  $\displaystyle a_p +k$
+ </span>
+ 总能被取到，其中
+ <span class="text/tex">
+  $\displaystyle 0 \leq k \leq a_q-a_p$
+ </span>
+ 。
+</p>
+<p>
+ 用形象的语言来说，你眼前的楼梯上有一坨屎。如果你每次只能上一级台阶，那你肯定会踩到屎。
+</p>
+<h2>
+ <b>
+  微分与差分
+ </b>
+</h2>
+<p>
+ 我们熟知：对于函数
+ <span class="text/tex">
+  $\displaystyle y=f(x)$
+ </span>
+ ,
+ <span class="text/tex">
+  $\displaystyle  \frac{dy}{dx}|_{x=x_0}=\lim_{x \rightarrow x_0}{\frac{f(x)-f(x_0)}{x-x_0}}=f^\prime(x_0)$
+ </span>
+ 称为该函数在
+ <span class="text/tex">
+  $\displaystyle x=x_0$
+ </span>
+ 处的
+ <i>
+  导数
+ </i>
+ (derivative),
+ <span class="text/tex">
+  $\displaystyle dy=f^\prime (x)dx$
+ </span>
+ 称为其
+ <i>
+  微分
+ </i>
+ (differential)。
+</p>
+<p>
+ 类似地，我们有从
+ <span class="text/tex">
+  $\displaystyle Z\rightarrow R$
+ </span>
+ 的数列
+ <span class="text/tex">
+  $\displaystyle {a_n}$
+ </span>
+ 在
+ <span class="text/tex">
+  $\displaystyle n=n_0$
+ </span>
+ 的差分：
+</p>
+<p>
+ 右差分
+ <span class="text/tex">
+  $\displaystyle \Delta_+a_{n_0}=a_{n_0+1}-a_{n_0}$
+ </span>
+ ,左差分
+ <span class="text/tex">
+  $\displaystyle \Delta _-a_{n_0}=a_{n_0}-a_{n_0-1}$
+ </span>
+</p>
+<p>
+ 这篇文章中，如果不加特殊说明，默认差分为右差分。
+</p>
+<p>
+ 如果要与导数的写法类似，我们可以有如下改写：
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle \frac{\Delta a_n}{\Delta n}=\frac{a_{n+1}-a_n}{(n+1)-n}$
+ </span>
+</p>
+<p>
+ 数列
+ <span class="text/tex">
+  $\displaystyle \{\Delta a_n\}$
+ </span>
+ 称为
+ <span class="text/tex">
+  $\displaystyle \{a_n\}$
+ </span>
+ 的（右）差分函数，简称（右）差分。
+</p>
+<p>
+ 数列
+ <span class="text/tex">
+  $\displaystyle \{\Delta (\Delta a_n)\}$
+ </span>
+ 称为
+ <span class="text/tex">
+  $\displaystyle \{a_n\}$
+ </span>
+ 的二阶差分，记作
+ <span class="text/tex">
+  $\displaystyle \{\Delta^2a_n\}$
+ </span>
+</p>
+<p>
+ 类似地，我们可定义n阶差分。
+</p>
+<p>
+ 由于离散的简单性，我们可以直接写出k阶差分公式：
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle \Delta ^k a_n=\sum_{i=0}^{k}{C_k^i(-1)^{k-i}a_{n+i}}$
+ </span>
+</p>
+<p>
+ 其实，我们可以通过这个来写出k阶导数公式：
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle f^{(k)}(x_0)=\lim_{\Delta x \rightarrow 0}\frac{\Delta^kf(a_0)}{(\Delta x)^K}$
+ </span>
+ ,其中
+ <span class="text/tex">
+  $\displaystyle a_n=x_0+n\Delta x$
+ </span>
+</p>
+<p>
+ 有了这些定义，我们可以很容易地发现差分和导数，或者说微分的相似点：
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle (f(x)+kg(x))^\prime =f^\prime (x)+kg^\prime (x)$
+ </span>
+ ,
+ <span class="text/tex">
+  $\displaystyle (fg)^\prime =f^\prime g+f g^\prime$
+ </span>
+</p>
+<p>
+ 这两个公式的证明都用到了一些高端的极限证明技巧。它们的平凡形式，即离散化数列形式如下：
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle \Delta (a_n+kb_n)=\Delta a_n+k\Delta b_n$
+ </span>
+ ,
+ <span class="text/tex">
+  $\displaystyle \Delta (a_nb_n)=b_n\Delta a_n+a_{n+1} \Delta b_n=a_n\Delta b_n+b_{n+1}\Delta a_n$
+ </span>
+</p>
+<p>
+ 数列乘法的差分公式中出现了
+ <span class="text/tex">
+  $\displaystyle a_{n+1}$
+ </span>
+ 这一项，这其实是一个不太平凡的发现。由于函数的连续性，把这往后移一项的特点掩盖了。
+</p>
+<p>
+ 对于高阶导数，我们有Leibniz公式：
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle (fg)^{(n)}=\sum_{k=0}^{n}{C_{n}^{k}f^{(n-k)}g^{(k)}}$
+ </span>
+</p>
+<p>
+ 那么对于高阶差分，我们有 证明方法几乎完全类似，形式也几乎完全类似 的公式：
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle \Delta ^{n}(a_nb_n)=\sum_{k=0}^{n}{C_n^k \Delta ^{n-k}a_{n+k}\Delta ^{k}b_n}$
+ </span>
+</p>
+<p>
+ 事实上，对于不熟悉Leibniz公式的同学来说，用简单的代数运算法则推导数列高阶差分公式反而更易于类比。
+</p>
+<p>
+ 接下来，便是用离散化观点看问题的最有名的例子：Taylor公式。
+</p>
+<p>
+ 对一个性质充分好的函数来说（这里不强调其性质是由于数列的形式确实没太多性质需求）：
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle f(x)=\sum_{k=0}^{\infty}{\frac{f^{(k)}(x_0)}{k!}(x-x_0)^k}$
+ </span>
+</p>
+<p>
+ 而对于一个数列来说，我们先给出结论：
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle a_n=\sum_{k=0}^{n-m}{C_{n-m}^k \Delta ^k a_m}$
+ </span>
+ ,其中m是一个小于n的整数（这里的小于是因为我们用的右差分）。
+</p>
+<p>
+ 下面我们来说明这个类比的重要性，顺便讲一下证明数列形式的思路：
+</p>
+<p>
+ Taylor公式的系数其实并不那么重要，最重要的是其中传达出来的信息：如果已知一个函数在某点处的函数值，并且知道其在任意阶导数的值，那么这个函数被惟一确定。这踏马是什么操作啊！It doesn't make sense!
+</p>
+<p>
+ 用数列的角度去看它，就清楚了许多：
+</p>
+<p>
+ 从一个简单例子看起：
+</p>
+<p>
+ 我已知
+ <span class="text/tex">
+  $\displaystyle a_m$
+ </span>
+ 和
+ <span class="text/tex">
+  $\displaystyle \Delta a_m$
+ </span>
+ ,求
+ <span class="text/tex">
+  $\displaystyle a_{m+1}$
+ </span>
+ .
+</p>
+<p>
+ 这太显然了吧！不就是
+ <span class="text/tex">
+  $\displaystyle a_{m+1}=\Delta a_m+a_m$
+ </span>
+ 么！
+</p>
+<p>
+ 那我们如果已知
+ <span class="text/tex">
+  $\displaystyle a_m,\Delta a_m$
+ </span>
+ 和
+ <span class="text/tex">
+  $\displaystyle \Delta ^2 a_m$
+ </span>
+ ,能否求
+ <span class="text/tex">
+  $\displaystyle a_{m+2}$
+ </span>
+ 呢？
+</p>
+<p>
+ 答案是肯定的。
+</p>
+<p>
+ 不妨设
+ <span class="text/tex">
+  $\displaystyle a_{m+2}=\Delta ^2 a_m+k_1 \Delta a_m +k_2 a_m$
+ </span>
+ ,直接带入
+ <span class="text/tex">
+  $\displaystyle \Delta^2 a_m =a_{m+2}-2a_{m+1}+a_m$
+ </span>
+ 和
+ <span class="text/tex">
+  $\displaystyle \Delta a_m=a_{m+1}-a_m$
+ </span>
+ 中，通过对比系数，可得
+ <span class="text/tex">
+  $\displaystyle k_1=2,k_2=1$
+ </span>
+ .
+</p>
+<p>
+ 类似地，由于我们知道
+ <span class="text/tex">
+  $\displaystyle \Delta ^k a_n=\sum_{i=0}^{k}{C_k^i(-1)^{k-i}a_{n+i}}$
+ </span>
+ ，所以总可以用
+ <span class="text/tex">
+  $\displaystyle a_m$
+ </span>
+ 和在此处的k个高阶差分，来表示
+ <span class="text/tex">
+  $\displaystyle a_{m+k}$
+ </span>
+ ,具体的系数，列一个线性方程组就ok啦！
+</p>
+<p>
+ 这就说明，通过在一个点处的值和在该点处的差分（导数），可以唯一确定这个数列（函数）。
+</p>
+<h2>
+ <b>
+  积分与和分
+ </b>
+</h2>
+<p>
+ 作为微分的逆运算，不定积分也同样作为伤害万千学子的工具存在。
+</p>
+<p>
+ 而差分，类似地，也有逆运算——和分：
+</p>
+<p>
+ 对数列
+ <span class="text/tex">
+  $\displaystyle \{a_n\}$
+ </span>
+ ，如果存在数列
+ <span class="text/tex">
+  $\displaystyle \{b_n\}$
+ </span>
+ 满足
+ <span class="text/tex">
+  $\displaystyle a_n=\Delta b_n$
+ </span>
+ ,则称
+ <span class="text/tex">
+  $\displaystyle \{b_n\}$
+ </span>
+ 为
+ <span class="text/tex">
+  $\displaystyle \{a_n\}$
+ </span>
+ 的一个和数列。
+</p>
+<p>
+ 有定理如下：
+</p>
+<p>
+ 若
+ <span class="text/tex">
+  $\displaystyle \{b_n\}$
+ </span>
+ 、
+ <span class="text/tex">
+  $\displaystyle \{c_n\}$
+ </span>
+ 均为
+ <span class="text/tex">
+  $\displaystyle \{a_n\}$
+ </span>
+ 的和数列，则
+ <span class="text/tex">
+  $\displaystyle b_n-c_n$
+ </span>
+ 为常数列。
+</p>
+<p>
+ 这个定理只需要特别简单的代数知识，留给读者作证明。
+</p>
+<p>
+ 下面定义不定和分：
+</p>
+<p>
+ 设
+ <span class="text/tex">
+  $\displaystyle \{b_n\}$
+ </span>
+ 为
+ <span class="text/tex">
+  $\displaystyle \{a_n\}$
+ </span>
+ 的一个和数列，则记
+ <span class="text/tex">
+  $\displaystyle \sum{a_n \Delta n}=b_n+C$
+ </span>
+ ,其中C是任意常数。
+</p>
+<p>
+ 这里之所以要记
+ <span class="text/tex">
+  $\displaystyle \Delta n$
+ </span>
+ （它实际上等于1，所以可以不记），是为了和函数的不定积分相匹配。
+</p>
+<p>
+ 与函数的不定积分类似，不定和分也有四则运算性质：
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle \sum (a_n+kb_n)\Delta n=\sum a_n \Delta n+k\sum b_n \Delta n$
+ </span>
+ ,
+ <span class="text/tex">
+  $\displaystyle \sum b_n\Delta a_n=a_{n}b_n-\sum a_{n+1}\Delta b_n$
+ </span>
+ ，
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle \sum a_n \Delta b_n\Delta n=\sum a_n \Delta b_n$
+ </span>
+</p>
+<p>
+ 第三条性质，即微积分中的换元积分法，是显然的。
+</p>
+<p>
+ 而定和分，我们早已接触，就是普通的和式，只不过我们这里用更科学的方式记它：
+ <span class="text/tex">
+  $\displaystyle \sum _{i=m}^{n}a_i\Delta i$
+ </span>
+ 。
+</p>
+<p>
+ 那么，大名鼎鼎的Abel求和，就是分部积分法的离散化形式：
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle \sum _{i=m}^n b_i \Delta a_i=a_{n+1}b_{n+1}-a_mb_m-\sum _{i=m}^na_{i+1}\Delta b_i$
+ </span>
+ .
+</p>
+<p>
+ 证明亦十分简单，留给读者。
+</p>
+<p>
+ 微积分基本定理，即Newton-Leibniz公式，
+ <span class="text/tex">
+  $\displaystyle \int_{a}^{b}f^\prime (x)dx=f(b)-f(a)$
+ </span>
+ ,很难直观地感受。一个求面积的公式居然和不定积分有关。但是我们如果将其离散化，却是十分容易理解的：
+ <span class="text/tex">
+  $\displaystyle \sum _{i=m}^n \Delta a_i =a_{n+1}-a_m$
+ </span>
+ .这完全是一个简单的代数运算。
+</p>
+<p>
+ 在这里说一句，《积分与和分》一目中，把求和用和式书写，纯属为了类比和版面要求。其实，将和式展开成普通的形式，反而更容易理解。
+</p>
+<h2>
+ <b>
+  高维形式
+ </b>
+</h2>
+<p>
+ 函数，有n元m维函数。同样地，我们也可以有n元m维数列：
+</p>
+<p>
+ 定义从
+ <span class="text/tex">
+  $\displaystyle Z^n \rightarrow R^m$
+ </span>
+ 上的数列为
+ <span class="text/tex">
+  $\displaystyle a_{\bold{z}}$
+ </span>
+ ,其中
+ <span class="text/tex">
+  $\displaystyle \bold z=(z_1,z_2,...z_n)\in Z^n$
+ </span>
+</p>
+<p>
+ 对于高维形式的偏导数，全导数，重积分，Fubini定理等等，都可以有其离散化类比。这些类比，就留给聪明的读者们，开拓知识的眼界了！
+</p>
+<h2>
+ <b>
+  最后
+ </b>
+</h2>
+<p>
+ 本文在我仓促之间写成，必有许多疏漏、错误，希望大家指出，不吝赐教！
+</p></div></div></body></html>

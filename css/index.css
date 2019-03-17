@@ -80,12 +80,13 @@ div.article_container li {
 }
 
 #Writings {
-    position:absolute;
+    position:relative;
     left:2em;
     margin-top:1em;
 }
 
 #Projects {
+    position:relative;
     right:2em;
     margin-top:1em;
 }

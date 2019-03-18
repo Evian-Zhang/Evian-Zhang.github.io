@@ -72,8 +72,13 @@ function adjustArticleContainer() {
         }
     }
 }
+function changeHref() {
+    var cryptography_link = document.getElementById("cryptography");
+    cryptography_link.href = "https://nbviewer.jupyter.org/github/Evian-Zhang/Introduction-to-modern-cryptography/blob/master/现代密码学简介.pdf?number=" + String(Math.random());
+}
 window.onload = function () {
     adjustArticleContainer();
+    changeHref();
     setCanvasContainerSize();
     drawTree();
 };

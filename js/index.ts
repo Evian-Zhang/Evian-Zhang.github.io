@@ -69,12 +69,31 @@ function drawTree () {
     }
 }
 
+function adjustArticleContainer () {
+    var left_container = [document.getElementById("Writings"), document.getElementById("LaTeXIntro")];
+    var right_container = [document.getElementById("Projects"), document.getElementById("Math")];
+    if (left_container.length > 1) {
+        for (var i = 1; i < left_container.length; i++) {
+            var previous = left_container[i - 1];
+            left_container[i].style.top = String(previous.offsetTop + previous.offsetHeight) + "px";
+        }
+    }
+    if (right_container.length > 1) {
+        for (var i = 1; i < right_container.length; i++) {
+            var previous = right_container[i - 1];
+            right_container[i].style.top = String(previous.offsetTop + previous.offsetHeight) + "px";
+        }
+    }
+}
+
 window.onload = function () {
+    adjustArticleContainer();
     setCanvasContainerSize();
     drawTree();
 };
 
 window.onresize = function () {
+    adjustArticleContainer();
     setCanvasContainerSize();
     drawTree();
 };

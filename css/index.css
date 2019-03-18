@@ -45,6 +45,8 @@ a:hover {
 }
 
 div.article_container {
+    position:absolute;
+    margin-top:2em;
     border:dashed;
     width:20em;
 }
@@ -67,26 +69,17 @@ div.article_container li {
 }
 
 #LaTeXIntro {
-    position:absolute;
-    /*right:calc(50% + 10em);*/
     left:2em;
-    margin-top:1em;
 }
 
 #Math {
-    position:absolute;
     right:2em;
-    margin-top:1em;
 }
 
 #Writings {
-    position:relative;
     left:2em;
-    margin-top:1em;
 }
 
 #Projects {
-    position:relative;
     right:2em;
-    margin-top:1em;
 }

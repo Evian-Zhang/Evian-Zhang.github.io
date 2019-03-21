@@ -1,0 +1,58 @@
+body {
+    background-color: black;
+    color: white;
+}
+
+#hidden_things {
+    z-index:-1;
+    position: absolute;
+}
+
+#header_holder {
+    text-align: center;
+    alignment: center;
+    font-family: sans-serif;
+}
+
+#buttons_holder {
+    position: relative;
+    top: 150px;
+    margin: auto;
+    width: 30%;
+    height: 200px;
+    opacity: 0;
+}
+
+#pseudo_file_choose_button {
+    position:absolute;
+    left:0;
+    font-size:20px;
+}
+
+#generate_button {
+    position:absolute;
+    right:0;
+    font-size:20px;
+}
+
+#images_holder {
+    position: relative;
+    top: 0;
+    margin: auto;
+    width: 80%;
+    height: fit-content;
+    alignment: center;
+}
+
+div.image_container {
+    float: left;
+    text-align: center;
+    background-color: white;
+    min-width:150px;
+    height: 300px;
+    margin: 30px;
+}
+
+div.image_container img {
+    max-height:200px;
+}

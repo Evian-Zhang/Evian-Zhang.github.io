@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>LaTeX入门(二)——下载安装及基本知识</title>
+<base target="_blank" />
+<link rel="stylesheet" type="text/css" href="/staticVersion/cssticVersion/css/article.css" />
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'] ],
+        displayMath: [ ['$$','$$'] ]
+    }
+});
+</script>
+</head>
+<body>
+<div id="main_wrapper">
+    <header id="main_header">
+        <a href="/staticVersion/index.htmlion/index.html">Evian Zhang's<br />naive blog</a>
+        <h2>LaTeX入门(二)——下载安装及基本知识</h2>
+    </header>
+    <div id="article_body">
+<p>
+ 作为新时代下年轻有为、有过多年浏览使用互联网经验的有志青年，我们一定要明白一件事，下载软件一定要在这个软件的官网上下载，除非万不得已，否则千万别在什么什么应用管家之类的地方下载软件。谁用谁知道。
+</p>
+<p>
+ LaTeX的官网是
+ <a class="wrap external" href="http://link.zhihu.com/?target=https%3A//www.latex-project.org/" rel="nofollow noreferrer" target="_blank">
+  latex-project
+ </a>
+ ，相信聪明的你一定知道如何选择"Get"然后找到这个界面
+</p>
+<figure>
+ <img src="55969812_assets/v2-3ef5cd174b5736803d20b2a375a4e0d6_b.jpg"/>
+</figure>
+<p>
+ 选择自己操作系统对应的发行版下载安装即可（Windows版的三个都可以）。
+</p>
+<p>
+ 对于Windows系统来说，下载安装完成之后，会有一个叫TeXworks的软件；对于macOS系统来说，下载安装完成之后，会有一个叫TeXShop的软件。这两个软件都是我们今后在LaTeX使用中最常使用的软件。
+</p>
+<h2>
+ LaTeX基本知识
+</h2>
+<p>
+ 下面我来介绍一下LaTeX的一些基本知识。相信大家经常听到的术语有TeX, LaTeX, XeLaTeX, TeXworks, TeXShop这类的，究竟分别指代什么呢？
+</p>
+<p>
+ 我们用LaTeX进行文字处理，就好比是设计衣服。设计衣服有哪些步骤呢？第一步，找一个裁缝，和裁缝商量好图纸的规范，比如说，纽扣要用圆形，辅助线要用虚线；第二步，找一张纸；第三步，设计衣服；第四步，交给裁缝；第五步，裁缝出去置办原材料；第六步，裁缝剪裁。
+</p>
+<p>
+ 这个比喻会贯穿我们学习LaTeX的最初阶段。
+</p>
+<p>
+ 图纸的规范，就是编程语言，比如说我们熟知的C++，JAVA等；纸，就是编辑器，我们用过的有sublime text，vim等；设计衣服，就是我们编程写代码；裁缝，就是编译器，比如说gcc, g++。
+</p>
+<p>
+ 最初阶段，这个图纸的规范就是TeX，而这个裁缝也叫TeX。后来，大家发觉TeX的功能有些少，就发明了LaTeX，这既是一个图纸的规范的名字，也是一个裁缝的名字。再后来，随着人们对越来越多功能的需要，大家遵循LaTeX这一规范，又出现了许多裁缝，有pdfLaTeX，有XeLaTeX. 而我们现在最常用的裁缝，就是XeLaTeX. 因为这个编译器可以直接调用系统字体，并且识别Unicode编码。简单来说，就是这个裁缝认得东西多，有的国家的人喜欢用点划线来表示虚线，有的国家的人喜欢用一连串小点表示虚线，这个裁缝他都认的得。
+</p>
+<p>
+ 而在这篇文章中，我们下载并安装的，实际上是裁缝+纸。TeXworks, TeXShop就是纸。我们设计衣服，其实在任何纸上设计都行，只要遵从图纸规范，并给相应的裁缝就行。我们编程也是这样，实际上txt就能写代码，只要交给对应的编译器进行编译就行。那编辑器实现的功能，实际上是更好的纸。我们设计衣服，可能花纹、装饰品会非常非常的多，一层叠一层，最后我们很难识别出哪是领口，那是袖口。而好的纸，可以做到什么功能呢？我们一旦画完领口，这个领口就被标成红色。画完袖口，袖口就被标成蓝色。装饰物都是绿色，花纹都标成黄色。这样的话，无论多么复杂的图纸，我们都能找到基本的框架。这就是一个好的编辑器能提供的功能。此外，比如说我们想批量修改，把一个圆形的装饰物修改成一个方形的，一个好的编辑器也能这样，将相同的代码进行批量修改。
+</p>
+<p>
+ 任何东西，永远不会达到最好，总会有比他还要好的。编辑器也是这样。TeXworks, TeXShop都是默认安装的编辑器，能实现基础的功能。但总有比这还好的，比如说TeXStudio等等。甚至于有的编辑器，自带一个裁缝，你每加一笔，裁缝立刻就给你做出来。也就是所谓的“所见即所得”。对更好的编辑器的选择，则看大家的需求。相信随着大家将来对LaTeX的深入，会遇到更多更好的编辑器。我用的就是自带的TeXShop，感觉已经基本够用了。
+</p>
+<p>
+ 那么，LaTeX的基本常识就介绍到这里，下篇文章，我们将真正进入LaTeX的使用环节。
+</p></div></div></body></html>

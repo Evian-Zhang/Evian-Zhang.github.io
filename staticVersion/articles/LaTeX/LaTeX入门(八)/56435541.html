@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>LaTeX入门(八)——图片</title>
+<base target="_blank" />
+<link rel="stylesheet" type="text/css" href="/staticVersion/cssticVersion/css/article.css" />
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'] ],
+        displayMath: [ ['$$','$$'] ]
+    }
+});
+</script>
+</head>
+<body>
+<div id="main_wrapper">
+    <header id="main_header">
+        <a href="/staticVersion/index.htmlion/index.html">Evian Zhang's<br />naive blog</a>
+        <h2>LaTeX入门(八)——图片</h2>
+    </header>
+    <div id="article_body">
+<p>
+ 在之前一系列的文章中，我们从小到大，从字、段、章节、页面的角度介绍了LaTeX的使用原理，就像是我们设计衣服，从针线，到布匹，再到衣裳的设计。正如衣服还需要各种装饰物点缀，那么，从这篇文章起，我们就开始介绍各个局部的小方面了。这篇文章，介绍的是图片的插入。
+</p>
+<h2>
+ 插入图片
+</h2>
+<p>
+ 要在文档中插入图片，需要
+ <code>
+  graphicx
+ </code>
+ 宏包。此外，为了让图片出现在正确的位置，需要
+ <code>
+  float
+ </code>
+ 宏包。因此，在导言区中加上
+</p>
+<div class="highlight">
+ <pre><code class="language-tex"><span></span><span class="k">\usepackage</span><span class="nb">{</span>graphicx<span class="nb">}</span>
+<span class="k">\usepackage</span><span class="nb">{</span>float<span class="nb">}</span>
+</code></pre>
+</div>
+<p>
+ 接着，如果我们要插入的图片的名字是pic.png, 那么在我们正文中要插入图片的位置加上如下代码：
+</p>
+<div class="highlight">
+ <pre><code class="language-text"><span></span>\begin{figure}[H]
+\centering
+\includegraphics{pic.png}
+\caption{Title of picture}
+\end{figure}
+</code></pre>
+</div>
+<p>
+ 这里注意一点，如果要将图片插入到文档中，建议将图片拷贝到.tex文件的同一级文件夹中，否则需要在
+ <code>
+  \includegraphics{}
+ </code>
+ 的参数中填写绝对路径。
+</p>
+<p>
+ 而
+ <code>
+  \caption{}
+ </code>
+ 指令的作用，是在其对应的位置（位于
+ <code>
+  \includegraphics{}
+ </code>
+ 前就是图片上方，后就是图片下方）产生“图x：Title of picture”的语句。其中x是图片的编号。关于图片的编号，后面的文章会统一说。
+</p>
+<p>
+ 可以给
+ <code>
+  \includegraphics{}
+ </code>
+ 加上option列表以调整图片的大小。比如说，我想插入的图片是原图片等比例缩小为原来的0.8，则可以写成
+</p>
+<div class="highlight">
+ <pre><code class="language-text"><span></span>\includegraphics[scale=0.8]{pic.png} 
+</code></pre>
+</div>
+<p>
+ 如果我是想专门调整长宽，则可以把
+ <code>
+  scale=0.8
+ </code>
+ 换成
+ <code>
+  height=xxx, width=xxx
+ </code>
+ 这样来实现。
+</p>
+<p>
+ 此外，关于
+ <code>
+  \caption{}
+ </code>
+ ，我们可以对其字体、文字进行相关设置。这里需要我们使用
+ <code>
+  caption
+ </code>
+ 宏包。我们首先在导言区中写上
+</p>
+<div class="highlight">
+ <pre><code class="language-text"><span></span>\usepackage{caption}
+</code></pre>
+</div>
+<p>
+ 然后在导言区中使用
+ <code>
+  \captionsetup{}
+ </code>
+ 进行相关设置。
+</p>
+<p>
+ 由于我们这里需要设置的是
+ <code>
+  figure
+ </code>
+ 浮动体的caption，因此，我们需要特别注明
+ <code>
+  captionsetup[figure]{}
+ </code>
+ . 如果我们需要改变标题中的“图x”，让它变成“Picture x”或者其他文字，在大括号中可以写
+ <code>
+  name=Picture
+ </code>
+ 来实现。如果我们要改变这个caption整体的字号、字体，比如说全都变成
+ <code>
+  Large
+ </code>
+ 字号，意大利斜体，则可以在大括号中写
+ <code>
+  font={Large, it}
+ </code>
+ . 值得注意的是这里的字号只能设置成LaTeX内置的那几个字号（可以参见之前的文章），而不能自己设置字号。其他参数均可以看
+ <code>
+  caption
+ </code>
+ 宏包的说明。
+</p>
+<h2>
+ 并排图片
+</h2>
+<p>
+ 将两个图片并排在一起，需要一定的技巧。假设我们有两张图片pic1.png和pic2.png, 我们要将它们并排，则可以在正文中使用如下语句：
+</p>
+<div class="highlight">
+ <pre><code class="language-tex"><span></span><span class="k">\begin</span><span class="nb">{</span>figure<span class="nb">}</span>[H]
+<span class="k">\centering</span>
+<span class="k">\begin</span><span class="nb">{</span>minipage<span class="nb">}{</span>0.48<span class="k">\textwidth</span><span class="nb">}</span>
+<span class="k">\centering</span>
+<span class="k">\includegraphics</span><span class="nb">{</span>pic1.png<span class="nb">}</span>
+<span class="k">\caption</span><span class="nb">{</span>Title of pic1<span class="nb">}</span>
+<span class="k">\end</span><span class="nb">{</span>minipage<span class="nb">}</span>
+<span class="k">\begin</span><span class="nb">{</span>minipage<span class="nb">}{</span>0.48<span class="k">\textwidth</span><span class="nb">}</span>
+<span class="k">\centering</span>
+<span class="k">\includegraphics</span><span class="nb">{</span>pin2.png<span class="nb">}</span>
+<span class="k">\caption</span><span class="nb">{</span>Title of pic2<span class="nb">}</span>
+<span class="k">\end</span><span class="nb">{</span>minipage<span class="nb">}</span>
+<span class="k">\end</span><span class="nb">{</span>figure<span class="nb">}</span>
+</code></pre>
+</div>
+<p>
+ 如果我们要并排三张图，则将
+ <code>
+  0.48\textwidth
+ </code>
+ 变成
+ <code>
+  0.32\textwidth
+ </code>
+ ，以此类推。
+</p>
+<h2>
+ 过宽的图片
+</h2>
+<p>
+ 有时候我们会遇到过宽的图片，由于我们之前说的页面设置中存在左边距，所以会出现以下这种尴尬情况：
+</p>
+<figure>
+ <img src="56435541_assets/v2-b020efdca33e38dce8f5b851a011e0c0_b.jpg"/>
+</figure>
+<p>
+ 这时，我们需要使用一个叫
+ <code>
+  adjustbox
+ </code>
+ 的宏包。在导言区加上一句
+</p>
+<div class="highlight">
+ <pre><code class="language-text"><span></span>\usepackage[export]{adjustbox} 
+</code></pre>
+</div>
+<p>
+ 然后在正文中使用
+</p>
+<div class="highlight">
+ <pre><code class="language-tex"><span></span><span class="k">\begin</span><span class="nb">{</span>figure<span class="nb">}</span>[H]
+<span class="k">\centering</span>
+<span class="k">\includegraphics</span><span class="na">[center]</span><span class="nb">{</span>pic.png<span class="nb">}</span>
+<span class="k">\end</span><span class="nb">{</span>figure<span class="nb">}</span>
+</code></pre>
+</div>
+<p>
+ 即可。也就是说，在
+ <code>
+  \includegraphics[]{}
+ </code>
+ 的中括号中，加上一句
+ <code>
+  center
+ </code>
+ 就能实现图片居中了。如图：
+</p>
+<figure>
+ <img src="56435541_assets/v2-9d76c61c021ea15da6023810897cd667_b.jpg"/>
+</figure>
+<h2>
+ 文字环绕图片
+</h2>
+<p>
+ 我不太建议在正经论文中使用文字环绕图片，而且LaTeX在这方面做的也并不是尽善尽美。要使用文字环绕图片，需要在导言区使用宏包
+ <code>
+  wrapfig
+ </code>
+ 。即在导言区中加上一句
+</p>
+<div class="highlight">
+ <pre><code class="language-text"><span></span>\usepackage{wrapfig} 
+</code></pre>
+</div>
+<p>
+ 然后在正文中要加入图片的地方使用语句
+</p>
+<div class="highlight">
+ <pre><code class="language-tex"><span></span><span class="k">\begin</span><span class="nb">{</span>wrapfigure<span class="nb">}{</span>position<span class="nb">}{</span>width<span class="nb">}</span>
+<span class="k">\centering</span>
+<span class="k">\includegraphics</span><span class="nb">{</span>pic.png<span class="nb">}</span>
+<span class="k">\end</span><span class="nb">{</span>wrapfigure<span class="nb">}</span>
+</code></pre>
+</div>
+<p>
+ 其中position可以有
+ <code>
+  r
+ </code>
+ 或者
+ <code>
+  l
+ </code>
+ 两种选项，分别对应在文字右侧和在文字左侧。
+ <code>
+  width
+ </code>
+ 是这个浮动体的宽度（不是这个图片的宽度），比图片宽度略大一些。因此，比如说我要一个在文字右边的，宽度为
+ <code>
+  0.5\textwidth
+ </code>
+ 的浮动体，可以写成
+</p>
+<div class="highlight">
+ <pre><code class="language-tex"><span></span><span class="k">\begin</span><span class="nb">{</span>wrapfigure<span class="nb">}{</span>r<span class="nb">}{</span>0.5<span class="k">\textwidth</span><span class="nb">}</span>
+<span class="k">\centering</span>
+<span class="k">\includegraphics</span><span class="nb">{</span>pic.png<span class="nb">}</span>
+<span class="k">\end</span><span class="nb">{</span>wrapfigure<span class="nb">}</span>
+</code></pre>
+</div>
+<p>
+</p></div></div></body></html>

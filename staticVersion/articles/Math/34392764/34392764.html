@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>多元函数极限的一些讨论</title>
+<base target="_blank" />
+<link rel="stylesheet" type="text/css" href="/staticVersion/cssticVersion/css/article.css" />
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'] ],
+        displayMath: [ ['$$','$$'] ]
+    }
+});
+</script>
+</head>
+<body>
+<div id="main_wrapper">
+    <header id="main_header">
+        <a href="/staticVersion/index.htmlion/index.html">Evian Zhang's<br />naive blog</a>
+        <h2>多元函数极限的一些讨论</h2>
+    </header>
+    <div id="article_body">
+<h2>
+ <b>
+  前言
+ </b>
+</h2>
+<p>
+ 多元函数的极限，是一个非常难以理解的东西。相信大家在学习多元函数极限的时候，都对“以任意方式趋近”有了很深的印象。一元函数的极限，很简单，只会以直线趋近，但维度一升高，极限就会变的异常复杂。我这篇文章里主要想讲的是，怎样将多元函数极限与一元函数极限联系起来。当然，也有一些很实用的技巧，比如说最后一部分中，利用极坐标来判断二重极限不存在。
+</p>
+<p>
+ 这篇文章的实用性并没有前几篇那么强，但我觉得，如果想大致了解一下多元函数的极限与一元函数极限的关系，这篇文章也许能起到一定的作用。
+</p>
+<h2>
+ <b>
+  正文
+ </b>
+</h2>
+<p>
+ 我们以多元函数的极限的定义来开始我们这次的文章：
+</p>
+<p>
+ 不过在此之前，我们需要先定义
+ <span class="text/tex">
+  $\displaystyle n$
+ </span>
+ 维空间中的距离：
+</p>
+<blockquote>
+ 对于点
+ <span class="text/tex">
+  $\displaystyle A(a_1,a_2,\ldots ,a_n)$
+ </span>
+ 和
+ <span class="text/tex">
+  $\displaystyle B(b_1,b_2,\ldots ,b_n)$
+ </span>
+ ,定义
+ <br/>
+ <span class="text/tex">
+  $\displaystyle |AB|=\sqrt{\sum _{i=1}^n(a_i-b_i)^2}$
+ </span>
+</blockquote>
+<p>
+ 接下来，我们就可以定义极限了：
+</p>
+<blockquote>
+ 对于
+ <span class="text/tex">
+  $\displaystyle n$
+ </span>
+ 元
+ <span class="text/tex">
+  $\displaystyle m$
+ </span>
+ 维函数
+ <span class="text/tex">
+  $\displaystyle f:\mathbb R^n\to \mathbb{R} ^m$
+ </span>
+ 和一个点
+ <span class="text/tex">
+  $\displaystyle M_0(m_1,m_2,\ldots ,m_n)$
+ </span>
+ ,如果
+ <span class="text/tex">
+  $\displaystyle \exists \text{点}A(a_1,a_2,\ldots a_m)\in \mathbb{R}^m,\mathrm{s.t.}\forall \varepsilon &gt;0,\exists \delta &gt;0,\mathrm{s.t.}\forall N(M_0,\delta)\text{中的聚点}M(x_1,x_2,\ldots ,x_n),\text{有}$
+ </span>
+ <span class="text/tex">
+  $\displaystyle |f(M)-(a_1,a_2,\ldots ,a_m)|&lt; \varepsilon$
+ </span>
+ <br/>
+ 则称
+ <span class="text/tex">
+  $\displaystyle A$
+ </span>
+ 为
+ <span class="text/tex">
+  $\displaystyle f$
+ </span>
+ 在
+ <span class="text/tex">
+  $\displaystyle M\to M_0$
+ </span>
+ 时的极限，记作
+ <br/>
+ <span class="text/tex">
+  $\displaystyle \lim_{M\to M_0}f(M)=A$
+ </span>
+</blockquote>
+<p>
+ 以上即为多元函数极限的定义。
+</p>
+<p>
+ 对于定义的挖掘，我并不想有太多的讨论，主要还是在聚点的问题上，详细请看我的文章
+ <a class="internal" href="../31550235/31550235.html">
+  更精细地处理极限
+ </a>
+ 。
+</p>
+<h2>
+ <b>
+  换元法
+ </b>
+</h2>
+<p>
+ 和一元函数类似，多元函数的换元法的本质仍然是复合函数的极限法则：
+</p>
+<blockquote>
+ 对于
+ <span class="text/tex">
+  $\displaystyle n$
+ </span>
+ 元
+ <span class="text/tex">
+  $\displaystyle k$
+ </span>
+ 维函数
+ <span class="text/tex">
+  $\displaystyle g$
+ </span>
+ 和
+ <span class="text/tex">
+  $\displaystyle k$
+ </span>
+ 元
+ <span class="text/tex">
+  $\displaystyle m$
+ </span>
+ 维函数
+ <span class="text/tex">
+  $\displaystyle f$
+ </span>
+ ，若
+ <span class="text/tex">
+  $\displaystyle \lim_{M\to M_0}g(M)=N_0$
+ </span>
+ 且
+ <span class="text/tex">
+  $\displaystyle \lim_{N\to N_0}f(N)=A$
+ </span>
+ ,而
+ <span class="text/tex">
+  $\displaystyle \exists N(M_0,\delta),\mathrm{s.t.}\forall M\in N(M_0,\delta),g(M)\neq N_0$
+ </span>
+ ,那么我们有
+ <br/>
+ <span class="text/tex">
+  $\displaystyle \lim_{M\to M_0}f(g(M))=\lim_{N\to N_0}f(N)=A$
+ </span>
+</blockquote>
+<p>
+ 对于多元函数的换元法，我们需要注意到的是，这不仅可以简化我们的计算，还可以将多元函数的极限转化为一元函数的极限。此时只需要令
+ <span class="text/tex">
+  $\displaystyle k=m=1$
+ </span>
+ 即可。
+</p>
+<p>
+ 比如说：
+</p>
+<blockquote>
+ 求
+ <span class="text/tex">
+  $\displaystyle \lim_{(x,y)\to (0,0)}\frac{\sin (xy)}{xy}$
+ </span>
+ <br/>
+ 记二元一维函数
+ <span class="text/tex">
+  $\displaystyle t(x,y)=xy$
+ </span>
+ ,则
+ <span class="text/tex">
+  $\displaystyle \lim_{(x,y)\to (0,0)}t(x,y)=0$
+ </span>
+ .
+ <br/>
+ 我们使用复合函数的运算法则：
+ <br/>
+ <span class="text/tex">
+  $\displaystyle \lim_{(x,y)\to (0,0)}\frac{\sin (xy)}{xy}=\lim_{t\to 0}\frac{\sin t}{t}=1$
+ </span>
+</blockquote>
+<h2>
+ <b>
+  多重极限与累次极限
+ </b>
+</h2>
+<p>
+ <b>
+  （这一段如果不想探究原理的人可以略过）
+ </b>
+</p>
+<p>
+ 首先我们定义一致收敛：
+</p>
+<blockquote>
+ 已知一个带参数
+ <span class="text/tex">
+  $\displaystyle t$
+ </span>
+ 的函数
+ <span class="text/tex">
+  $\displaystyle f_t(x)$
+ </span>
+ 和一个数
+ <span class="text/tex">
+  $\displaystyle t_0$
+ </span>
+ ,其中
+ <span class="text/tex">
+  $\displaystyle t\in T,x\in X$
+ </span>
+ .若
+ <br/>
+ <span class="text/tex">
+  $\displaystyle \forall \varepsilon &gt;0,\exists \delta &gt;0,\mathrm{s.t.}\forall x\in X,\forall 0&lt;|t-t_0|&lt;\delta,|f_t(x)-f_{t_0}(x)|&lt;\varepsilon$
+ </span>
+ <br/>
+ 则称函数列
+ <span class="text/tex">
+  $\displaystyle \{f_t(x)\}$
+ </span>
+ 在
+ <span class="text/tex">
+  $\displaystyle t\to t_0$
+ </span>
+ 时一致收敛到
+ <span class="text/tex">
+  $\displaystyle f_{t_0}(x)$
+ </span>
+ .
+</blockquote>
+<p>
+ 这里需要注意一点，由于
+ <span class="text/tex">
+  $\displaystyle \forall x\in X$
+ </span>
+ 是在
+ <span class="text/tex">
+  $\displaystyle \exists \delta &gt;0$
+ </span>
+ 之后，故
+ <span class="text/tex">
+  $\displaystyle \delta$
+ </span>
+ 应是一个与
+ <span class="text/tex">
+  $\displaystyle x$
+ </span>
+ 的选取无关的数。这与我们一般的普通极限的定义不同。
+</p>
+<p>
+ 常见的不一致收敛的函数列是
+ <span class="text/tex">
+  $\displaystyle f_n(x)=\frac{1}{nx}$
+ </span>
+ 在
+ <span class="text/tex">
+  $\displaystyle n\to +\infty$
+ </span>
+ 时。导致这样情况出现的原因在
+ <span class="text/tex">
+  $\displaystyle x=0$
+ </span>
+ 的附近。
+</p>
+<p>
+ 下面给出交换极限顺序的定理：
+</p>
+<blockquote>
+ 已知一个带参数
+ <span class="text/tex">
+  $\displaystyle t$
+ </span>
+ 的函数
+ <span class="text/tex">
+  $\displaystyle f_t(x)$
+ </span>
+ 和
+ <span class="text/tex">
+  $\displaystyle t_0,x_0$
+ </span>
+ ,其中
+ <span class="text/tex">
+  $\displaystyle t\in T,x\in X$
+ </span>
+ .若函数列
+ <span class="text/tex">
+  $\displaystyle \{f_t(x)\}$
+ </span>
+ 在
+ <span class="text/tex">
+  $\displaystyle t\to t_0$
+ </span>
+ 时一致收敛到
+ <span class="text/tex">
+  $\displaystyle f_{t_0}(x)$
+ </span>
+ ，且
+ <span class="text/tex">
+  $\displaystyle \forall t\in T,\lim_{x\to x_0}f_t(x)$
+ </span>
+ 存在,那么
+ <br/>
+ <span class="text/tex">
+  $\displaystyle \lim_{t\to t_0}\lim_{x\to x_0}f_t(x)=\lim_{x\to x_0}\lim_{t\to t_0}f_t(x)$
+ </span>
+</blockquote>
+<p>
+ 接下来介绍累次极限与多重极限的关系：
+</p>
+<blockquote>
+ 若
+ <span class="text/tex">
+  $\displaystyle \lim_{x\to x_0}\lim_{y\to y_0}f(x,y),\lim_{y\to y_0}\lim_{x\to x_0}f(x,y),\lim_{(x,y)\to (x_0,y_0)}f(x,y)$
+ </span>
+ 都存在，则它们相等。
+</blockquote>
+<h2>
+ <b>
+  用极坐标简化极限运算
+ </b>
+</h2>
+<p>
+ 相信大家都知道，
+ <span class="text/tex">
+  $\displaystyle n$
+ </span>
+ 元函数极限存在是一个非常苛刻的事情。它要求自变量以任何轨道趋近于定点的时候，极限都要存在。在二维情况下，是这个定理：
+</p>
+<blockquote>
+ <span class="text/tex">
+  $\displaystyle \lim_{(x,y)\to (x_0,y_0)}f(x,y)$
+ </span>
+ 存在，等价于
+ <br/>
+ <span class="text/tex">
+  $\displaystyle \forall\text{连续函数} \Gamma (x,y)$
+ </span>
+ 满足
+ <span class="text/tex">
+  $\displaystyle \Gamma(x_0,y_0)=0$
+ </span>
+ ，且在
+ <span class="text/tex">
+  $\displaystyle (x_0,y_0)$
+ </span>
+ 周围可以写成显函数
+ <span class="text/tex">
+  $\displaystyle y=F(x)$
+ </span>
+ 或
+ <span class="text/tex">
+  $\displaystyle x=F(y)$
+ </span>
+ ,须有
+ <span class="text/tex">
+  $\displaystyle \lim_{x\to x_0}f(x,F(x))$
+ </span>
+ 存在且相等。
+</blockquote>
+<p>
+ 对于高维，是类似的。
+</p>
+<p>
+ 相信
+ <span class="text/tex">
+  $\displaystyle \lim_{(x,y)\to (0,0)}\frac{xy}{x^2+y^2}$
+ </span>
+ 的例子已经让大家感受到了以不同直线趋于
+ <span class="text/tex">
+  $\displaystyle (0,0)$
+ </span>
+ 时极限不想等的绝望，有些同学也看过
+ <span class="text/tex">
+  $\displaystyle f(x,y)=\begin{cases}1&amp;y=\sqrt{x}\\0&amp;y\neq \sqrt{x}\end{cases}$
+ </span>
+ 这样丧心病狂的例子，只有以
+ <span class="text/tex">
+  $\displaystyle y=\sqrt{x}$
+ </span>
+ 的轨道趋近于
+ <span class="text/tex">
+  $\displaystyle (0,0)$
+ </span>
+ 时极限为
+ <span class="text/tex">
+  $\displaystyle 1$
+ </span>
+ ，其他情况的极限都是
+ <span class="text/tex">
+  $\displaystyle 0$
+ </span>
+ .仅仅从一个轨道趋近而极限不同，极限就不存在，可见多元函数的极限存在是一个非常苛刻的事情。
+</p>
+<p>
+ 对于二元函数
+ <span class="text/tex">
+  $\displaystyle z=f(x,y)$
+ </span>
+ ,我们要求极限
+ <span class="text/tex">
+  $\displaystyle \lim_{(x,y)\to (x_0,y_0)}f(x,y)$
+ </span>
+ 确实不太容易，但是，如果
+</p>
+<blockquote>
+ 我们令
+ <span class="text/tex">
+  $\displaystyle x-x_0=\rho \cos \theta,y-y_0=\rho\sin\theta$
+ </span>
+ ,
+ <span class="text/tex">
+  $\displaystyle f(x,y)=g(\rho,\theta)$
+ </span>
+ ,且
+ <span class="text/tex">
+  $\displaystyle \forall k\in \mathbb{R},\lim_{(\rho,\theta)\to(0,k)}g(\rho,\theta)$
+ </span>
+ 存在且相等，那么我们有：
+ <br/>
+ <span class="text/tex">
+  $\displaystyle \lim_{(x,y)\to (x_0,y_0)}f(x,y)=\lim_{\rho \to 0}g(\rho)$
+ </span>
+ <br/>
+ 且若
+ <span class="text/tex">
+  $\displaystyle \lim_{\rho \to 0}g(\rho,\theta)$
+ </span>
+ 的结果与
+ <span class="text/tex">
+  $\displaystyle \theta$
+ </span>
+ 有关，或
+ <span class="text/tex">
+  $\displaystyle \lim_{\rho \to 0}g(\rho,\theta)$
+ </span>
+ 的结果不存在，则
+ <span class="text/tex">
+  $\displaystyle \lim_{(x,y)\to (x_0,y_0)}f(x,y)$
+ </span>
+ 不存在。
+</blockquote>
+<p>
+ 这么长一段话，最后还是回到另一个二重极限存在上来，看似毫无用处。
+</p>
+<p>
+ 这个定理，我们用的时候，是这样用的：
+</p>
+<p>
+ 先把
+ <span class="text/tex">
+  $\displaystyle \lim_{\rho \to 0}g(\rho,\theta)$
+ </span>
+ 的结果求出来。如果和
+ <span class="text/tex">
+  $\displaystyle \theta$
+ </span>
+ 有关，那么二重极限一定不存在。
+</p>
+<p>
+ 如果和
+ <span class="text/tex">
+  $\displaystyle \theta$
+ </span>
+ 无关，并且极限的表达式最终化简出来只是涉及到乘法，比如说
+ <span class="text/tex">
+  $\displaystyle \lim_{\rho \to 0}\rho ^2\sin \theta$
+ </span>
+ ,那么二重极限存在，且与此一重极限的极限值相等。
+</p>
+<p>
+ 如果极限的表达式化简出来是分子分母都有
+ <span class="text/tex">
+  $\displaystyle \rho$
+ </span>
+ 的，别想了，赶快用土方法
+ <span class="text/tex">
+  $\displaystyle \lim_{(x,y)\to (x_0,y_0)}$
+ </span>
+ 吧。
+</p>
+<p>
+ 所以说，这个定理最重要的帮助，便是判断极限不存在。我通过将
+ <span class="text/tex">
+  $\displaystyle \theta$
+ </span>
+ 看作常数，求出
+ <span class="text/tex">
+  $\displaystyle \lim_{\rho \to 0}g(\rho)$
+ </span>
+ ,如果结果和
+ <span class="text/tex">
+  $\displaystyle \theta$
+ </span>
+ 有关，我可以轻易地构造出反例：
+ <span class="text/tex">
+  $\displaystyle y=\tan \theta_1 x$
+ </span>
+ 和
+ <span class="text/tex">
+  $\displaystyle y=\tan\theta_2x$
+ </span>
+ ,当
+ <span class="text/tex">
+  $\displaystyle (x,y)$
+ </span>
+ 以这两种轨道趋近于
+ <span class="text/tex">
+  $\displaystyle (0,0)$
+ </span>
+ 时，结果必然不同。
+</p>
+<p>
+ 但是，确实有一些人以为，所有的二重极限都可以化成极坐标来做。这实际上是错误的。事实上，
+ <span class="text/tex">
+  $\displaystyle \lim_{(x,y)\to(x_0,y_0)}f(x,y)=\lim_{(\rho,\theta)\to(0,k)}g(\rho,\theta)$
+ </span>
+ 这点并没有错。但是，后者要求对所有的
+ <span class="text/tex">
+  $\displaystyle k$
+ </span>
+ ，极限的结果都要存在且相等。并且，后者还是一个二重极限，而非累次极限。比如说，我们有反例：
+</p>
+<blockquote>
+ 已知
+ <span class="text/tex">
+  $\displaystyle f(x,y)=\frac{x^2y}{x^2+y^2}$
+ </span>
+ ,求
+ <span class="text/tex">
+  $\displaystyle \lim_{(x,y)\to (0,0)}f(x,y)$
+ </span>
+ 是否存在。
+ <br/>
+ 取
+ <span class="text/tex">
+  $\displaystyle y=x$
+ </span>
+ 和
+ <span class="text/tex">
+  $\displaystyle y=x^2$
+ </span>
+ ,可以很容易知道极限是不存在的。但是，如果我们转化成极坐标之后，求
+ <br/>
+ <span class="text/tex">
+  $\displaystyle \lim_{\rho \to 0}\frac{\rho ^3\cos ^2x\sin x}{\rho ^4\cos ^4x+\rho ^2\sin ^2x}=\lim_{\rho \to 0}\frac{\rho\cos ^2x\sin x}{\rho^2\cos ^4x+\sin ^2x}=0$
+ </span>
+</blockquote>
+<p>
+ 出现这种情况的理由其实很好想，因为转化成极坐标之后，极限的趋近方式就变成了以直线趋近于原点。这显然不是充分的。
+</p>
+<p>
+ 但是，我们有定理：
+</p>
+<blockquote>
+ 如果
+ <span class="text/tex">
+  $\displaystyle \lim_{(x,y)\to (x_0,y_0)}f(x,y)$
+ </span>
+ 的极限存在，则可以用极坐标方式求极限。
+</blockquote>
+<p>
+ 当然，这个也有更高维的推广：
+</p>
+<p>
+ 超球坐标系：向量
+ <span class="text/tex">
+  $\displaystyle (x_1,x_2,\ldots ,x_n)$
+ </span>
+ 可以表示成
+ <span class="text/tex">
+  $\displaystyle (\rho,\theta_1,\theta_2,\ldots ,\theta_{n-1})$
+ </span>
+ 的形式，其中
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle x_i=\rho\sin\theta_1\sin\theta_2\cdots \sin\theta_{i-1}\cos \theta _i,i=1,2,\ldots ,n-1$
+ </span>
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle x_n=\rho\sin\theta_1\sin\theta_2\cdots \sin\theta_{n-2}\sin\theta_{n-1}$
+ </span>
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle \rho=\sqrt{x_1^2+x_2^2+\cdots +x_n^2}$
+ </span>
+</p>
+<p>
+ 那么同样地，我们要求极限
+ <span class="text/tex">
+  $\displaystyle \lim_{(x_1,x_2,\ldots ,x_n)\to (y_1,y_2,\ldots ,y_n)}f(x_1,x_2,\ldots ,x_n)$
+ </span>
+ ,也可以通过算
+ <span class="text/tex">
+  $\displaystyle \lim_{\rho \to 0}g(\rho)$
+ </span>
+ 来大致判断。
+</p>
+<p>
+</p></div></div></body></html>

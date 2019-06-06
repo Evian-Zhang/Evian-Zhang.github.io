@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>LaTeX入门(三)——Hello world!</title>
+<base target="_blank" />
+<link rel="stylesheet" type="text/css" href="/staticVersion/cssticVersion/css/article.css" />
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'] ],
+        displayMath: [ ['$$','$$'] ]
+    }
+});
+</script>
+</head>
+<body>
+<div id="main_wrapper">
+    <header id="main_header">
+        <a href="/staticVersion/index.htmlion/index.html">Evian Zhang's<br />naive blog</a>
+        <h2>LaTeX入门(三)——Hello world!</h2>
+    </header>
+    <div id="article_body">
+<p>
+ 这篇文章中，我们将用LaTeX写一个Hello world!
+</p>
+<p>
+ 下载好编辑器(Windows: TeXworks, macOS: TeXShop)，我们打开对应的软件，首先第一步，是将编译器调成XeLaTeX. 我以TeXShop为例，也就是选择左数第二个下拉组合框，选择XeLaTeX即可。（这个只用设置一次，以后再打开的话都不用设置）
+</p>
+<figure>
+ <img src="56016409_assets/v2-4d62da3615d7ded3815b3a5823cae400_b.jpg"/>
+</figure>
+<p>
+ 然后在其中输入以下代码：
+</p>
+<div class="highlight">
+ <pre><code class="language-tex"><span></span><span class="k">\documentclass</span><span class="nb">{</span>article<span class="nb">}</span>
+<span class="k">\begin</span><span class="nb">{</span>document<span class="nb">}</span>
+Hello world!
+<span class="k">\end</span><span class="nb">{</span>document<span class="nb">}</span>
+</code></pre>
+</div>
+<p>
+ 然后找到一个叫“排版”的按钮，点击，就会生成对应的文件啦！（这里的排版就相当于把衣服设计好，交给裁缝，其他的事都是裁缝的事啦）
+</p>
+<h2>
+ LaTeX文档的结构
+</h2>
+<p>
+ 上述是如何用LaTeX写一个"Hello world!". 借此，我来介绍一下LaTeX文档的结构。基本框架为
+</p>
+<div class="highlight">
+ <pre><code class="language-text"><span></span>\documentclass{aClass}%文档类
+%导言区
+\begin{document}
+%正文
+\end{document}
+</code></pre>
+</div>
+<p>
+ 这里%代表注释，其后的文字在编译阶段会被一个空白字符代替。
+</p>
+<h2>
+ 文档类
+</h2>
+<p>
+ 第一行，是固定的
+ <code>
+  \documentclass{}
+ </code>
+ .这个大括号里填的东西叫文档类。什么是文档类呢？沿用上一篇文章中的比喻，用LaTeX就好比设计衣服。那么文档类就相当于我们要设计的衣服的种类。就好比说，我声明了我要设计一条连衣裙，那么就会默认生成裙摆，同时这连衣裙也不会出现裤腿之类的东西；我又声明我要设计一双布鞋，那么我们也不能在接下来提到领口、袖口，但我们却能使用鞋底、鞋垫。LaTeX文档类的作用也是类似的。我们常用的LaTeX文档类有article, report, minimal. 比如说，使用了article, 一般就用不了chapter，只能用section, subsection, 使用report就可以用chapter. 同时，在排版时也会有一些自动调整的东西，比如说一个叫book的文档类，生成以后的文档就会自动分左页右页。有时候，同一个命令在不同文档类的行为也不同，就像是同样是扣子，在牛仔服上就是金属的纽扣，旗袍上就是盘扣。我们最常用的，是article文档类，也是我们之后的文章里默认使用的文档类。此外，minimal文档类，则就相当于一个布料，它啥也没给你预设，就是一个最简单的纸。此外，如果我们要在LaTeX中使用中文，则应使用ctexart文档类。那有人会有疑问，之前不是说XeLaTeX编译器可以支持各种Unicode编码吗。这里的原因在于，使用了XeLaTeX之后，编译器只会认，不会处理；在没使用XeLaTeX之前，编译器连认都认不得。而使用了ctexart文档类之后，编译器就知道该怎么输出中文了。
+</p>
+<h2>
+ 导言区
+</h2>
+<p>
+ 在文档类和
+ <code>
+  \begin{document}
+ </code>
+ 之间，是导言区(preamble) . 导言区是干什么的呢？是进行文档预设的。举个例子，你设计衣服，不是所有的细节都由自己来设计。有许多的东西我们直接用现成的就行。比如说，我这衣服，面料要是瑞蚨祥的面子，这配的鞋子，要是内联升的布鞋，最好再配一把荣宝斋的折扇。这些，都写在设计图纸上。然后交给裁缝，裁缝拿了图纸，第一件事就是根据这图纸上的明目，去各个地方置办。在LaTeX中，这些名目叫做
+ <b>
+  宏包
+ </b>
+ (package), 用指令
+ <code>
+  \usepackage{}
+ </code>
+ 来调用。这些宏包大都与时俱进，经常有更新，那我们从哪知道这牌子最新的内容呢？就需要包管理器。我们下载下来的LaTeX发行版中，除了配有TeXworks, TeXShop这类的编辑器，还有包管理器，也就是TeX live. 这个包管理器中管理着所有我们可以使用的宏包，我们也可以利用这个软件进行宏包更新。此外，每个宏包里都有许多配套的指令供我们使用，就像是我可以选择这扣子，要是单排扣还是双排扣，要是铜的还是锡的。这些配套的指令，也是写在导言区里的。一个宏包的指令可能有几十甚至几百个，我们只需要记得常用的一两个就行了。那么其他指令该怎么查呢？每个宏包都有它配套的说明书。这时候
+ <code>
+  texdoc
+ </code>
+ 就派上它的用场了。Windows系统打开命令提示符，macOS系统打开终端，在里面写上
+</p>
+<div class="highlight">
+ <pre><code class="language-bash"><span></span>texdoc xxx 
+</code></pre>
+</div>
+<p>
+ 其中"xxx"为所要查找的宏包的名字。
+</p>
+<p>
+ 输入以后，就会弹出一个pdf，就是宏包的说明文档了。
+</p>
+<p>
+ 总得来说，导言区是由各种各样的指令构成的。指令分为无参数指令、有参数指令及环境三类。其基本格式为
+</p>
+<div class="highlight">
+ <pre><code class="language-tex"><span></span><span class="k">\command</span><span class="na">[option]</span><span class="nb">{</span>parameter<span class="nb">}</span>
+</code></pre>
+</div>
+<p>
+ 每个指令，都是由一个反斜杠
+ <code>
+  \
+ </code>
+ 开头，然后跟着指令的名称，接下来中括号中写选项，大括号中写参数。
+</p>
+<p>
+ 无参数指令，比如说
+ <code>
+  \LaTeX
+ </code>
+ , 输出的是排版好的LaTeX（正如本文的题图）;
+ <code>
+  \bfseries
+ </code>
+ ，使其所在的作用域内的文字全部变成黑体；
+ <code>
+  \maketitle
+ </code>
+ 输出标题；
+</p>
+<p>
+ 有参数指令，比如说
+ <code>
+  \textit{}
+ </code>
+ , 将其参数内的文字全部变成意大利斜体；
+ <code>
+  \author{}
+ </code>
+ 将作者名存储到一个叫author的变量中，在后续输出标题时会被调用。
+</p>
+<p>
+ 环境，就是
+ <code>
+  \begin{env}
+ </code>
+ 和
+ <code>
+  \end{env}
+ </code>
+ . 这两个永远是配套使用的（因为当初Knuth老爷子是用Pascal写的TeX233333） 。比如说
+ <code>
+  \begin{document}
+ </code>
+ 和
+ <code>
+  \end{document}
+ </code>
+ 之间的就是正文环境，
+ <code>
+  \begin{table}
+ </code>
+ 和
+ <code>
+  \end{table}
+ </code>
+ 之间的就是表格环境。我的建议是大家在写LaTeX的时候，begin和end先打出来，再在之间填内容，以防忘掉了end.
+</p>
+<p>
+ 而填在中括号内的可选的选项，也是指令的组成部分之一。比如说，
+ <code>
+  \begin{table}[H]
+ </code>
+ ，就是一个以
+ <code>
+  H
+ </code>
+ 类型浮动的表格；
+ <code>
+  \usepackage[ruled]{algorithm2e}
+ </code>
+ 就是使用被画在框框里的算法格式。
+</p>
+<p>
+ 此外，我们也可以自己定义指令。就好比你在设计图上写着，我下面约定，我说“扣子”的时候，就是说的是带花纹的纽扣。LaTeX的定义指令的方式有两类：def类和new类。比如说，我已经有一个指令叫
+ <code>
+  \cmd
+ </code>
+ 和
+ <code>
+  \cmd1
+ </code>
+ , 我要定义一个新的指令
+ <code>
+  \cmd2
+ </code>
+ , 它是先使用
+ <code>
+  \cmd
+ </code>
+ , 再使用
+ <code>
+  \cmd1
+ </code>
+ . 那么我们有如下两种定义方法：
+</p>
+<div class="highlight">
+ <pre><code class="language-text"><span></span>\def\cmd2{\cmd\cmd1}
+</code></pre>
+</div>
+<p>
+ 或者
+</p>
+<div class="highlight">
+ <pre><code class="language-text"><span></span>\newcommand\cmd2{\cmd\cmd1}
+</code></pre>
+</div>
+<p>
+ 可以直观地认为，就是在接下来文中出现
+ <code>
+  \cmd2
+ </code>
+ 的地方，都直接用
+ <code>
+  \cmd\cmd1
+ </code>
+ 来代替。
+</p>
+<p>
+ 但是，
+ <code>
+  \def
+ </code>
+ 命令和
+ <code>
+  \newcommand
+ </code>
+ 命令也有区别，如果我定义了一个指令，它的名字已经被别的指令用了，那么
+ <code>
+  \def
+ </code>
+ 命令则是直接替代，
+ <code>
+  \newcommand
+ </code>
+ 命令会报错，我们用
+ <code>
+  \renewcommand
+ </code>
+ 则不会报错。
+</p>
+<p>
+ 对于定义带参数的命令，比如说，我们已经有了两个指令
+ <code>
+  \cmd{}
+ </code>
+ 和
+ <code>
+  \cmd1{}
+ </code>
+ ，我想定义指令
+ <code>
+  \cmd2{}{}
+ </code>
+ ，它接受两个参数，第一个参数传给
+ <code>
+  \cmd{}
+ </code>
+ , 第二个参数参数传给
+ <code>
+  \cmd1{}
+ </code>
+ ，这时候我们可以写
+</p>
+<div class="highlight">
+ <pre><code class="language-text"><span></span>\def\cmd2#1#2{\cmd{#1}\cmd1{#2}}
+</code></pre>
+</div>
+<p>
+ 或者
+</p>
+<div class="highlight">
+ <pre><code class="language-text"><span></span>\newcommand\cmd2[2]{\cmd{#1}\cmd1{#2}}
+</code></pre>
+</div>
+<p>
+ 对于
+ <code>
+  \def
+ </code>
+ 指令，有几个参数就写几个
+ <code>
+  #
+ </code>
+ , 对于
+ <code>
+  \newcommand
+ </code>
+ 指令，
+ <code>
+  []
+ </code>
+ 中直接写参数的数量。
+</p>
+<p>
+ 如果我要新定义一个环境，则使用命令
+ <code>
+  \newenvironment
+ </code>
+ 命令。比如说，我现在已经有一个叫
+ <code>
+  env
+ </code>
+ 的环境，我想新定义一个叫
+ <code>
+  env1
+ </code>
+ 的环境，它先进入
+ <code>
+  env
+ </code>
+ 环境，再在环境内执行
+ <code>
+  \cmd
+ </code>
+ 指令。那么，我们的写法为
+</p>
+<div class="highlight">
+ <pre><code class="language-text"><span></span>\newenvironment{env1}{\begin{env}\cmd}{\end{env}}
+</code></pre>
+</div>
+<p>
+ 在
+ <code>
+  {\env1}
+ </code>
+ 之后的第一个大括号内，写的是内容，可以理解为在遇到
+ <code>
+  \begin{env1}
+ </code>
+ 时直接替换；第二个大括号内，遇到
+ <code>
+  \end{env1}
+ </code>
+ 时直接替换。
+</p>
+<p>
+ 最后，介绍一些作用域。和部分编程语言一样，LaTeX也有块级作用域。就好比，我在设计衣服时，画了个框，说这个框内的所有花纹都给我用绿色画。出了这个框，这个命令就无效了。在LaTeX中，作用域由
+ <code>
+  {...}
+ </code>
+ 及环境
+ <code>
+  \begin{env}...\end{env}
+ </code>
+ 构成。比如说我们之前提到的
+ <code>
+  \beseries
+ </code>
+ 命令，它使它所在的作用域内的所有文字变成粗体，于是我们可以写
+ <code>
+  {\bfseries This is bold} and this is normal.
+ </code>
+ 这样, This is bold会是粗体，而and this is normal则会变回正常。在任何环境之间，也是如此。
+</p>
+<p>
+ 最后的最后，唠叨一句，
+ <code>
+  \usepackage
+ </code>
+ 这个命令，只能在导言区使用，就像是你不能让裁缝都开始做衣服了，突然又发现有东西没有置办，还得跑出去置办。其余的命令，大都可以在正文内使用。
+</p>
+<h2>
+ 正文
+</h2>
+<p>
+ 在
+ <code>
+  \begin{document}
+ </code>
+ 和
+ <code>
+  \end{document}
+ </code>
+ 之间的，就是正文。 只有在这里面输入的东西，才会被输出。随着我们对LaTeX了解的深入，在正文里能写的东西会越来越多。
+</p>
+<h2>
+ 最后
+</h2>
+<p>
+ 由于本人能力有限，文章内必有不足之处，敬请方家不吝斧正。
+</p></div></div></body></html>

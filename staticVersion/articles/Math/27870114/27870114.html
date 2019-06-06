@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>极限的思想</title>
+<base target="_blank" />
+<link rel="stylesheet" type="text/css" href="/staticVersion/cssticVersion/css/article.css" />
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'] ],
+        displayMath: [ ['$$','$$'] ]
+    }
+});
+</script>
+</head>
+<body>
+<div id="main_wrapper">
+    <header id="main_header">
+        <a href="/staticVersion/index.htmlion/index.html">Evian Zhang's<br />naive blog</a>
+        <h2>极限的思想</h2>
+    </header>
+    <div id="article_body">
+<p>
+ 上下四方曰宇，古往今来曰宙。世间如此之大，而在你心之外的所有地方，都有我的身影。
+</p>
+<p>
+ 从切线到椭圆，从子集到极大值，数学中大部分对象以及它们的行为，用我们高中知识都可以描述。然而，有一种行为我们目前还不懂得如何描述，即：无限接近。
+</p>
+<p>
+ 开头所写的一句话，也是一种无限接近的情况。我无限接近你的心，却从未在你的心中出现过，这样的行为确实难以描述。
+</p>
+<p>
+ 在数学中也有类似的行为。
+</p>
+<h2>
+ <b>
+  拓扑
+ </b>
+</h2>
+<p>
+ <br/>
+</p>
+<figure>
+ <img src="27870114_assets/v2-e6b738508a01e0ce2c6c2f07999bacf5_b.jpg"/>
+</figure>
+<p>
+ 如图，是一个平面S。平面内有三个区域：白色外部，黑色边界，蓝色内部。黑色边界和蓝色内部共同组成一个平面点集P。我们任取这个P内的一个点，用人眼观察，很容易分辨出这个点属于边界还是内部。但是，用数学的语言去判断的时候，却感到有些难度。我们发现，蓝色区域内的点，可以无限接近黑色区域，却又可以不属于黑色区域。这该如何描述呢？这里，我们便需要找到特定区域内的点的共性。蓝色内部和黑色边界中的点的区别，似乎很好用语言描述：蓝色内部的点，距离黑色边界的距离永远大于0，而黑色边界中的点，到黑色边界的距离等于0.
+</p>
+<p>
+ 我们不妨把这个点集P想象成一座大的城池。黑色边界便是城墙。你有一把可以任意调节射程的弹弓。在城内（蓝色内部），你总可以调节弹弓的射程，使得你无论朝哪个方向发射弹子，都会仍然落在城内。具体的方法便是测得你所在的位置距离黑色边界的距离的最小值，然后使弹弓的射程小于那个最小值即可。由于我们之前讲到，蓝色内部的点，距离黑色边界的距离永远大于0，所以这种方法是可行的。
+</p>
+<p>
+ 那么黑色边界上的点该如何描述呢？我们设想一下城外的敌军射手要攻城，如果不从战略上考虑，那么只要登上城墙上任意一点，均可实现向城内的攻击；而守城的射手，在城墙上的任意一点，也可实现向城外的攻击。用比较绕口的话来说，就是在城墙上的任意一点，用任意射程的弓，总存在一个方向，使得箭落在城内，也总存在一个方向，使得箭落在城外。
+</p>
+<p>
+ 我们将这种判定方法用数学语言描述，需要引入一个
+ <b>
+  邻域
+ </b>
+ (neighborhood)的概念：
+</p>
+<p>
+ 对于任意一点p，它的半径为r的邻域
+ <span class="text/tex">
+  $\displaystyle N_r(p)=\{q|d(p,q)&lt;r\}$
+ </span>
+ ,其中
+ <span class="text/tex">
+  $\displaystyle d(p,q)$
+ </span>
+ 表示p、q之间的距离。
+</p>
+<p>
+ 所谓的邻域，即我们刚刚所说的弹弓、弓箭的射程。
+</p>
+<p>
+ 接下来，我们便可以定义P的内点（即蓝色内部的点）和边界点（即黑色边界的点）了：
+</p>
+<p>
+ 已知
+ <span class="text/tex">
+  $\displaystyle p \in S$
+ </span>
+</p>
+<p>
+ 若
+ <span class="text/tex">
+  $\displaystyle \exists r&gt;0,s.t.N_r(p) \subseteq P$
+ </span>
+ ,则称p为P的
+ <b>
+  内点
+ </b>
+ (interior point)
+</p>
+<p>
+ 若
+ <span class="text/tex">
+  $\displaystyle \forall r&gt;0,\exists q \neq p\wedge s\ne p,s.t.q,s \in N_r(p) \wedge q \notin P\wedge s\in P$
+ </span>
+ ,则称p为P的
+ <b>
+  边界点
+ </b>
+ (boundary point)
+</p>
+<p>
+ 容易知道，边界点和内点不可能为同一个点。
+</p>
+<p>
+ 这便是一例描述“无限接近”的例子。
+</p>
+<h2>
+ <b>
+  集合
+ </b>
+</h2>
+<p>
+ 我们再将这个例子特殊化为一维的：
+</p>
+<p>
+ 1和集合
+ <span class="text/tex">
+  $\displaystyle \{x|x=\frac{n-1}{n},n \in N^*\}$
+ </span>
+ 之间的关系，再如2和开区间(1,2)的关系。我们不妨仔细研究一下第二个例子。
+</p>
+<p>
+ 容易知道，2是集合(1,2)的边界点。而且，在一维数轴中，
+ <span class="text/tex">
+  $\displaystyle d(p,q)=|p-q|$
+ </span>
+ .那么，可以这样推出2来：
+</p>
+<p>
+ 如果
+ <span class="text/tex">
+  $\displaystyle m\in R,s.t.\forall \epsilon &gt;0,\exists x \in (1,2),y \notin (1,2),s.t.|x-m|&lt; \epsilon,|y-m|&lt; \epsilon$
+ </span>
+ ,则m=1或2.
+</p>
+<p>
+ 但在一维中，由于偏序关系（即大小关系）可以方便使用，我们的定义可以大大简化。
+</p>
+<p>
+ 我们回想一下，对于闭区间[1,2],我们可以很容易得出2与其的关系：如果
+ <span class="text/tex">
+  $\displaystyle m \in [1,2],s.t. \forall x \in [1,2],m\ge x$
+ </span>
+ ,那么m=2.
+</p>
+<p>
+ 我们发现，运用
+ <span class="text/tex">
+  $\displaystyle m\geq x$
+ </span>
+ 这个条件，可以把我们刚刚啰嗦的定义中的y给去掉，并且得出唯一的2而非1或2.所以，我们可以这样定义一个集合的
+ <b>
+  上确界
+ </b>
+ (least upper bound)：
+</p>
+<p>
+ 已知实数集
+ <span class="text/tex">
+  $\displaystyle E$
+ </span>
+ ,如果数m满足
+ <span class="text/tex">
+  $\displaystyle \forall x \in E,m\geq x$
+ </span>
+ 且
+ <span class="text/tex">
+  $\displaystyle \forall \epsilon &gt;0,\exists x \in E,s.t.m-\epsilon &lt;x$
+ </span>
+ ,则称m为集合E的上确界。
+</p>
+<p>
+ 这样的定义，便是我们在一维情况下描述“无限接近”的一个比较规范的方法。
+</p>
+<p>
+ 这里留一个小思考给大家:
+</p>
+<p>
+ 如果我们现在只知道有理数。我们将有理数集分为两部分A和B，使得
+ <span class="text/tex">
+  $\displaystyle \forall x\forall y\left( \left( x\in A\wedge y\in B \right) \rightarrow x&lt;y \right) $
+ </span>
+</p>
+<p>
+ 那么A的上确界和B的下确界的存在情况共有几种？
+</p>
+<h2>
+ <b>
+  数列
+ </b>
+</h2>
+<p>
+ 上述的“无限接近”的过程，只是一种静态的过程。运动是一切物体的绝对状态。了解了静态的过程，我们便可以探寻动态的过程：
+</p>
+<p>
+ 我们知道，数列
+ <span class="text/tex">
+  $\displaystyle a_n=\frac{(-1)^n}{n}$
+ </span>
+ 当n趋于无穷时，
+ <span class="text/tex">
+  $\displaystyle a_n$
+ </span>
+ 趋于0.这是我们初中就知道的。从图像上也可以轻易看出来：
+</p>
+<p>
+ <br/>
+</p>
+<figure>
+ <img src="27870114_assets/v2-fbbc767e291762debba0b57734170ed2_b.jpg"/>
+</figure>
+<p>
+ 这种无限接近的情形，却又比较难描述了。
+</p>
+<p>
+ 那我们从反面来思考。为什么我们不说
+ <span class="text/tex">
+  $\displaystyle a_n$
+ </span>
+ 趋于0.1呢？当n＞20的时候，
+ <span class="text/tex">
+  $\displaystyle |a_n-0.1|\ge 0.1-|a_n|=0.1-\frac{1}{n}&gt;0.05$
+ </span>
+ ,当n越来越大的时候，
+</p>
+<p>
+ <br/>
+</p>
+<p>
+ 与0.1的差总是大于0.05
+</p>
+<p>
+ 这正如鲁迅笔下的“厚障壁”一般，彻底否认了0.1是
+ <span class="text/tex">
+  $\displaystyle a_n$
+ </span>
+ 的极限。
+</p>
+<p>
+ 用这种方法去想，如果
+ <span class="text/tex">
+  $\displaystyle a_n$
+ </span>
+ 不趋于a，那么:
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle \exists N\in R,s.t.\forall n &gt;N,|a_n-a|&gt;k$
+ </span>
+ ,其中k是正常数。
+</p>
+<p>
+ 通过合理的类推，我们完全可以定义一个数列的极限:
+</p>
+<p>
+ 若对于常数a,
+ <span class="text/tex">
+  $\displaystyle \forall \epsilon&gt;0,\exists N(\epsilon)\in R,s.t.\forall n&gt;N,|a_n-a|&lt;\epsilon$
+ </span>
+ ,其中
+ <span class="text/tex">
+  $\displaystyle N(\epsilon)$
+ </span>
+ 是关于
+ <span class="text/tex">
+  $\displaystyle \epsilon$
+ </span>
+ 的函数，则称
+ <span class="text/tex">
+  $\displaystyle a_n$
+ </span>
+ 收敛于a，记为
+ <span class="text/tex">
+  $\displaystyle \lim_{n \to + \infty}a_n=a$
+ </span>
+</p>
+<p>
+ 下面我们举一个例子：证明
+ <span class="text/tex">
+  $\displaystyle \lim_{n \to + \infty}\frac{(-1)^n}{n}=0$
+ </span>
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle \forall \epsilon&gt;0$
+ </span>
+ ,由于
+ <span class="text/tex">
+  $\displaystyle |a_n-0|=\frac1n$
+ </span>
+ ,故取
+ <span class="text/tex">
+  $\displaystyle N=[\frac1\epsilon]$
+ </span>
+ ,则
+ <span class="text/tex">
+  $\displaystyle |a_n-0|&lt;\epsilon$
+ </span>
+</p>
+<h2>
+ <b>
+  函数
+ </b>
+</h2>
+<p>
+ 以上讨论的是数列的极限，即：定义域为离散的，值域为稠密的一种特殊的函数。我们不妨简单地看一下一般的函数的极限如何处理：
+</p>
+<p>
+ 由于函数在定义域上的稠密性，故除了自变量趋于无穷以外，自变量趋于任何值时，都可能存在极限。比如
+ <span class="text/tex">
+  $\displaystyle y=\frac{\sin x}{x}$
+ </span>
+ 在
+ <span class="text/tex">
+  $\displaystyle x \to 0$
+ </span>
+ 时就存在极限。
+</p>
+<p>
+ 这时我们该如何处理呢？
+</p>
+<p>
+ 类似我们刚才对数列极限的讨论，我们依然可以从反面去考虑。
+</p>
+<p>
+ 比如说，对于函数
+ <span class="text/tex">
+  $\displaystyle f(x)=x^2$
+ </span>
+ ，在
+ <span class="text/tex">
+  $\displaystyle x \to 2$
+ </span>
+ 时，容易知道
+ <span class="text/tex">
+  $\displaystyle f(x) \to 4$
+ </span>
+</p>
+<p>
+ 那为什么不是说
+ <span class="text/tex">
+  $\displaystyle f(x) \to9$
+ </span>
+ 呢？
+</p>
+<p>
+ 因为
+ <span class="text/tex">
+  $\displaystyle |9-x^2|=|5+(2-x)(2+x)|$
+ </span>
+ ,当
+ <span class="text/tex">
+  $\displaystyle |2-x|&lt;0.5$
+ </span>
+ ,即
+ <span class="text/tex">
+  $\displaystyle 1.5&lt;x&lt;2.5$
+ </span>
+ 时，
+</p>
+<p>
+ <span class="text/tex">
+  $\displaystyle |9-x^2|&gt;|5-0.5*(2.5+2)|=2.75$
+ </span>
+</p>
+<p>
+ 同样地，这也产生了一个“厚障壁”。
+</p>
+<p>
+ 类似于数列的讨论，我们也可以得到函数极限的定义:
+</p>
+<p>
+ 若对于常数a和
+ <span class="text/tex">
+  $\displaystyle x_0$
+ </span>
+ ,
+ <span class="text/tex">
+  $\displaystyle \forall \epsilon&gt;0,\exists \delta(\epsilon)\in R,s.t.\forall |x-x_0|&lt;\delta,|f(x)-a|&lt;\epsilon$
+ </span>
+ ,其中
+ <span class="text/tex">
+  $\displaystyle \delta(\epsilon)$
+ </span>
+ 是关于
+ <span class="text/tex">
+  $\displaystyle \epsilon$
+ </span>
+ 的函数，则称
+ <span class="text/tex">
+  $\displaystyle f(x)$
+ </span>
+ 在
+ <span class="text/tex">
+  $\displaystyle x \to x_0$
+ </span>
+ 时趋于a，记作
+ <span class="text/tex">
+  $\displaystyle \lim_{x \to x_0}f(x)=a$
+ </span>
+</p>
+<h2>
+ <b>
+  最后
+ </b>
+</h2>
+<p>
+ 有人知道我为什么把专栏头像设为L(u)么？大家不妨来猜猜看嘛。
+</p>
+<p>
+</p>
+<p>
+</p>
+<p>
+</p></div></div></body></html>

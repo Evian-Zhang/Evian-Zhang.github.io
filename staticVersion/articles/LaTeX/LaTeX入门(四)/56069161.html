@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>LaTeX入门(四)——文字</title>
+<base target="_blank" />
+<link rel="stylesheet" type="text/css" href="/staticVersion/cssticVersion/css/article.css" />
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'] ],
+        displayMath: [ ['$$','$$'] ]
+    }
+});
+</script>
+</head>
+<body>
+<div id="main_wrapper">
+    <header id="main_header">
+        <a href="/staticVersion/index.htmlion/index.html">Evian Zhang's<br />naive blog</a>
+        <h2>LaTeX入门(四)——文字</h2>
+    </header>
+    <div id="article_body">
+<p>
+ 上一篇文章讲了LaTeX的主要框架。从这篇文章起，我们就开始从各个角度去细致地研究LaTeX写作了。
+</p>
+<p>
+ 说到字体，就不得不说一些关于字体的常识。字体就像是我们做衣服时的布料，无论我们设计的衣服长什么样子，都是得靠特定的布料才能纺成。
+ <b>
+  字体族
+ </b>
+ ，就相当于布料的厂家，布料有瑞蚨祥的，有谦祥益的；字体族，也有Times New Roman的，Helvetica的。而每一个字体族，都有其对应的许多字体形状，就相当于一个布料厂家生产的布料，会有许多种类。大多数字体族提供的字体形状有常规体，意大利斜体。而布料厂家对于每一种布料有时候还会提供粗的与细的两个品种，一个字体族对于每一个字体形状，有时候也有两个系列：粗体与正常体。
+</p>
+<p>
+ 在 Windows 中可以在
+ <code>
+  设置
+ </code>
+ -&gt;
+ <code>
+  字体
+ </code>
+ 中查看电脑中安装的字体名称及其预览，在macOS中可以在
+ <code>
+  其他
+ </code>
+ -&gt;
+ <code>
+  字体册
+ </code>
+ 中查看电脑中安装的字体名称（PostScript 名称）及其预览。
+</p>
+<p>
+ 在LaTeX中，我们的裁缝说，他织衣服要三种布料，不管你在设计图纸中用没用到，这三种布料会被他自动用在合适的地方。如果你不提供给他，那么他就默认使用自己定的三种布料种类。LaTeX要求我们定义三种字体族，分别为主字体族（正文字体族），无衬线字体族，打字机字体族。如果我们不提供给他，那么他会使用TeX默认的字体族（很丑，很丑）。这三种字体族，会在特定的环境中默认使用。比如说，在正文环境内，即
+ <code>
+  \begin{document}
+ </code>
+ 和
+ <code>
+  \end{document}
+ </code>
+ 之间，一般默认都是正文字体族；在
+ <code>
+  \begin{verbatim}
+ </code>
+ 和
+ <code>
+  \end{verbatim}
+ </code>
+ 之间，一般默认都是打字机字体族。
+</p>
+<p>
+ 这里小小地科普一下，什么叫无衬线字体呢？
+</p>
+<p>
+ 维基百科中这样说：
+</p>
+<blockquote>
+ <b>
+  无衬线体
+ </b>
+ （英语：sans-serif）指没有衬线的字体，与衬线字体相反，完全抛弃装饰衬线，只剩下主干，造型简明有力，更具现代感，起源也很晚。适用于标题、广告，瞬间的识别性高。
+ <br/>
+ 在汉字等东亚字体中称“黑体”（或“方体”），与有衬线的“白体”相对。
+</blockquote>
+<p>
+ 并配了这样的图：
+</p>
+<figure>
+ <img src="56069161_assets/v2-8b2c2312e54f10e28db43c0c0f666267_b.jpg"/>
+</figure>
+<p>
+ 相信大家看了图片，就能很清楚地知道衬线字体和无衬线字体的区别了。
+</p>
+<p>
+ 同时，大家可以回忆一下，我们看过的横幅、海报，基本都用的是无衬线字体，看的PPT，大部分也都用的是无衬线字体。因为无衬线字体醒目，更能让人在远方看得清。
+</p>
+<p>
+ 而打字机字体，则主要用于代码的排版。
+</p>
+<p>
+ 我们如何设置这些字体族呢？ 首先，现在导言区（对，就是
+ <code>
+  \documentclass{}
+ </code>
+ 和
+ <code>
+  \begin{document}
+ </code>
+ 之间的部分）使用宏包fontspec, 即
+</p>
+<div class="highlight">
+ <pre><code class="language-tex"><span></span><span class="k">\usepackage</span><span class="nb">{</span>fontspec<span class="nb">}</span>
+</code></pre>
+</div>
+<p>
+ 然后分别可以用
+ <code>
+  \setmainfont{fontName}
+ </code>
+ ,
+ <code>
+  \setsansfont{fontName}
+ </code>
+ ,
+ <code>
+  \setmonofont{fontName}
+ </code>
+ 来设置主字体族，无衬线字体族和打字机字体族。其中
+ <code>
+  fontName
+ </code>
+ 就是上文提到的字体名称，需要去操作系统特定的地方去找的（具体参见上文），不是什么“雅黑”，“宋体”，是类似于"simsun", "Times new roman"这类的！！！
+</p>
+<p>
+ 而如果自己还想单独设置字体族对应的字体形状，可以仿照下面的例子：
+ <code>
+  \setmainfont[BoldFont=boldFontName, ItalicFont=italicFontName]{mainFontName}
+ </code>
+ 来设置。
+</p>
+<p>
+ 然后，在正文中，我们有如下几个命令：
+ <code>
+  \textrm{}
+ </code>
+ 和
+ <code>
+  \rmfamily
+ </code>
+ ,
+ <code>
+  \textsf{}
+ </code>
+ 和
+ <code>
+  \sffamily
+ </code>
+ ,
+ <code>
+  \texttt{}
+ </code>
+ 和
+ <code>
+  \ttfamily
+ </code>
+ , 可以让我们分别主动调用主字体族，无衬线字体族和打字机字体族。 注意到每一组命令都有两个，一个是带参数的，一个是不带参数的。带参数的命令是把参数变成对应的字体族，不带参数的命令是把该命令所在的作用域内的文字变成对应的字体族。比如说，我在LaTeX的正文区内输入如下指令（导言区等省略）：
+</p>
+<div class="highlight">
+ <pre><code class="language-text"><span></span>{\ttfamily This is ttfamily and \textsf{this is textsf} and} this is the main font.
+</code></pre>
+</div>
+<p>
+ 那么排版出来的结果是
+</p>
+<figure>
+ <img src="56069161_assets/v2-e74c5dcdd6f92d6047af4ae0b257d961_b.png"/>
+</figure>
+<p>
+ 类似地，我们可以使用
+ <code>
+  \textup{}
+ </code>
+ 和
+ <code>
+  \upshape
+ </code>
+ ,
+ <code>
+  \textit{}
+ </code>
+ 和
+ <code>
+  \itshape
+ </code>
+ 来分别主动调用当前字体族的直立体与意大利斜体，用
+ <code>
+  \textmd{}
+ </code>
+ 和
+ <code>
+  \mdseries
+ </code>
+ ,
+ <code>
+  \textbf{}
+ </code>
+ 和
+ <code>
+  \bfseries
+ </code>
+ 来分别调用当前字体形状的正常体与粗体。
+</p>
+<p>
+ 那么，如果我们还想用第四种字体，该怎么办呢？我们可以在导言区用命令
+ <code>
+  \newfontfamily\newfontname{fontName}
+ </code>
+ 来定义一个新字体，其中
+ <code>
+  \newfontname
+ </code>
+ 就是你想用来使用新定义的字体的指令，
+ <code>
+  fontName
+ </code>
+ 就是新字体的名字。接下来，就可以在正文中使用
+ <code>
+  {\newfontname This is written in new font}
+ </code>
+ 来调用新字体。
+</p>
+<hr/>
+<h2>
+ 中文字体
+</h2>
+<p>
+ 值得指出的是，上面fontspec对字体的设置，只适用于英文字体。也就是说，你用fontspec，只能设置文本里英文的字体。对于文本中中文字体的设置，请看下面：
+</p>
+<p>
+ 如果要在文本中输入中文，首先需要使用文档类（记不得的同学请看上一篇文章）ctexart，或者ctexrep之类的，也就是把对应的英文文档类缩写，前面加ctex.
+</p>
+<p>
+ 然后不需要再新引入宏包，直接使用命令
+ <code>
+  setCJKmainfont{fontName}
+ </code>
+ ,
+ <code>
+  setCJKsansfont{fontName}
+ </code>
+ ,
+ <code>
+  setCJKmonofont{fontName}
+ </code>
+ 来分别设置正文的主中文字体族，无衬线中文字体族和打字机中文字体族。同时，我们也可以用
+ <code>
+  \setCJKfamilyfont{newFontName}{fontName}
+ </code>
+ 来定义新中文字体，然后再正文中用
+ <code>
+  \CJKfamily{newFontName}
+ </code>
+ 来使用新中文字体。
+</p>
+<p>
+ 同样地，如果想单独设定某个字体族的字体形状，也可以模仿
+ <code>
+  \setCJKmainfont[BoldFont=boldFontName, ItalicFont=italicFontName]{mainFontName}
+ </code>
+ 来设置。
+</p>
+<p>
+ 顺便说一句，CJK的意思是Chinese, Japanese和Korean，代表中日韩三国文字。
+</p>
+<p>
+ 此外，需要特别提出的是，对于macOS用户，如果使用ctex这类的文档类，如果自己不设置主中文字体、无衬线中文字体和打字机中文字体，就会报错，因为这个文档类默认是针对Windows的字体配置的。
+</p>
+<hr/>
+<h2>
+ 字号
+</h2>
+<p>
+ 上述的是字体的设置，接下来讲一下字号的设置
+</p>
+<p>
+ 这里强调一点，LaTeX中的字号与Word中的字号在某些细微之处是不一样滴，请不要相同字号下用Word和LaTeX作比较。
+</p>
+<p>
+ LaTeX提供了十个十分方便的命令：
+</p>
+<p>
+ <code>
+  \tiny
+ </code>
+ ,
+ <code>
+  \scriptsize
+ </code>
+ ,
+ <code>
+  \footnotesize
+ </code>
+ ,
+ <code>
+  \small
+ </code>
+ ,
+ <code>
+  \normalsize
+ </code>
+ ,
+ <code>
+  \large
+ </code>
+ ,
+ <code>
+  \Large
+ </code>
+ ,
+ <code>
+  \LARGE
+ </code>
+ ,
+ <code>
+  \huge
+ </code>
+ ,
+ <code>
+  \Huge
+ </code>
+</p>
+<p>
+ 这十个命令可以方便地改变其所在的作用域内的字体大小和行距（关于行距我会在下一篇文章提及）。
+</p>
+<p>
+ 此外，我们也可以用
+ <code>
+  \fontsize{}{}\selectfont
+ </code>
+ 来设置字号(最后的
+ <code>
+  \selectfont
+ </code>
+ 的含义不需要理解，反正记住只要改字号，在之后一定要加上
+ <code>
+  \selectfont
+ </code>
+ 才能生效)。前者写字号的绝对大小，如10pt, 20pt. 后者写的是行距，一般是字号乘1.2，具体讨论可看下一篇文章。
+</p>
+<p>
+ 对于中文，我们可以用
+ <code>
+  \zihao{-3}
+ </code>
+ 来表示小三号字体。其余的可以类似推得。
+</p>
+<hr/>
+<h2>
+ 空格
+</h2>
+<p>
+ 对于英文文本来说，单词间的空格是有效的，但仅限于一个空格。比如说，我在正文内输入
+ <code>
+  Hello world!
+ </code>
+ , 输出的Hello和world!之间会有一个空格。但是，如果我在正文内输入
+ <code>
+  Hello       world!
+ </code>
+ , 输出的Hello和world!之间的空格依然只有一个。 这个时候，我们可以用指令
+ <code>
+  \
+ </code>
+ , 也就是反斜杠加空格，来实现空格。比如说，我想输出的Hello和world!之间有五个空格，那么我在正文内可以写
+ <code>
+  Hello\ \ \ \ \ world!
+ </code>
+ 。
+</p>
+<p>
+ 对于指令来说，其后的空格将会被省略。比如说，
+ <code>
+  Hello \LaTeX world!
+ </code>
+ ，输出的时候LaTeX和world!之间将没有空格。为了解决这种情况，我们依然可以使用指令
+ <code>
+  \
+ </code>
+ , 即
+ <code>
+  Hello \LaTeX\ world!
+ </code>
+ 。
+</p>
+<p>
+ 对于中文文本来说，中文汉字之间的空格默认被省略，
+ <code>
+  你好
+ </code>
+ 和
+ <code>
+  你     好
+ </code>
+ 输出的效果是一样的。为了解决这一问题，我们可以类似地用
+ <code>
+  你\ \ \ \ \ 好
+ </code>
+ 来解决。
+</p>
+<p>
+ 对于中英文混排文本来说，默认会在中文和英文之间加一个空格，而这也是论文写作的规范。也就是
+ <code>
+  你的paper交了吗
+ </code>
+ 输出的时候"的"、"paper"、"交" 之间各有一个空格。如果你不喜欢这样，可以在导言区内加入
+ <code>
+  \CJKsetecglue{}
+ </code>
+ 这个命令（大括号内什么都不用写）。
+</p>
+<p>
+ 如果要对空格更精细地控制，请看下面一段。
+</p>
+<p>
+ 上述的
+ <code>
+  \
+ </code>
+ 只是空格的一种，它产生的空格的宽度约为三分之一个字母"M"的宽度。 LaTeX中还有许多其他产生空格的方法。如果记一个"M"的宽度为m,
+ <code>
+  \,
+ </code>
+ 产生1/6个m的宽度，
+ <code>
+  \;
+ </code>
+ 产生2/7个m的宽度，
+ <code>
+  \quad
+ </code>
+ 产生一个m的宽度，
+ <code>
+  \qquad
+ </code>
+ 产生两个m的宽度。
+</p>
+<hr/>
+<h2>
+ 特殊文字
+</h2>
+<p>
+ 有时候，我们也会遇到输入特殊文字的地方。比如说在2016年数模美赛中，就要输入Erdős这个名字。虽然XeLaTeX可以识别Unicode编码，但我还是建议大家用LaTeX的指令来加上字母上标。比如说这个ő，可以用
+ <code>
+  \H{o}
+ </code>
+ 来表示。而对于德语等语言的变音符号ö等，也可以用类似于
+ <code>
+  \"{o}
+ </code>
+ 的指令来表示。汉语拼音四声为：阴平
+ <code>
+  \={a}
+ </code>
+ , 阳平
+ <code>
+  \'{a}
+ </code>
+ , 上声
+ <code>
+  \v{a}
+ </code>
+ , 去声
+ <code>
+  \`{a}
+ </code>
+ （这个左引号是英文模式下数字键1左边的那个）。此外，如果要使用Unicode编码，则可以用
+ <code>
+  \u
+ </code>
+ 后加对应的数字来实现，如
+ <code>
+  \u22ef
+ </code>
+ 这样。 如果要用ASCII码来表示的话，则用
+ <code>
+  \char
+ </code>
+ 后加对应的数字来实现，如
+ <code>
+  \char92
+ </code>
+ 这样。
+</p>
+<p>
+ 对于LaTeX的控制性字符，比如说
+ <code>
+  \
+ </code>
+ ,
+ <code>
+  &amp;
+ </code>
+ ,
+ <code>
+  ~
+ </code>
+ ,
+ <code>
+  ^
+ </code>
+ ,
+ <code>
+  _
+ </code>
+ ,
+ <code>
+  #
+ </code>
+ ,
+ <code>
+  %
+ </code>
+ ,
+ <code>
+  {
+ </code>
+ ,
+ <code>
+  }
+ </code>
+ , 除了
+ <code>
+  \
+ </code>
+ 以外，其他都可以在原有字符前面加上
+ <code>
+  \
+ </code>
+ 来实现转义输出，如
+ <code>
+  \&amp;
+ </code>
+ 就会输出
+ <code>
+  &amp;
+ </code>
+ . 而对于反斜杠，我个人建议用
+ <code>
+  \char92
+ </code>
+ 来实现。 而
+ <code>
+  ~
+ </code>
+ 和
+ <code>
+  ^
+ </code>
+ 我建议用
+ <code>
+  \~{}
+ </code>
+ 和
+ <code>
+  \^{}
+ </code>
+ 来实现。
+</p>
+<p>
+ 最后的最后我可介绍一下ASCII和Unicode编码。
+</p>
+<p>
+ 我们知道，电脑中对数据的存储只能用二进制，也就是0和1来进行。那么我们就需要将文字与二进制数一一映射。由于计算机最初在使用拉丁字母的国家出现，所以，他们想，只要把字母表和几个常见的符号二进制化就行了，就产生了ASCII码。这张表里，每个字母及符号都有对应的二进制数表示。
+</p>
+<p>
+ ASCII码对于西欧的语言，修修补补，增加几个字母就可以解决。但是嘞，他们发现，世界上还有中文、日文、谚文、子喃这样的文字，这种文字不是用字母表来构成单词，或者说，这些文字的字母表成千上万。这可咋办呢。于是，Unicode应运而生。它包含了世界上几乎所有的文字，每个文字都有对应的Unicode编码表示。
+</p>
+<p>
+ 以上就是ASCII码和Unicode码。
+</p>
+<h2>
+ 最后
+</h2>
+<p>
+ 由于本人能力有限，文章必有疏漏之处，敬请方家不吝斧正。
+</p></div></div></body></html>

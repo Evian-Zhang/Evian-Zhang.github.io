@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>LaTeX入门(十)——编号二三事</title>
+<base target="_blank" />
+<link rel="stylesheet" type="text/css" href="/staticVersion/cssticVersion/css/article.css" />
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'] ],
+        displayMath: [ ['$$','$$'] ]
+    }
+});
+</script>
+</head>
+<body>
+<div id="main_wrapper">
+    <header id="main_header">
+        <a href="/staticVersion/index.htmlion/index.html">Evian Zhang's<br />naive blog</a>
+        <h2>LaTeX入门(十)——编号二三事</h2>
+    </header>
+    <div id="article_body">
+<p>
+ 之前在列表、章节、参考文献、图片、表格中，我们都提到了编号。所以，在这篇文章中，我们统一地讨论一下LaTeX编号的二三事。
+</p>
+<p>
+ LaTeX呐，就一点好，它能自动编号（滑稽
+</p>
+<p>
+ 比如说，我们在一个有序列表中，都是用
+ <code>
+  \item
+ </code>
+ 来表示一个个条目，却从来没有指定这是第几条条目。在我们按下排版按钮后，LaTeX自动给我们的条目标好了编号。这样的话，比如说我们想在第二条条目和第三条条目之间增加一条条目，只需要加一个
+ <code>
+  \item
+ </code>
+ 即可，而不需要把接下来的所有条目的编号都加一。这就叫LaTeX的自动编号。
+</p>
+<p>
+ 图片和表格的自动编号都是由
+ <code>
+  \caption{}
+ </code>
+ 命令控制的。在默认情况下，图片和表格的编号都是全局顺序编号。也就是说，如果一张图片是整个文档中出现的第3张图片，那么它的编号就是3. 这种编号方式多见于论文。还有什么编号方式呢？如果我有一本上百页的书，里面的图片成百上千，按顺序编号肯定不好看。所以，在书中常见的编号方式是章节内编号。比如说这张图片是第二节出现的第三张图片，那么它的编号就可以是2.3. 我们在LaTeX中如何实现这个呢？
+</p>
+<p>
+ 我们需要的是
+ <code>
+  counterwithin
+ </code>
+ . 首先，我们需要给出的是环境名。比如说，我们想改变的是表格环境的编号方式，环境名就是table, 图片的环境名就是figure. 接下来，我们需要考虑的是这个编号是跟着哪个编号走的。比如说，如果我需要表格的编号跟着
+ <code>
+  section
+ </code>
+ 走，即
+ <code>
+  section
+ </code>
+ 的编号是1，那么该章节内第三个出现的表格的编号就是1.3, 如果表格的编号跟着
+ <code>
+  subsection
+ </code>
+ 走，即
+ <code>
+  subsection
+ </code>
+ 的编号是1.3, 那么该子章节内第三个出现的表格的编号就是1.3.3. 下面假设我们要改变的是表格环境的编号方式，让它跟着
+ <code>
+  subsection
+ </code>
+ 走，那么我们需要在导言区写的是：
+</p>
+<div class="highlight">
+ <pre><code class="language-text"><span></span> \counterwithin{table}{subsection}
+</code></pre>
+</div>
+<h2>
+ 交叉引用
+</h2>
+<p>
+ 接下来，我们介绍LaTeX中一个很厉害的东西——交叉引用。在我们写论文的过程中，我们可能会用到之前写过的东西。比如说，我的这步结论是根据之前的某个表格得出的。那么，按照LaTeX的哲学，我们可以不用在源码中写出具体的编号，因为编号是LaTeX自动帮我们编的。那么，我们该如何做呢？LaTeX提供了两个指令：
+ <code>
+  \ref{}
+ </code>
+ 和
+ <code>
+  \label{}
+ </code>
+ .
+</p>
+<p>
+ <code>
+  \label{}
+ </code>
+ 做的，是给我们想要引用的表格或是其他有编号的东西起个别名，而
+ <code>
+  \ref{}
+ </code>
+ 做的是根据别名找到对应的编号。比如说，我给某个表格起了个叫adjTab的别名，那么
+ <code>
+  \ref{adjTab}
+ </code>
+ 在编译后会自动变成该表格的编号。
+</p>
+<p>
+ 那我们的
+ <code>
+  \label{}
+ </code>
+ 该放在哪里呢？
+ <b>
+  放在产生编号的命令后面
+ </b>
+ 。 这是什么意思呢？比如说，我要引用一个章节
+ <code>
+  section{}
+ </code>
+ 的编号，那么我们应该写的是
+ <code>
+  \section{Title}\lable{aLabel}
+ </code>
+ . 而我们之前讲过，图片和表格的编号都是由
+ <code>
+  \caption{}
+ </code>
+ 控制的，所以我们应该写的是
+ <code>
+  \caption{Title}\label{aLabel}
+ </code>
+ .
+</p>
+<p>
+ 而更神奇的是，我们可以在前面去引用后面的编号。比如说，在某段之后会出现一个表格，但我在这表格之前的那段里就可以用
+ <code>
+  \ref
+ </code>
+ 来引用这个表格的编号。LaTeX实际工作的原理是什么呢？
+</p>
+<p>
+ 我们在编译LaTeX的时候，会发现除了.pdf文件以外，还生成了其他文件。LaTeX在编译的时候，会搜集所有的
+ <code>
+  \label
+ </code>
+ 命令，在编译生成的.aux文件中创建一个对应表，一个label名对应一个编号。此时，
+ <code>
+  \ref
+ </code>
+ 命令是不管用的，因为在处理
+ <code>
+  \ref
+ </code>
+ 命令的时候，那个表还没有建成，所以第一次编译出来的结果，
+ <code>
+  \ref
+ </code>
+ 命令对应的位置都是"??". 在我们再一次编译之后，
+ <code>
+  \ref
+ </code>
+ 才会出现正确的编号。
+</p>
+<p>
+ 因此，如果我们的文章中出现了
+ <code>
+  \label
+ </code>
+ 及
+ <code>
+  \ref
+ </code>
+ 命令，一定要记住，要按两次"排版"按钮，才能出来正确的文章。
+</p></div></div></body></html>

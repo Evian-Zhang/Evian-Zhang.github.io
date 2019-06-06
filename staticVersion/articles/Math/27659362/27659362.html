@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>浅谈相等关系与等价关系</title>
+<base target="_blank" />
+<link rel="stylesheet" type="text/css" href="/staticVersion/cssticVersion/css/article.css" />
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'] ],
+        displayMath: [ ['$$','$$'] ]
+    }
+});
+</script>
+</head>
+<body>
+<div id="main_wrapper">
+    <header id="main_header">
+        <a href="/staticVersion/index.htmlion/index.html">Evian Zhang's<br />naive blog</a>
+        <h2>浅谈相等关系与等价关系</h2>
+    </header>
+    <div id="article_body">
+<p>
+ 数学的学习中，我们往往会遇到
+ <span class="text/tex">
+  $\displaystyle x=y$
+ </span>
+ 和
+ <span class="text/tex">
+  $\displaystyle x\sim y$
+ </span>
+ 。前者是相等关系，后者是等价关系。这两者联系紧密，有时也难以分清。所以，我觉得有必要单独对比一下这两种关系。
+</p>
+<p>
+ 首先，从关系的角度来看，这两者并无区别。相等关系和等价关系一样，都是自反的，对称的，传递的。这一点无可置辩，却也给了我们对相等关系和等价关系的一个最本质的认识。事实上，相等关系和等价关系都是描述了两个对象的一定程度上的
+ <b>
+  相同性
+ </b>
+ ，或者说，
+ <b>
+  可互换性
+ </b>
+ 。两个对象可以互换，故这个关系有对称性，而一个对象可以和自身互换，故这个关系有自反性，而传递性更不用说，也是成立的。
+</p>
+<p>
+ 那么，相等关系和等价关系有什么区别呢？
+</p>
+<p>
+ 莱布尼茨说：“世界上没有两片完全相同的叶子。”但是事实上，大树对此不以为然。无论是哪一片叶子，都可以对自己提供糖分，也都需要根提供无机盐养分。所以说，对大树而言，两片叶子是
+ <b>
+  等价的
+ </b>
+ ，对莱布尼茨而言，两片叶子不是
+ <b>
+  相等的
+ </b>
+ 。
+</p>
+<p>
+ 从数学上来讲，等价关系是在
+ <b>
+  某个方面上
+ </b>
+ 两者的可互换性，而相等关系是在
+ <b>
+  所有方面
+ </b>
+ 两者的可互换性。
+</p>
+<p>
+ 具体而言，如集合之间的等势，就是在基数方面两个集合的可互换性。我们可以写
+ <span class="text/tex">
+  $\displaystyle Z\sim Q$
+ </span>
+ ，却不可以写
+ <span class="text/tex">
+  $\displaystyle Z=Q$
+ </span>
+ ，原因就在于，在元素方面，Z和Q不完全相同，故Z和Q不是所有方面都可互换。
+</p>
+<p>
+ 而在真正的数学概念中，相等关系和等价关系并非像我们这样模糊定义的。数学家们每引入一个新的对象，都会
+ <b>
+  定义
+ </b>
+ 其相等关系或等价关系。有的相等关系十分显然，如“对于复数
+ <span class="text/tex">
+  $\displaystyle z_1=a_1+b_1i$
+ </span>
+ 和
+ <span class="text/tex">
+  $\displaystyle z_2=a_2+b_2i$
+ </span>
+ ,若
+ <span class="text/tex">
+  $\displaystyle a_1=a_2,b_1=b_2$
+ </span>
+ ,则
+ <span class="text/tex">
+  $\displaystyle z_1=z_2$
+ </span>
+ ”；但有的却要想一想，并非平凡：“若
+ <span class="text/tex">
+  $\displaystyle z_n=a_n+b_ni$
+ </span>
+ ,则
+ <span class="text/tex">
+  $\displaystyle \sum_{n=1}^{\infty }{z_n}= \sum_{n=1}^{\infty }{a_n}+i\sum_{n=1}^{\infty }{b_n}$
+ </span>
+ ”，我们在级数理论中知道，对无穷级数而言，交换律和结合律并非总是成立，而数学家们通过这个相等关系的定义规避了这个问题。
+</p>
+<p>
+ 事实上，相等关系是一种特殊的等价关系。相等关系比等价关系的特殊之处在于，若两对象相等，则在任意语境中，无论是自然语言的叙述，还是数学语言的等式，这两个对象都可以互换。
+</p>
+<p>
+ 比如说，对于高阶无穷小
+ <span class="text/tex">
+  $\displaystyle f(x)=o(x)$
+ </span>
+ ，我觉得这样写是不够严谨的（事实上Zorich的数学分析上也注过），比如说，
+ <span class="text/tex">
+  $\displaystyle x\rightarrow 0$
+ </span>
+ 时，
+ <span class="text/tex">
+  $\displaystyle \sin x=o(x^2)$
+ </span>
+ ,
+ <span class="text/tex">
+  $\displaystyle \tan x =o(x^2)$
+ </span>
+ ,那么根据相等关系的传递性，
+ <span class="text/tex">
+  $\displaystyle \sin x=\tan x$
+ </span>
+ ,这显然是荒谬的。所以，用等价关系来叙述反而更好些。在
+ <span class="text/tex">
+  $\displaystyle x\rightarrow 0$
+ </span>
+ 的情况下，
+ <span class="text/tex">
+  $\displaystyle \sin x\sim o(x^2)$
+ </span>
+ ,
+ <span class="text/tex">
+  $\displaystyle \tan x\sim o(x^2)$
+ </span>
+ ,
+ <span class="text/tex">
+  $\displaystyle \sin x\sim \tan x $
+ </span>
+ 。这毫无矛盾。
+</p>
+<p>
+ 但是，用等价符号记高阶无穷小得有一条注意的事项，它不是对称的。比如说，
+ <span class="text/tex">
+  $\displaystyle o(x^3)\sim o(x^2)$
+ </span>
+ 意味着
+ <span class="text/tex">
+  $\displaystyle o(x^3)$
+ </span>
+ <b>
+  是
+ </b>
+ <span class="text/tex">
+  $\displaystyle x^2$
+ </span>
+ 的高阶无穷小，而
+ <span class="text/tex">
+  $\displaystyle o(x^2)$
+ </span>
+ 却不一定
+ <b>
+  是
+ </b>
+ <span class="text/tex">
+  $\displaystyle x^3$
+ </span>
+ 的高阶无穷小。
+</p>
+<p>
+ 再者说，相等关系中还有一条规律，即：如非特别说明，等号两边可以同时消掉相同的项。尽管这条并非严格要求，但不符合的情况总是较少的。而
+ <span class="text/tex">
+  $\displaystyle o(x)+o(x)=o(x)$
+ </span>
+ ,也就显得比较奇怪了。但用等价关系来看，由于等价关系并没有这条规律，所以是合适的。
+</p>
+<p>
+ 此外，相等关系和等价关系可以通过某些关系关联。再次举无穷小的例子，
+ <span class="text/tex">
+  $\displaystyle x\rightarrow 0$
+ </span>
+ 时,
+ <span class="text/tex">
+  $\displaystyle f(x)\sim o(x)$
+ </span>
+ ,那么
+ <span class="text/tex">
+  $\displaystyle \lim_{x \rightarrow 0}\frac{f(x)+g(x)}{x}=\lim_{x \rightarrow 0}\frac{o(x)+g(x)}{x}$
+ </span>
+ ,通过lim的符号，我们将相等关系和等价关系联系在了一起。
+</p></div></div></body></html>

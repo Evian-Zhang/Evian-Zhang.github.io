@@ -164,7 +164,7 @@ figure {
 img {
     margin: 0 auto;
     max-width: 100%;
-    horiz-align: center;
+    alignment: center;
 }
 
 code {

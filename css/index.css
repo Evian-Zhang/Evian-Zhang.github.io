@@ -68,22 +68,10 @@ div.article_container li {
     display:flex;
 }
 
-#LaTeXIntro {
+div.left {
     left:2em;
 }
 
-#Math {
-    right:2em;
-}
-
-#Writings {
-    left:2em;
-}
-
-#Projects {
-    right:2em;
-}
-
-#macOS {
+div.right {
     right:2em;
 }

@@ -70,8 +70,10 @@ function drawTree () {
 }
 
 function adjustArticleContainer () {
-    var left_container = [document.getElementById("Writings"), document.getElementById("LaTeXIntro")];
-    var right_container = [document.getElementById("Projects"), document.getElementById("Math")];
+    // var left_container = [document.getElementById("Writings"), document.getElementById("LaTeXIntro")];
+    var left_container = document.getElementsByClassName("left") as HTMLCollectionOf<HTMLDivElement>;
+    // var right_container = [document.getElementById("Projects"), document.getElementById("Math"), document.getElementById("macOS")];
+    var right_container = document.getElementsByClassName("right") as HTMLCollectionOf<HTMLDivElement>;
     if (left_container.length > 1) {
         for (var i = 1; i < left_container.length; i++) {
             var previous = left_container[i - 1];

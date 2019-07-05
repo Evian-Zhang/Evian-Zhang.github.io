@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>设计macOS上登录自启动的菜单栏的后台非沙盒应用</title>
+ <base target="_blank" />
+ <link rel="stylesheet" type="text/css" href="/css/article.css" />
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'] ],
+        displayMath: [ ['$$','$$'] ]
+    }
+});
+</script>
+</head><body>
+<div id="main_wrapper">
+ <header id="main_header">
+  <a href="/index.html">Evian Zhang's<br />naive blog</a>
+  <h2>在macOS10.14上使用GDB教程</h2>
+ </header>
+ <div id="article_body">
+<p>
+ 这个标题看起来非常拗口，我们来分析一下，我们要设计的应用需要满足：
+</p>
+<ul>
+ <li>
+  登录自启动
+ </li>
+ <li>
+  在菜单栏上有图标
+ </li>
+ <li>
+  后台应用
+ </li>
+ <li>
+  非沙盒
+ </li>
+</ul>
+<p>
+ 最后一条是由于大部分的macOS应用都没有必要上到AppStore上去，所以非沙盒设计也简单一些。而满足前三条的应用实际上非常常见，如大家誉为神器的Alfred等。我之前设计过一个在Mac上的统计屏幕使用时间的软件
+ <a class="internal" href="https://zhuanlan.zhihu.com/p/67118846">
+  MyAppTime
+ </a>
+ , 就满足了这四个条件。实际使用截图如下：
+</p>
+<figure data-size="normal">
+ <img src="./67788332_assets/v2-02543e7bc6f0dace8700ead08b070f7b_b.jpg"/>
+</figure>
+<p class="ztext-empty-paragraph">
+ <br/>
+</p>
+<p>
+ 现在网络上（无论是中文网站还是外国网站）大多都是基于沙盒化的应用介绍的，需要额外的Helper等辅助应用，比较麻烦。而我介绍的这种方法似乎并没有人介绍过。下面，分别介绍一下在非沙盒化情况下，前三点是如何完成的：
+</p>
+<h2>
+ 登录自启动
+</h2>
+<p>
+ 首先，新建一个plist文件，建议取名按逆域名命名，如
+ <code>
+  com.developer.applicationLauncher.plist
+ </code>
+ , 其中要加入以下条目：
+</p>
+<div class="highlight">
+ <pre><code class="language-text">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;
+&lt;plist version="1.0"&gt;
+&lt;dict&gt;
+	&lt;key&gt;Label&lt;/key&gt;
+	&lt;string&gt;com.developer.applicationLauncher&lt;/string&gt;
+	&lt;key&gt;ProgramArguments&lt;/key&gt;
+	&lt;array&gt;
+		&lt;string&gt;/Applications/xxx.app/Contents/MacOS/xxx&lt;/string&gt;
+	&lt;/array&gt;
+	&lt;key&gt;RunAtLoad&lt;/key&gt;
+	&lt;true/&gt;
+&lt;/dict&gt;
+&lt;/plist&gt;</code></pre>
+</div>
+<p>
+ 其中的
+ <code>
+  xxx
+ </code>
+ 就是我们要设计的应用的名字。
+</p>
+<p>
+ 然后，将这个plist文件移动至
+ <code>
+  ~/Library/LaunchAgents
+ </code>
+ 文件夹即可。
+</p>
+<h2>
+ 在菜单栏上有图标
+</h2>
+<p>
+ 首先，在
+ <code>
+  Assets.xcassets
+ </code>
+ 文件夹内加入一个new Image Set, 然后向里面添加一个图片作为菜单栏的图标。这里建议图片为PDF格式，且仅有黑色和白色两种颜色。然后在AppDelegate中加入如下代码即可。
+</p>
+<div class="highlight">
+ <pre><code class="language-objective-c"><span class="n">NSStatusBar</span> <span class="o">*</span><span class="n">statusBar</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSStatusBar</span> <span class="n">systemStatusBar</span><span class="p">];</span>
+<span class="n">NSStatusItem</span> <span class="o">*</span><span class="n">statusItem</span> <span class="o">=</span> <span class="p">[</span><span class="n">statusBar</span> <span class="nl">statusItemWithLength</span><span class="p">:</span><span class="n">NSVariableStatusItemLength</span><span class="p">];</span>
+<span class="n">NSImage</span> <span class="o">*</span><span class="n">statusItemImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSImage</span> <span class="nl">imageNamed</span><span class="p">:</span><span class="s">@"statusItemImage"</span><span class="p">];</span>
+<span class="n">statusItemImage</span><span class="p">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">NSMakeSize</span><span class="p">(</span><span class="mf">18.0</span><span class="p">,</span> <span class="mf">18.0</span><span class="p">);</span>
+<span class="n">statusItemImage</span><span class="p">.</span><span class="n">template</span> <span class="o">=</span> <span class="nb">YES</span><span class="p">;</span>
+<span class="n">statusItem</span><span class="p">.</span><span class="n">button</span><span class="p">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">statusItemImage</span><span class="p">;</span>
+<span class="n">statusItem</span><span class="p">.</span><span class="n">button</span><span class="p">.</span><span class="n">target</span> <span class="o">=</span> <span class="nb">self</span><span class="p">;</span>
+<span class="n">statusItem</span><span class="p">.</span><span class="n">button</span><span class="p">.</span><span class="n">action</span> <span class="o">=</span> <span class="k">@selector</span><span class="p">(</span><span class="n">handleStatusItem</span><span class="p">);</span></code></pre>
+</div>
+<h2>
+ 后台应用
+</h2>
+<p>
+ 在
+ <code>
+  info.plist
+ </code>
+ 中加入一条：Application is agent(UIElement), 并将其设置为Boolean值YES即可。
+</p>
+<figure data-size="normal">
+ <img src="./67788332_assets/v2-7b9c18414512631916ec0b82af4753a5_b.png"/>
+</figure></div></div></body></html>

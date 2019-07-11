@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width initial-scale=1" name="viewport"/>
+  <title>
+   macOS上的汇编入门（一）——引言
+  </title>
+  <base target="_blank"/>
+  <link href="/css/article.css" rel="stylesheet" type="text/css"/>
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({
+tex2jax: {
+	inlineMath: [ ['$','$'] ],
+	displayMath: [ ['$$','$$'] ]
+}
+});
+  </script>
+ </head>
+ <div id="main_wrapper">
+  <header id="main_header">
+   <a href="/index.html">
+    Evian Zhang's
+    <br/>
+    naive blog
+   </a>
+   <h2>
+    macOS上的汇编入门（一）——引言
+   </h2>
+  </header>  <div id="article">
+   <p>
+    <span>
+     我最近一个阶段都在学习汇编语言，但是，当我想使用我的Mac编写汇编语言的时候，发现了许多问题。比如说，大多数实体的教材都采用的是32位甚至是16位的处理器，在如今仅支持64位架构的macOS 10.15上根本不能原生运行；再者，基于XNU这种类Unix内核的macOS系统，汇编语言的部分细节，如系统调用号等等与Linux不同，调用约定也与Windows不同。但现在网络上基于macOS来入门汇编语言的文章非常少，涉及到macOS汇编的也基本上不是用来入门的文章。因此，我打算利用这个暑假来写一写如何在macOS上入门汇编语言。
+    </span>
+   </p>
+   <h1>
+    <a class="md-header-anchor" name="%E9%9C%80%E8%A6%81%E7%9A%84%E8%83%8C%E6%99%AF%E7%9F%A5%E8%AF%86">
+    </a>
+    <span>
+     需要的背景知识
+    </span>
+   </h1>
+   <p>
+    <span>
+     阅读我写的这一系列文章需要的背景知识并不多，包括：
+    </span>
+   </p>
+   <ul>
+    <li>
+     <span>
+      能看懂C语言
+     </span>
+    </li>
+    <li>
+     <span>
+      一点点的计组知识
+     </span>
+    </li>
+    <li>
+     <span>
+      一点点的命令行知识（至少应当会在终端下进入指定的目录）
+     </span>
+    </li>
+   </ul>
+   <h1>
+    <a class="md-header-anchor" name="%E8%BF%99%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0%E7%A9%B6%E7%AB%9F%E8%AE%B2%E4%BA%86%E4%BB%80%E4%B9%88">
+    </a>
+    <span>
+     这系列文章究竟讲了什么
+    </span>
+   </h1>
+   <p>
+    <span>
+     那么，我打算讲的是在macOS上利用GAS语法，也就是AT&amp;T语法进行x86-64汇编的入门。
+    </span>
+   </p>
+   <h1>
+    <a class="md-header-anchor" name="%E5%8F%AF%E4%BB%A5%E5%9C%A8%E5%93%AA%E7%9C%8B%E5%88%B0%E8%BF%99%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0">
+    </a>
+    <span>
+     可以在哪看到这系列文章
+    </span>
+   </h1>
+   <p>
+    <span>
+     我在我的
+    </span>
+    <a href="https://github.com/Evian-Zhang/Assembly-on-macOS">
+     <span>
+      GitHub
+     </span>
+    </a>
+    <span>
+     上，
+    </span>
+    <a href="https://zhuanlan.zhihu.com/c_1132336120712765440">
+     <span>
+      知乎专栏
+     </span>
+    </a>
+    <span>
+     上和
+    </span>
+    <a href="https://blog.csdn.net/EvianZhang">
+     <span>
+      CSDN
+     </span>
+    </a>
+    <span>
+     上同步更新。
+    </span>
+   </p>
+   <p>
+    <span>
+     下一篇文章：
+    </span>
+    <a href="macOS上的汇编入门（二）——数学基础.html">
+     <span>
+      macOS上的汇编入门（二）——数学基础
+     </span>
+    </a>
+   </p>
+  </div>
+ </div>
+</html>

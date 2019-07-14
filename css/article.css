@@ -96,6 +96,7 @@ body {
     padding:0;
     margin:0;
     background-color:#FFFEEE;
+    font-family:"SF Pro SC", "SF Pro Text", "SF Pro Icons", "PingFang SC", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 }
 
 #main_wrapper {
@@ -154,7 +155,7 @@ body {
 }
 
 h2 {
-    font-family:sans-serif;
+    font-family:"SF Pro SC", "SF Pro Text", "SF Pro Icons", "PingFang SC", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 }
 
 figure {

@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width initial-scale=1" name="viewport"/>
+  <title>
+   macOS上的汇编入门（七）——字面量与局部变量
+  </title>
+  <base target="_blank"/>
+  <link href="/css/article.css" rel="stylesheet" type="text/css"/>
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({
+tex2jax: {
+	inlineMath: [ ['$','$'] ],
+	displayMath: [ ['$$','$$'] ]
+}
+});
+  </script>
+ </head>
+ <div id="main_wrapper">
+  <header id="main_header">
+   <a href="/index.html">
+    Evian Zhang's
+    <br/>
+    naive blog
+   </a>
+   <h2>
+    macOS上的汇编入门（七）——字面量与局部变量
+   </h2>
+  </header>  <div id="article_body">
+   <p>
+    <span>
+     在上一篇文章中，我们分析了第一个汇编程序。
+    </span>
+   </p>
+   <pre><code class="language-assembly" lang="assembly"># exit.s    
+    .section    __TEXT,__text
+    .globl  _main
+_main:
+    movq    $0, %rax
+    retq
+</code></pre>
+   <p>
+    <span>
+     这个汇编程序是我们所有汇编程序的框架，因为它实现了程序进入和程序退出的功能。我们接下来所有的程序都是在这个程序的基础上进行修改。
+    </span>
+   </p>
+   <p>
+    <span>
+     在这篇文章中，我主要介绍的是汇编语言中变量的使用。在x86-64架构下，寄存器的数量很少。而且，寄存器的作用往往是用于运算而不是用于存储。那么，我们在程序中该如何使用变量呢？
+    </span>
+   </p>
+   <h1>
+    <a class="md-header-anchor" name="%60.equ%60%E5%AE%9A%E4%B9%89%E5%AD%97%E9%9D%A2%E9%87%8F">
+    </a>
+    <code>
+     .equ
+    </code>
+    <span>
+     定义字面量
+    </span>
+   </h1>
+   <p>
+    <span>
+     最简单的定义变量的方式，是利用汇编器指令
+    </span>
+    <code>
+     .equ
+    </code>
+    <span>
+     . 这类似于C语言中的
+    </span>
+    <code>
+     #define
+    </code>
+    <span>
+     . 比如说，我在程序开头写上
+    </span>
+   </p>
+   <pre><code class="language-assembly" lang="assembly">.equ	maxCount, 0x114514
+</code></pre>
+   <p>
+    <span>
+     那么，我在之后的程序里就可以写
+    </span>
+   </p>
+   <pre><code class="language-assembly" lang="assembly">movq	$maxCount, %rax
+</code></pre>
+   <p>
+   </p>
+   <p>
+    <span>
+     来表示将
+    </span>
+    <code>
+     0x114514
+    </code>
+    <span>
+     赋值给rax寄存器。
+    </span>
+   </p>
+   <p>
+    <span>
+     同时这里应当指出，这个指令是汇编器指令，在汇编的时候，会自动将所有的
+    </span>
+    <code>
+     maxCount
+    </code>
+    <span>
+     直接用
+    </span>
+    <code>
+     0x114514
+    </code>
+    <span>
+     替代。比如说，我有以下程序：
+    </span>
+   </p>
+   <pre><code class="language-assembly" lang="assembly">	.text
+	.globl	_main
+	.equ	maxCount, 0x114514
+_main:
+	movq	$maxCount, %rax
+	retq
+</code></pre>
+   <p>
+    <span>
+     我们通过汇编、链接以后，得到一个
+    </span>
+    <code>
+     test
+    </code>
+    <span>
+     可执行文件。我们可以用之前提到的MachOView软件，或者在终端中键入
+    </span>
+   </p>
+   <pre><code class="language-shell" lang="shell">otool -v -t ./test
+</code></pre>
+   <p>
+    <span>
+     来查看生成的可执行文件中
+    </span>
+    <code>
+     __TEXT
+    </code>
+    <span>
+     段
+    </span>
+    <code>
+     __text
+    </code>
+    <span>
+     节的内容：
+    </span>
+   </p>
+   <p>
+    <img alt="otool" referrerpolicy="no-referrer" src="macOS上的汇编入门（七）——字面量与局部变量.assets/otool.png"/>
+   </p>
+   <p>
+    <span>
+     由此可知，最终生成的文件中，是直接替换得到的。
+    </span>
+   </p>
+   <p>
+    <span>
+     此外，
+    </span>
+    <code>
+     .equ
+    </code>
+    <span>
+     还有一个比较方便的地方在于，它可以支持简单的算术运算，如加减乘除等。比如说，我可以写
+    </span>
+    <code>
+     .equ	maxCount, 1919-810
+    </code>
+    <span>
+     , 那么接下来所有出现
+    </span>
+    <code>
+     maxCount
+    </code>
+    <span>
+     的地方，都会用
+    </span>
+    <code>
+     1109
+    </code>
+    <span>
+     来替代。
+    </span>
+   </p>
+   <p>
+    <span>
+     但是，正如C语言中的
+    </span>
+    <code>
+     #define
+    </code>
+    <span>
+     定义的宏一样，
+    </span>
+    <code>
+     .equ
+    </code>
+    <span>
+     定义的变量只是一个简单的替换，并不支持对这个变量重新赋值之类的操作。这个变量也没有其地址，只是一个字面量。
+    </span>
+   </p>
+   <h1>
+    <a class="md-header-anchor" name="%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F">
+    </a>
+    <span>
+     局部变量
+    </span>
+   </h1>
+   <h2>
+    <a class="md-header-anchor" name="%E6%A0%88">
+    </a>
+    <span>
+     栈
+    </span>
+   </h2>
+   <p>
+    <span>
+     我们知道，在C语言中，局部变量在栈上分配。在汇编语言中也是这样。因此，我们来回忆一下「栈」的概念。
+    </span>
+   </p>
+   <p>
+    <span>
+     在操作系统基础中，我们谈到，在一个程序运行的时候，系统会自动给这个程序分配一个栈区。这个栈区和数据结构中所说的栈类似，也支持压栈和弹栈的操作。栈区在逻辑地址空间里是一块连续的空间，栈底是固定的，每次压栈，都会使栈顶向逻辑地址减小的方向移动。
+    </span>
+   </p>
+   <p>
+    <span>
+     在几个寄存器中，有一个寄存器和栈的关系非常大，那就是rsp寄存器。从它的名字就可以看出来，stack pointer, 它存储的值永远是栈顶的地址，所以它又被叫做栈顶指针。我们可以用
+    </span>
+    <code>
+     (%rsp)
+    </code>
+    <span>
+     来获取栈顶存储的值，通过
+    </span>
+    <code>
+     a(%rsp)
+    </code>
+    <span>
+     , 其中
+    </span>
+    <code>
+     a
+    </code>
+    <span>
+     是任何一个整数，来获取地址是rsp存储的值加
+    </span>
+    <code>
+     a
+    </code>
+    <span>
+     处的内存单元的值。比如说，
+    </span>
+    <code>
+     2(%rsp)
+    </code>
+    <span>
+     就是栈顶上方（逻辑地址增大方向）2个字节处的值，
+    </span>
+    <code>
+     -2(%rsp)
+    </code>
+    <span>
+     就是栈顶下方（逻辑地址减小方向）2个字节处的值。关于这个记号，我也会在之后的寻址方式中提到。
+    </span>
+   </p>
+   <p>
+    <span>
+     在汇编语言中，压栈和弹栈的助记符分别是
+    </span>
+    <code>
+     push
+    </code>
+    <span>
+     和
+    </span>
+    <code>
+     pop
+    </code>
+    <span>
+     . 这两个操作均有一个操作数。
+    </span>
+    <code>
+     push
+    </code>
+    <span>
+     的操作是将栈顶指针向下移动（也就是将rsp内的值减小），并将移动后rsp对应位置内存区域的值赋为其操作数，而pop则相反。这里“向下移动”的距离是根据
+    </span>
+    <code>
+     push
+    </code>
+    <span>
+     后面跟着的字母决定的，如
+    </span>
+    <code>
+     pushq
+    </code>
+    <span>
+     就是把rsp内的值减8.
+    </span>
+   </p>
+   <p>
+    <span>
+     此外，如果是想获得栈顶的值，而不弹栈，可以直接用
+    </span>
+    <code>
+     mov
+    </code>
+    <span>
+     来实现。如
+    </span>
+    <code>
+     popq	%rax
+    </code>
+    <span>
+     是将栈顶的8个字节内存储的值赋给rax, 并且栈顶指针向上移动8个字节。而
+    </span>
+    <code>
+     movq	(%rsp), %rax
+    </code>
+    <span>
+     则是只将栈顶的8个字节内存储的值赋给rax, 不涉及栈顶指针的移动。而如果只想弹栈却不想赋值，那么直接对rsp进行
+    </span>
+    <code>
+     add
+    </code>
+    <span>
+     即可。如想把栈顶的8个字节的数据弹栈，就直接
+    </span>
+    <code>
+     addq	$8, %rsp
+    </code>
+    <span>
+     .
+    </span>
+   </p>
+   <p>
+    <span>
+     同时，对于
+    </span>
+    <code>
+     push
+    </code>
+    <span>
+     而言，如果我们一下子准备把许多值压入栈内，那么可以先用
+    </span>
+    <code>
+     sub
+    </code>
+    <span>
+     指令减小rsp, 再用
+    </span>
+    <code>
+     mov
+    </code>
+    <span>
+     移动。比如说：
+    </span>
+   </p>
+   <pre><code class="language-assembly" lang="assembly"># method 1
+pushq	$0x114514
+pushq	$0x1919
+pushq	$0x810
+
+# method 2
+subq	$24, %rsp
+movq	$0x114514, 16(%rsp)
+movq	$0x1919, 8(%rsp)
+movq	$0x810, (%rsp)
+</code></pre>
+   <p>
+    <span>
+     方法一和方法二的最终效果是一样的。但是，我们建议使用方法二，也就是“先
+    </span>
+    <code>
+     sub
+    </code>
+    <span>
+     , 再
+    </span>
+    <code>
+     mov
+    </code>
+    <span>
+     ”，因为这样更高效。
+    </span>
+   </p>
+   <h2>
+    <a class="md-header-anchor" name="%E4%BD%BF%E7%94%A8%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F">
+    </a>
+    <span>
+     使用局部变量
+    </span>
+   </h2>
+   <p>
+    <span>
+     讲完了栈的概念，接下来就是如何使用局部变量了。使用局部变量非常简单，就是将局部变量放到栈上，然后使用的时候直接去访问栈上对应的地址空间就行。然后在返回之前，把栈恢复即可。
+    </span>
+   </p>
+   <p>
+    <span>
+     但是，这里有一个常用的技巧。像上面的例子中写的，我们是通过对rsp中存储的地址加偏移量去访问局部变量，但是，如果我们之后又有了压栈、弹栈的操作，那么，偏移量就会改变。这种不稳定性十分不利于我们编程。因此，我们又用了另一个寄存器rbp来解决这个问题。rbp, 顾名思义，base pointer, 基地址指针，一般是用来使用偏移量寻址的。我们使用的技巧是，先将rbp
+    </span>
+    <code>
+     push
+    </code>
+    <span>
+     进栈（之所以保留我会在后面的调用约定里说到），然后利用之前的手法对rsp
+    </span>
+    <code>
+     sub
+    </code>
+    <span>
+     . 然后，利用rbp的偏移量来引用局部变量。最后在返回前，将
+    </span>
+    <code>
+     rbp
+    </code>
+    <span>
+     赋值给
+    </span>
+    <code>
+     rsp
+    </code>
+    <span>
+     , 此时栈顶指针指向的是最初对rbp
+    </span>
+    <code>
+     push
+    </code>
+    <span>
+     之后的位置，然后将栈顶
+    </span>
+    <code>
+     pop
+    </code>
+    <span>
+     出来给rbp，最后返回。
+    </span>
+   </p>
+   <p>
+    <span>
+     比如说，我有以下C程序：
+    </span>
+   </p>
+   <pre><code class="language-c" lang="c">int main()
+{
+  int a = 0x114514;
+  int b = 0x1919;
+  int c = 0x810;
+  return 0;
+}
+</code></pre>
+   <p>
+    <span>
+     那么，它对应的汇编程序如下：
+    </span>
+   </p>
+   <pre><code class="language-assembly" lang="assembly">_main:
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$24, %rsp
+	
+	movq	$0x114514, -8(%rbp)
+	movq	$0x1919, -16(%rbp)
+	movq	$0x810, -24(%rbp)
+	
+	movq	$0, %rax
+	
+	movq	%rbp, %rsp
+	popq	%rbp
+	retq
+</code></pre>
+   <p>
+    <span>
+     它对应的栈的变化如图所示：
+    </span>
+   </p>
+   <p>
+    <img alt="" referrerpolicy="no-referrer" src="macOS上的汇编入门（七）——字面量与局部变量.assets/stack.png"/>
+   </p>
+   <p>
+    <span>
+     由此可见，在执行完
+    </span>
+    <code>
+     popq	%rbp
+    </code>
+    <span>
+     之后，栈又恢复为最初进入时的模样。
+    </span>
+   </p>
+   <p>
+    <span>
+     我们在使用rbp+偏移量来访问局部变量的时候，有时候会觉得要把变量对应的偏移量记住，这会比较麻烦。我们可以结合上面讲到的
+    </span>
+    <code>
+     .equ
+    </code>
+    <span>
+     定义字面量来解决这一问题：
+    </span>
+   </p>
+   <pre><code class="language-assembly" lang="assembly">_main:
+	.equ	a, -8
+	.equ	b, -16
+	.equ	c, -24
+	pushq	%rbp
+	movq	%rsp, %rbp
+	subq	$24, %rsp
+	
+	movq	$0x114514, a(%rbp)
+	movq	$0x1919, b(%rbp)
+	movq	$0x810, c(%rbp)
+	
+	movq	$0, %rax
+	
+	movq	%rbp, %rsp
+	popq	%rbp
+	retq
+</code></pre>
+   <p>
+    <span>
+     这样，我们只需要之后用
+    </span>
+    <code>
+     a(%rbp)
+    </code>
+    <span>
+     就可以指代
+    </span>
+    <code>
+     a
+    </code>
+    <span>
+     了。
+    </span>
+   </p>
+   <h1>
+    <a class="md-header-anchor" name="%E5%8F%AF%E4%BB%A5%E5%9C%A8%E5%93%AA%E7%9C%8B%E5%88%B0%E8%BF%99%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0">
+    </a>
+    <span>
+     可以在哪看到这系列文章
+    </span>
+   </h1>
+   <p>
+    <span>
+     我在我的
+    </span>
+    <a href="https://github.com/Evian-Zhang/Assembly-on-macOS">
+     <span>
+      GitHub
+     </span>
+    </a>
+    <span>
+     上，
+    </span>
+    <a href="https://zhuanlan.zhihu.com/c_1132336120712765440">
+     <span>
+      知乎专栏
+     </span>
+    </a>
+    <span>
+     上和
+    </span>
+    <a href="https://blog.csdn.net/EvianZhang">
+     <span>
+      CSDN
+     </span>
+    </a>
+    <span>
+     上同步更新。
+    </span>
+   </p>
+   <p>
+    <span>
+     上一篇文章：
+    </span>
+    <a href="macOS上的汇编入门（六）——汇编语言初识.html">
+     <span>
+      macOS上的汇编入门（六）——汇编语言初识
+     </span>
+    </a>
+   </p>
+  </div>
+ </div>
+</html>

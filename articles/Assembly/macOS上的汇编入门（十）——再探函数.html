@@ -1,0 +1,981 @@
+<!DOCTYPE doctype html>
+<html>
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width initial-scale=1" name="viewport"/>
+  <title>
+   macOS上的汇编入门（十）——再探函数
+  </title>
+  <base target="_blank"/>
+  <link href="/css/article.css" rel="stylesheet" type="text/css"/>
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({
+tex2jax: {
+	inlineMath: [ ['$','$'] ],
+	displayMath: [ ['$$','$$'] ]
+}
+});
+  </script>
+ </head>
+ <div id="main_wrapper">
+  <header id="main_header">
+   <a href="/index.html">
+    Evian Zhang's
+    <br/>
+    naive blog
+   </a>
+   <h2>
+    macOS上的汇编入门（十）——再探函数
+   </h2>
+  </header>  <div id="article_body">
+   <p>
+    <span>
+     在上一篇文章中，我们简要地谈了在汇编语言中是如何实现函数功能的，即用
+    </span>
+    <code>
+     call
+    </code>
+    <span>
+     和
+    </span>
+    <code>
+     ret
+    </code>
+    <span>
+     . 在这篇文章中，我们将更深入地探讨关于汇编语言中函数的话题。
+    </span>
+   </p>
+   <h1>
+    <a class="md-header-anchor" name="%E8%B0%83%E7%94%A8%E7%BA%A6%E5%AE%9A">
+    </a>
+    <span>
+     调用约定
+    </span>
+   </h1>
+   <p>
+    <span>
+     汇编语言中的函数，实质只是一个标签所代表的内存地址。它不像其他高级语言一样，有完整的函数原型体系。比如说，在C语言中，
+    </span>
+    <code>
+     int func(int a, char *b)
+    </code>
+    <span>
+     可以让我们知道，这个函数接受两个参数，第一个是
+    </span>
+    <code>
+     int
+    </code>
+    <span>
+     类型的，第二个是
+    </span>
+    <code>
+     char *
+    </code>
+    <span>
+     类型的，同时这个函数也返回一个
+    </span>
+    <code>
+     int
+    </code>
+    <span>
+     类型的值。但是，汇编语言中并没有这样的体系。在我们自己写的程序中，如果调用自己写的函数，那我既可以往rdi里传参数，也可以把参数压入栈里，然后函数再弹栈获得参数；函数返回既可以返回到rax里，也可以多返回到几个寄存器内实现多返回值。这一切都是我们自己约定好的。但是，写程序不只是自己用自己的，也需要用他人的函数，也需要被他人的函数用。那么，我们就应该与他人达成一个约定，如何调用函数，函数会不会改变某些寄存器的值等等。这叫做调用约定(Calling Convention). 关于调用约定，一定要看的是
+    </span>
+    <a href="https://github.com/hjl-tools/x86-psABI">
+     <span>
+      System V x86-64 psABI
+     </span>
+    </a>
+    <span>
+     . 这个和之前我提到的Intel的x86-64架构官方文档
+    </span>
+    <a href="https://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-instruction-set-reference-manual-325383.pdf">
+     <span>
+      64-ia-32-architectures-software-developer-instruction-set-reference-manual
+     </span>
+    </a>
+    <span>
+     一样，都是学习汇编语言一定要多看的文档，建议翻烂。
+    </span>
+   </p>
+   <h2>
+    <a class="md-header-anchor" name="%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92">
+    </a>
+    <span>
+     参数传递
+    </span>
+   </h2>
+   <p>
+    <span>
+     调用约定包含很多方面。首先，我们来谈谈参数传递。这里传递的参数默认是INTEGER类的，比如说
+    </span>
+    <code>
+     int
+    </code>
+    <span>
+     ,
+    </span>
+    <code>
+     long
+    </code>
+    <span>
+     ,
+    </span>
+    <code>
+     short
+    </code>
+    <span>
+     ,
+    </span>
+    <code>
+     char
+    </code>
+    <span>
+     , 以及指针等，也就是除了
+    </span>
+    <code>
+     double
+    </code>
+    <span>
+     这种我们在汇编中需要特殊对待的类型以外。
+    </span>
+   </p>
+   <p>
+    <span>
+     参数传递按从左至右的顺序依次是：rdi, rsi, rdx, rcx, r8, r9. 如果参数多于6个，则将多于6个的部分按从右往左的顺序压入栈内。
+    </span>
+   </p>
+   <p>
+    <span>
+     比如说，我有如下C程序：
+    </span>
+   </p>
+   <pre><code class="language-c" lang="c">// test.c
+int func(int a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8)
+{
+  return 3;
+}
+
+int main()
+{
+  func(1, 2, 3, 4, 5, 6, 7, 8);
+  return 0;
+}
+</code></pre>
+   <p>
+    <span>
+     我们在终端下键入
+    </span>
+   </p>
+   <pre><code class="language-shell" lang="shell">clang test.c -S
+</code></pre>
+   <p>
+    <span>
+     可以生成一个由
+    </span>
+    <code>
+     test.c
+    </code>
+    <span>
+     编译出的汇编代码
+    </span>
+    <code>
+     test.s
+    </code>
+    <span>
+     . 我们找到其中参数传递的部分，汇编代码如下：
+    </span>
+   </p>
+   <pre><code class="language-assembly" lang="assembly">	movl	$1, %edi
+	movl	$2, %esi
+	movl	$3, %edx
+	movl	$4, %ecx
+	movl	$5, %r8d
+	movl	$6, %r9d
+	movl	$7, (%rsp)
+	movl	$8, 8(%rsp)
+	callq	_func
+</code></pre>
+   <p>
+    <span>
+     我们可以看到，参数传递确实是按这种调用约定来的。
+    </span>
+   </p>
+   <p>
+    <span>
+     这里说明一点，为什么多于6个的时候压栈，是按从右往左的顺序压栈呢？这样的设计，满足了我们对可变参数的需求。我们知道，C语言中有
+    </span>
+    <code>
+     prinf
+    </code>
+    <span>
+     这个函数。这个函数的参数个数就是可变的，其参数的个数是由从左往右数第一个参数格式化字符串确定的。在我们程序语言的设计中，往往可变参数的个数都是由从左往右数的某个参数确定的。那么，我们从右往左压栈，函数内部弹栈获得参数的时候就是按从左往右的顺序，因此就可以在固定的位置获得用于确定可变参数个数的参数。这就是从右往左压栈的好处。
+    </span>
+   </p>
+   <h2>
+    <a class="md-header-anchor" name="%E8%BF%94%E5%9B%9E%E5%80%BC">
+    </a>
+    <span>
+     返回值
+    </span>
+   </h2>
+   <p>
+    <span>
+     返回值总是传递到rax上。这也就是我们最初的第一个汇编程序，返回的时候把
+    </span>
+    <code>
+     $0
+    </code>
+    <span>
+     赋给rax的原因。
+    </span>
+   </p>
+   <pre><code class="language-assembly" lang="assembly">movq	$0, %rax
+retq
+</code></pre>
+   <p>
+    <span>
+     就相当于C语言中的
+    </span>
+   </p>
+   <pre><code class="language-c" lang="c">return 0;
+</code></pre>
+   <h2>
+    <a class="md-header-anchor" name="%E4%BF%9D%E7%95%99%E5%AF%84%E5%AD%98%E5%99%A8">
+    </a>
+    <span>
+     保留寄存器
+    </span>
+   </h2>
+   <p>
+    <span>
+     在我们调用函数的时候，还要遵循一个约定，那就是哪些寄存器是保留寄存器。比如说，我在函数
+    </span>
+    <code>
+     _func
+    </code>
+    <span>
+     里面，修改了寄存器rbx的值，那么我在主函数中，
+    </span>
+    <code>
+     callq	_func
+    </code>
+    <span>
+     之后，并没有任何表征告诉我们rbx的值改变了，那么我们在后续的编程中就有可能使用了错误的rbx值。因此，在函数执行的时候，哪些寄存器应当保留，也属于调用约定。在这里，称调用的函数为called函数，调用called函数的函数称为calling函数。比如说：
+    </span>
+   </p>
+   <pre><code class="language-assembly" lang="assembly">_main:
+	callq	_func
+	retq
+	
+_func:
+	# do something
+</code></pre>
+   <p>
+    <span>
+     中，
+    </span>
+    <code>
+     _main
+    </code>
+    <span>
+     就是calling函数，
+    </span>
+    <code>
+     _func
+    </code>
+    <span>
+     就是called函数。
+    </span>
+   </p>
+   <p>
+    <span>
+     寄存器rbp, rbx, r12, r13, r14, r15是属于calling函数，其余的寄存器都属于called函数。called函数在使用上述寄存器的时候，应当对寄存器的初始值予以保留。
+    </span>
+   </p>
+   <p>
+    <span>
+     保留的最有效的方法就是将其
+    </span>
+    <code>
+     push
+    </code>
+    <span>
+     上栈，在返回之前再
+    </span>
+    <code>
+     pop
+    </code>
+    <span>
+     回来。这也就是我们当初在局部变量的时候，在使用rbp标记最初栈顶之前，首先要
+    </span>
+    <code>
+     pushq	%rbp
+    </code>
+    <span>
+     , 在函数返回之前，又要
+    </span>
+    <code>
+     popq	%rbp
+    </code>
+    <span>
+     . 同时我们也应当注意到，这也意味着我们在调用别的函数的时候，只能默认上述那几个寄存器在调用之后不会被改变，而别的寄存器是又可能被改变的。
+    </span>
+   </p>
+   <h1>
+    <a class="md-header-anchor" name="%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8">
+    </a>
+    <span>
+     函数调用
+    </span>
+   </h1>
+   <p>
+    <span>
+     在讲完了调用约定之后，我们接下来再讨论一下函数调用的问题。在了解调用约定之前，我们只能放心大胆地调用自己的函数。在了解了调用约定之后，我们就可以和他人写的函数互动了。这里分多种情况讨论一下。
+    </span>
+   </p>
+   <h2>
+    <a class="md-header-anchor" name="%E8%B0%83%E7%94%A8%E6%9C%AC%E6%96%87%E4%BB%B6%E4%B8%AD%E7%9A%84%E5%87%BD%E6%95%B0">
+    </a>
+    <span>
+     调用本文件中的函数
+    </span>
+   </h2>
+   <p>
+    <span>
+     就是最基础的情况，自己调用本文件中自己写的函数，不需要任何别的东西，直接
+    </span>
+    <code>
+     call
+    </code>
+    <span>
+     就好了。
+    </span>
+   </p>
+   <h2>
+    <a class="md-header-anchor" name="%E8%B0%83%E7%94%A8%E5%88%AB%E7%9A%84%E6%B1%87%E7%BC%96%E6%96%87%E4%BB%B6%E4%B8%AD%E7%9A%84%E5%87%BD%E6%95%B0">
+    </a>
+    <span>
+     调用别的汇编文件中的函数
+    </span>
+   </h2>
+   <p>
+    <span>
+     这里既有可能是自己写的多文件，也有可能是他人写的。如果要调用别的文件中的函数，那么这个函数在它被定义的那个文件中一定要是被
+    </span>
+    <code>
+     .globl
+    </code>
+    <span>
+     声明过的。假设有两个汇编文件
+    </span>
+    <code>
+     my.s
+    </code>
+    <span>
+     和
+    </span>
+    <code>
+     other.s
+    </code>
+    <span>
+     , 我们只需要在终端下依次键入
+    </span>
+   </p>
+   <pre><code class="language-shell" lang="shell">as my.s -o my.o
+as other.s -o other.o
+ld my.o other.o -o my -lSystem
+</code></pre>
+   <p>
+    <span>
+     这里要求
+    </span>
+    <code>
+     my.s
+    </code>
+    <span>
+     和
+    </span>
+    <code>
+     other.s
+    </code>
+    <span>
+     不能同时有
+    </span>
+    <code>
+     _main
+    </code>
+    <span>
+     .
+    </span>
+   </p>
+   <h2>
+    <a class="md-header-anchor" name="%E8%B0%83%E7%94%A8c%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E5%87%BD%E6%95%B0">
+    </a>
+    <span>
+     调用C语言中的函数
+    </span>
+   </h2>
+   <p>
+    <span>
+     假设我有一个C语言中的函数
+    </span>
+    <code>
+     int func(int a, int b, int c)
+    </code>
+    <span>
+     . 那么我如果想在别的汇编代码中调用这个函数，只需要将这个函数的名字前加一个
+    </span>
+    <code>
+     _
+    </code>
+    <span>
+     . 也就是
+    </span>
+    <code>
+     callq	_func
+    </code>
+    <span>
+     即可。参数传递和返回值都是按之前说的调用约定来做。假设C语言的代码叫做
+    </span>
+    <code>
+     test.c
+    </code>
+    <span>
+     , 汇编语言的代码叫做
+    </span>
+    <code>
+     main.o
+    </code>
+    <span>
+     , 那么我们只需要在终端下依次键入
+    </span>
+   </p>
+   <pre><code class="language-shell" lang="shell">clang test.c -c -o test.o
+as main.s -o main.o
+ld test.o main.o -o main -lSystem
+</code></pre>
+   <h2>
+    <a class="md-header-anchor" name="%E8%B0%83%E7%94%A8%E5%BA%93%E5%87%BD%E6%95%B0">
+    </a>
+    <span>
+     调用库函数
+    </span>
+   </h2>
+   <p>
+    <span>
+     操作系统提供了大量的库。在macOS中，大量的库函数都包含在文件
+    </span>
+    <code>
+     /usr/lib/libSystem.dylib
+    </code>
+    <span>
+     中。包括：
+    </span>
+   </p>
+   <ul>
+    <li>
+     <code>
+      libc
+     </code>
+     <br/>
+     <span>
+      C标准库
+     </span>
+    </li>
+    <li>
+     <code>
+      libinfo
+     </code>
+     <br/>
+     <span>
+      NetInfo库
+     </span>
+    </li>
+    <li>
+     <code>
+      libkvm
+     </code>
+     <br/>
+     <span>
+      内核虚存库
+     </span>
+    </li>
+    <li>
+     <code>
+      libm
+     </code>
+     <br/>
+     <span>
+      数学库
+     </span>
+    </li>
+    <li>
+     <code>
+      libpthread
+     </code>
+     <br/>
+     <span>
+      POSIX线程库
+     </span>
+    </li>
+   </ul>
+   <p>
+    <span>
+     这些库的C头文件我们可以在
+    </span>
+    <code>
+     /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk 1/usr/include/
+    </code>
+    <span>
+     目录下找到。
+    </span>
+   </p>
+   <p>
+    <span>
+     我们在链接时的参数
+    </span>
+    <code>
+     -lSystem
+    </code>
+    <span>
+     就代表链接
+    </span>
+    <code>
+     libSystem.dylib
+    </code>
+    <span>
+     . 因此，我们不需要再额外做任何工作，就能按照上述的调用C语言的方式调用系统库的函数了。因此，我们心心念念的
+    </span>
+    <code>
+     printf
+    </code>
+    <span>
+     终于可以用了！只不过要在前面加上
+    </span>
+    <code>
+     _
+    </code>
+    <span>
+     .
+    </span>
+   </p>
+   <p>
+    <span>
+     不过，还有一点额外要注意的。在调用库函数的时候，栈需要16字节对齐。这是什么意思呢？在之前提到的调用约定中，其实还有一点，就是栈对齐。由于我们写函数的时候总是会在第一步就
+    </span>
+    <code>
+     pushq	%rbp
+    </code>
+    <span>
+     ; 同时再在这个函数中用
+    </span>
+    <code>
+     call
+    </code>
+    <span>
+     调用别的函数的时候，实际上又把返回地址压栈。因此，called函数的起始栈地址，比calling函数的起始栈地址高了16个字节。硬件开发者就这个特点，进行了优化。导致栈进行16字节对齐的时候，效率会特别高。因此，这也就作为了一项调用约定。
+    </span>
+   </p>
+   <p>
+    <span>
+     那么，栈16字节对齐究竟是什么意思呢？首先，我们的
+    </span>
+    <code>
+     _main
+    </code>
+    <span>
+     函数默认其进入的时候，rsp寄存器内的地址值是16字节的倍数。接下来，我们如果要
+    </span>
+    <code>
+     call
+    </code>
+    <span>
+     任何库函数，要保证在
+    </span>
+    <code>
+     call
+    </code>
+    <span>
+     之前，
+    </span>
+    <code>
+     8(%rsp)
+    </code>
+    <span>
+     , 也就是rsp寄存器内的地址值加8，应当是16的倍数。因此，我们来算一下：在
+    </span>
+    <code>
+     _main
+    </code>
+    <span>
+     的最开始，rsp寄存器内的地址值是16的倍数；接下来一般人都会
+    </span>
+    <code>
+     pushq	%rbp
+    </code>
+    <span>
+     . 这时，rsp寄存器内的地址值是16的倍数加8. 因此，我们在接下来利用栈分配局部变量的时候，一定要让增加的栈空间是16的倍数。因此，即使只有3个
+    </span>
+    <code>
+     long
+    </code>
+    <span>
+     型的局部变量，也要将rsp减32, 而不是减24.
+    </span>
+   </p>
+   <p>
+    <span>
+     我们来看如何利用
+    </span>
+    <code>
+     printf
+    </code>
+    <span>
+     进行输出"helloworld, 114514"：
+    </span>
+   </p>
+   <pre><code class="language-assembly" lang="assembly"># helloworld.s    
+    .section    __TEXT, __cstring
+helloworld:
+    .asciz  "helloworld, %d\n"
+
+    .text
+    .globl  _main
+_main:
+    pushq   %rbp
+    leaq    helloworld(%rip), %rdi
+    movq    $114514, %rsi
+    movb    $0, %al
+    callq   _printf
+
+    popq    %rbp
+    movq    $0, %rax
+    retq
+</code></pre>
+   <p>
+    <span>
+     我们在
+    </span>
+    <code>
+     __TEXT
+    </code>
+    <span>
+     段
+    </span>
+    <code>
+     __cstring
+    </code>
+    <span>
+     节定义了用来输出的字符串。这个节是专门用来存储C风格字符串的。
+    </span>
+   </p>
+   <p>
+    <span>
+     接下来的
+    </span>
+    <code>
+     helloworld:
+    </code>
+    <span>
+     自然就是标签了。
+    </span>
+   </p>
+   <p>
+    <code>
+     .asciz
+    </code>
+    <span>
+     定义的是C风格字符串，地位和
+    </span>
+    <code>
+     .quad
+    </code>
+    <span>
+     这些汇编器指令相当。它会自动在字符串结尾补上
+    </span>
+    <code>
+     \0
+    </code>
+    <span>
+     .
+    </span>
+   </p>
+   <p>
+    <span>
+     接下来我们回忆一下
+    </span>
+    <code>
+     printf
+    </code>
+    <span>
+     接受的参数。第一个参数是一个字符指针，指向字符串的开头。因此，我们利用
+    </span>
+    <code>
+     leaq	helloworld(%rip), %rdi
+    </code>
+    <span>
+     , 将字符串传入第一个参数。接下来，我们的字符串中有
+    </span>
+    <code>
+     %d
+    </code>
+    <span>
+     , 说明
+    </span>
+    <code>
+     prinf
+    </code>
+    <span>
+     还得有第二个参数。因此，我们将
+    </span>
+    <code>
+     114514
+    </code>
+    <span>
+     传入rsi中。这样似乎就结束了。但是，有一个需要我们注意的，就是像
+    </span>
+    <code>
+     printf
+    </code>
+    <span>
+     这种接受可变参数的函数，还需要将参数中VECTOR寄存器的数量放入al中。所谓VECTOR寄存器，就可以理解成存放浮点数的寄存器。我们这里没有浮点数，因此将0放入al中即可。然后
+    </span>
+    <code>
+     callq	_printf
+    </code>
+    <span>
+     即可。
+    </span>
+   </p>
+   <h2>
+    <a class="md-header-anchor" name="%E8%A2%AB%E8%B0%83%E7%94%A8">
+    </a>
+    <span>
+     被调用
+    </span>
+   </h2>
+   <p>
+    <span>
+     被调用的最典型的例子，就是命令行参数
+    </span>
+    <code>
+     argc
+    </code>
+    <span>
+     与
+    </span>
+    <code>
+     argv
+    </code>
+    <span>
+     了。
+    </span>
+    <code>
+     argc
+    </code>
+    <span>
+     是在命令行中该程序被调用时参数的个数，
+    </span>
+    <code>
+     argv
+    </code>
+    <span>
+     是一个
+    </span>
+    <code>
+     char **
+    </code>
+    <span>
+     类型，是各个参数的字符串数组。比如说，
+    </span>
+   </p>
+   <pre><code class="language-shell" lang="shell">./test	helloworld 1
+</code></pre>
+   <p>
+    <span>
+     那么，
+    </span>
+    <code>
+     argc
+    </code>
+    <span>
+     就是3，
+    </span>
+    <code>
+     argv[0]
+    </code>
+    <span>
+     是
+    </span>
+    <code>
+     "./test"
+    </code>
+    <span>
+     ,
+    </span>
+    <code>
+     argv[1]
+    </code>
+    <span>
+     是
+    </span>
+    <code>
+     "helloworld"
+    </code>
+    <span>
+     ,
+    </span>
+    <code>
+     argv[2]
+    </code>
+    <span>
+     是
+    </span>
+    <code>
+     "1"
+    </code>
+    <span>
+     .
+    </span>
+   </p>
+   <p>
+    <span>
+     操作系统会自动将
+    </span>
+    <code>
+     argc
+    </code>
+    <span>
+     和
+    </span>
+    <code>
+     argv
+    </code>
+    <span>
+     作为
+    </span>
+    <code>
+     _main
+    </code>
+    <span>
+     函数的参数传给程序。因此，我们在
+    </span>
+    <code>
+     _main
+    </code>
+    <span>
+     的开始，就可以用rdi获得
+    </span>
+    <code>
+     argc
+    </code>
+    <span>
+     ,
+    </span>
+    <code>
+     rsi
+    </code>
+    <span>
+     获得argv.
+    </span>
+   </p>
+   <h2>
+    <a class="md-header-anchor" name="%E8%A2%ABc%E8%AF%AD%E8%A8%80%E8%B0%83%E7%94%A8">
+    </a>
+    <span>
+     被C语言调用
+    </span>
+   </h2>
+   <p>
+    <span>
+     和调用C语言时在函数名前加
+    </span>
+    <code>
+     _
+    </code>
+    <span>
+     相反, 被C语言调用时，C代码中要把汇编语言函数前的
+    </span>
+    <code>
+     _
+    </code>
+    <span>
+     去掉。比如说汇编语言中有一个函数
+    </span>
+    <code>
+     _func
+    </code>
+    <span>
+     , 那么在C语言中调用的函数就应当是
+    </span>
+    <code>
+     func()
+    </code>
+    <span>
+     . 此外，需要在C语言代码的开头写上
+    </span>
+   </p>
+   <pre><code class="language-c" lang="c">extern void func();
+</code></pre>
+   <p>
+    <span>
+     其中函数的返回值和参数都可以依据汇编语言来定，也可以写
+    </span>
+    <code>
+     extern int func(int a);
+    </code>
+    <span>
+     这种。
+    </span>
+   </p>
+   <h1>
+    <a class="md-header-anchor" name="%E5%8F%AF%E4%BB%A5%E5%9C%A8%E5%93%AA%E7%9C%8B%E5%88%B0%E8%BF%99%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0">
+    </a>
+    <span>
+     可以在哪看到这系列文章
+    </span>
+   </h1>
+   <p>
+    <span>
+     我在我的
+    </span>
+    <a href="https://github.com/Evian-Zhang/Assembly-on-macOS">
+     <span>
+      GitHub
+     </span>
+    </a>
+    <span>
+     上，
+    </span>
+    <a href="https://zhuanlan.zhihu.com/c_1132336120712765440">
+     <span>
+      知乎专栏
+     </span>
+    </a>
+    <span>
+     上和
+    </span>
+    <a href="https://blog.csdn.net/EvianZhang">
+     <span>
+      CSDN
+     </span>
+    </a>
+    <span>
+     上同步更新。
+    </span>
+   </p>
+   <p>
+    <span>
+     上一篇文章：
+    </span>
+    <a href="macOS上的汇编入门（九）——跳转与函数.html">
+     <span>
+      macOS上的汇编入门（九）——跳转与函数
+     </span>
+    </a>
+   </p>
+  </div>
+ </div>
+</html>

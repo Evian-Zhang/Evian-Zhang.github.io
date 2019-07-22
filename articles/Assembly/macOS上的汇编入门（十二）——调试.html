@@ -1,0 +1,510 @@
+<!DOCTYPE doctype html>
+<html>
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width initial-scale=1" name="viewport"/>
+  <title>
+   macOS上的汇编入门（十二）——调试
+  </title>
+  <base target="_blank"/>
+  <link href="/css/article.css" rel="stylesheet" type="text/css"/>
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({
+tex2jax: {
+	inlineMath: [ ['$','$'] ],
+	displayMath: [ ['$$','$$'] ]
+}
+});
+  </script>
+ </head>
+ <div id="main_wrapper">
+  <header id="main_header">
+   <a href="/index.html">
+    Evian Zhang's
+    <br/>
+    naive blog
+   </a>
+   <h2>
+    macOS上的汇编入门（十二）——调试
+   </h2>
+  </header>  <div id="article_body">
+   <p>
+    <span>
+     随着我们编写的汇编程序越来越复杂，往往就需要调试。对于汇编语言而言，常见的调试器有LLDB和GDB. 由于我比较喜欢用LLVM系列的产品，因此，在这篇文章中我主要介绍的是LLDB来调试汇编语言的方法。关于详细的LLDB的使用方法，大家可去官网
+    </span>
+    <a href="https://lldb.llvm.org/index.html">
+     <span>
+      lldb.llvm.org
+     </span>
+    </a>
+    <span>
+     查看。
+    </span>
+   </p>
+   <p>
+    <span>
+     同时，在新版本的macOS上使用GDB是一件比较麻烦的事，需要证书签名。关于使用方法请参见我之前的文章
+    </span>
+    <a href="https://evian-zhang.github.io/articles/macOS/%E5%9C%A8macOS10.14%E4%B8%8A%E4%BD%BF%E7%94%A8GDB%E6%95%99%E7%A8%8B/%E5%9C%A8macOS10.14%E4%B8%8A%E4%BD%BF%E7%94%A8GDB%E6%95%99%E7%A8%8B.html">
+     <span>
+      在macOS10.14上使用GDB教程
+     </span>
+    </a>
+    <span>
+     。
+    </span>
+   </p>
+   <p>
+    <span>
+     为了演示LLDB的调试，我们首先有一个汇编程序
+    </span>
+    <code>
+     test.s
+    </code>
+    <span>
+     :
+    </span>
+   </p>
+   <pre><code class="language-assembly" lang="assembly"># test.s
+	.text
+	.globl	_main
+_main:
+	movq	$0x2000001, %rax
+	movq	$0, %rdi
+	syscall
+</code></pre>
+   <p>
+    <span>
+     为了以源码级别调试程序，我们需要在汇编时加入调试选项
+    </span>
+    <code>
+     -g
+    </code>
+    <span>
+     . 也就是说，我们在终端下依次键入下面语句：
+    </span>
+   </p>
+   <pre><code class="language-shell" lang="shell">as test.s -g -o test.o
+ld test.o -o test -lSystem
+</code></pre>
+   <p>
+    <span>
+     这样就可以将调试信息储存在
+    </span>
+    <code>
+     test.o
+    </code>
+    <span>
+     中以便我们接下来的调试。
+    </span>
+   </p>
+   <h1>
+    <a class="md-header-anchor" name="%E8%BD%BD%E5%85%A5%E7%A8%8B%E5%BA%8F">
+    </a>
+    <span>
+     载入程序
+    </span>
+   </h1>
+   <p>
+    <span>
+     首先是将程序载入LLDB. 假设我们要调试的可执行程序是
+    </span>
+    <code>
+     test
+    </code>
+    <span>
+     . 那么，我们在终端下键入
+    </span>
+   </p>
+   <pre><code class="language-shell" lang="shell">lldb test
+</code></pre>
+   <p>
+    <span>
+     即可进入LLDB调试界面，同时会出现
+    </span>
+   </p>
+   <pre><code class="language-shell" lang="shell">(lldb) target create "test"
+Current executable set to 'test' (x86_64).
+(lldb)
+</code></pre>
+   <p>
+    <span>
+     的提示语句。
+    </span>
+   </p>
+   <p>
+    <span>
+     我们输入
+    </span>
+    <code>
+     quit
+    </code>
+    <span>
+     即可退出LLDB的调试界面：
+    </span>
+   </p>
+   <pre><code class="language-shell" lang="shell">(lldb) quit
+</code></pre>
+   <h1>
+    <a class="md-header-anchor" name="%E8%BF%90%E8%A1%8C%E7%A8%8B%E5%BA%8F">
+    </a>
+    <span>
+     运行程序
+    </span>
+   </h1>
+   <p>
+    <span>
+     接下来，我们可以输入
+    </span>
+    <code>
+     run
+    </code>
+    <span>
+     来执行这个程序：
+    </span>
+   </p>
+   <pre><code class="language-shell" lang="shell">(lldb) run
+Process 1512 launched: '/Users/evian/Downloads/test' (x86_64)
+Process 1512 exited with status = 0 (0x00000000)
+</code></pre>
+   <p>
+    <span>
+     程序顺利执行，没有发生错误。
+    </span>
+   </p>
+   <p>
+    <span>
+     但是，如果我们在某个地方写错了，比如说写成了
+    </span>
+    <code>
+     movq	$0x2001, %rax
+    </code>
+    <span>
+     , 那么汇编、链接时并不会发生错误，但在终端下运行时则会出现以下的错误报告：
+    </span>
+   </p>
+   <pre><code class="language-shell" lang="shell">./test
+[1]    1556 segmentation fault  ./test
+</code></pre>
+   <p>
+    <span>
+     这让我们摸不着头脑，段错误是为什么会出现呢？这时，在LLDB中一个简单的
+    </span>
+    <code>
+     run
+    </code>
+    <span>
+     就可以让我们找到答案：
+    </span>
+   </p>
+   <pre><code class="language-shell" lang="shell">(lldb) run
+Process 1573 launched: '/Users/evian/Downloads/test' (x86_64)
+Process 1573 stopped
+* thread #1, queue = 'com.apple.main-thread', stop reason = EXC_SYSCALL (code=8193, subcode=0x1)
+    frame #0: 0x0000000100000fb8 test
+    0x100000fb8: addl   %eax, (%rax)
+    0x100000fba: addb   %al, (%rax)
+    0x100000fbc: sbbb   $0x0, %al
+    0x100000fbe: addb   %al, (%rax)
+Target 0: (test) stopped.
+</code></pre>
+   <p>
+    <span>
+     注意看到其中的
+    </span>
+    <code>
+     stop reason = EXC_SYSCALL
+    </code>
+    <span>
+     . 这就说明是我们在系统调用时出现了问题。
+    </span>
+   </p>
+   <p>
+    <code>
+     run
+    </code>
+    <span>
+     除了直接运行以外，还可以传命令行参数。比如说，我们在终端下想这样运行：
+    </span>
+   </p>
+   <pre><code class="language-shell" lang="shell">./test helloworld 114514
+</code></pre>
+   <p>
+    <span>
+     也就是将两个命令行参数传递给
+    </span>
+    <code>
+     test
+    </code>
+    <span>
+     . 那么，我们在LLDB中也可以用
+    </span>
+    <code>
+     run
+    </code>
+    <span>
+     模拟这种传递过程：
+    </span>
+   </p>
+   <pre><code class="language-shell" lang="shell">(lldb) run helloworld 114514
+</code></pre>
+   <p>
+    <span>
+     即可。
+    </span>
+   </p>
+   <h1>
+    <a class="md-header-anchor" name="%E8%AE%BE%E7%BD%AE%E6%96%AD%E7%82%B9">
+    </a>
+    <span>
+     设置断点
+    </span>
+   </h1>
+   <p>
+    <span>
+     LLDB的功能远不止直接执行程序这么简单。接下来的工作，都需要我们首先设置断点。比如说，我想让程序在执行完
+    </span>
+    <code>
+     movq	%0x2000001, %rax
+    </code>
+    <span>
+     后停下来，也就是不继续执行
+    </span>
+    <code>
+     movq	%0, %rdi
+    </code>
+    <span>
+     . 这时应当怎么办呢？
+    </span>
+   </p>
+   <p>
+    <span>
+     首先，我们找到
+    </span>
+    <code>
+     movq	%0, %rdi
+    </code>
+    <span>
+     所在的行数，是第6行。因此，我们需要在第6行设置断点。在某行设置断点的意思就是在某行之前设置断点，当程序遇到断点时就会自动停下来，不继续执行。因此，我们在LLDB中输入并得到反馈：
+    </span>
+   </p>
+   <pre><code class="language-shell" lang="shell">(lldb) breakpoint set --file test.s --line 6
+Breakpoint 1: where = test`main + 7, address = 0x0000000100000faf
+</code></pre>
+   <p>
+    <span>
+     程序就自动设置了一个断点。这句话的意思就是在名叫
+    </span>
+    <code>
+     test.s
+    </code>
+    <span>
+     的文件的第6行设置断点。
+    </span>
+   </p>
+   <p>
+    <span>
+     接下来，我们如果直接
+    </span>
+    <code>
+     run
+    </code>
+    <span>
+     ，会出现：
+    </span>
+   </p>
+   <pre><code class="language-shell" lang="shell">(lldb) run
+Process 1669 launched: '/Users/evian/Downloads/test' (x86_64)
+Process 1669 stopped
+* thread #1, queue = 'com.apple.main-thread', stop reason = breakpoint 1.1
+    frame #0: 0x0000000100000faf test`main at test.s:6
+   3   		.globl	_main
+   4   	_main:
+   5   		movq	$0x2000001, %rax
+-&gt; 6   		movq	$0, %rdi
+   7   		syscall
+Target 0: (test) stopped.
+</code></pre>
+   <p>
+    <span>
+     也就直接在第6行停了下来。我们可以用
+    </span>
+    <code>
+     continue
+    </code>
+    <span>
+     让其继续执行：
+    </span>
+   </p>
+   <pre><code class="language-shell" lang="shell">(lldb) continue
+Process 1669 resuming
+Process 1669 exited with status = 0 (0x00000000)
+</code></pre>
+   <p>
+    <span>
+     或者利用
+    </span>
+    <code>
+     nexti
+    </code>
+    <span>
+     进行单步调试：
+    </span>
+   </p>
+   <pre><code class="language-shell" lang="shell">(lldb) nexti
+Process 1680 stopped
+* thread #1, queue = 'com.apple.main-thread', stop reason = instruction step over
+    frame #0: 0x0000000100000fb6 test`main at test.s:7
+   4   	_main:
+   5   		movq	$0x2000001, %rax
+   6   		movq	$0, %rdi
+-&gt; 7   		syscall
+Target 0: (test) stopped.
+</code></pre>
+   <p>
+    <span>
+     所谓单步调试，就是指在当前指令的下一个指令处再设置一个断点，然后继续执行。实际效果也就相当于又往后执行了一个指令，然后停止。
+    </span>
+   </p>
+   <h1>
+    <a class="md-header-anchor" name="%E5%AF%84%E5%AD%98%E5%99%A8%E4%B8%8E%E5%86%85%E5%AD%98">
+    </a>
+    <span>
+     寄存器与内存
+    </span>
+   </h1>
+   <p>
+    <span>
+     在进程停止在某个断点处时，我们还可以读取此时寄存器和内存的值。
+    </span>
+   </p>
+   <p>
+    <span>
+     利用
+    </span>
+    <code>
+     register read
+    </code>
+    <span>
+     可以阅读大部分常用寄存器的值：
+    </span>
+   </p>
+   <pre><code class="language-shell" lang="shell">(lldb) register read
+General Purpose Registers:
+       rax = 0x0000000002000001
+       rbx = 0x0000000000000000
+       rcx = 0x00007ffeefbff910
+       rdx = 0x00007ffeefbff7e8
+       rdi = 0x0000000000000001
+       rsi = 0x00007ffeefbff7d8
+       rbp = 0x00007ffeefbff7c8
+       rsp = 0x00007ffeefbff7b8
+        r8 = 0x0000000000000000
+        r9 = 0x0000000000000000
+       r10 = 0x0000000000000000
+       r11 = 0x0000000000000000
+       r12 = 0x0000000000000000
+       r13 = 0x0000000000000000
+       r14 = 0x0000000000000000
+       r15 = 0x0000000000000000
+       rip = 0x0000000100000faf  test`main + 7
+    rflags = 0x0000000000000246
+        cs = 0x000000000000002b
+        fs = 0x0000000000000000
+        gs = 0x0000000000000000
+</code></pre>
+   <p>
+    <span>
+     如果输入
+    </span>
+    <code>
+     register read —all
+    </code>
+    <span>
+     , 则会输出所有寄存器的值。
+    </span>
+   </p>
+   <p>
+    <span>
+     此外，我们还可以单独查看某个寄存器，比如说
+    </span>
+   </p>
+   <pre><code class="language-shell" lang="shell">(lldb) register read rsp
+     rsp = 0x00007ffeefbff7b8
+</code></pre>
+   <p>
+    <span>
+     就会返回rsp内存储的值。
+    </span>
+   </p>
+   <p>
+    <span>
+     同时，我们也可以查看内存中的值。我们刚刚查看到了此时栈顶指针位于
+    </span>
+    <code>
+     0x00007ffeefbff7b8
+    </code>
+    <span>
+     . 因此，我们利用
+    </span>
+   </p>
+   <pre><code class="language-shell" lang="shell">(lldb) memory read 0x00007ffeefbff7b8
+0x7ffeefbff7b8: 35 fc 2e 6d ff 7f 00 00 35 fc 2e 6d ff 7f 00 00  5�.m�...5�.m�...
+0x7ffeefbff7c8: 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00  ................
+</code></pre>
+   <p>
+    <span>
+     就获得了当前栈顶的内容。
+    </span>
+   </p>
+   <h1>
+    <a class="md-header-anchor" name="%E5%8F%AF%E4%BB%A5%E5%9C%A8%E5%93%AA%E7%9C%8B%E5%88%B0%E8%BF%99%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0">
+    </a>
+    <span>
+     可以在哪看到这系列文章
+    </span>
+   </h1>
+   <p>
+    <span>
+     我在我的
+    </span>
+    <a href="https://github.com/Evian-Zhang/Assembly-on-macOS">
+     <span>
+      GitHub
+     </span>
+    </a>
+    <span>
+     上，
+    </span>
+    <a href="https://zhuanlan.zhihu.com/c_1132336120712765440">
+     <span>
+      知乎专栏
+     </span>
+    </a>
+    <span>
+     上和
+    </span>
+    <a href="https://blog.csdn.net/EvianZhang">
+     <span>
+      CSDN
+     </span>
+    </a>
+    <span>
+     上同步更新。
+    </span>
+   </p>
+   <p>
+    <span>
+     上一篇文章：
+    </span>
+    <a href="macOS上的汇编入门（十一）——系统调用.html">
+     <span>
+      macOS上的汇编入门（十一）——系统调用
+     </span>
+    </a>
+   </p>
+  </div>
+ </div>
+</html>
